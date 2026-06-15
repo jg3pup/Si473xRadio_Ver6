@@ -40,6 +40,7 @@ app/
   android/        Android 用コントロールアプリ (.apk)
 docs/
   Manual          組み立てマニュアル (PDF)
+  Si473x_Radio_Manual.pdf  操作マニュアル
   Schematic       回路図 (PDF)
 ```
 
