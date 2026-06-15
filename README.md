@@ -39,7 +39,7 @@ app/
   windows/        Windows 用コントロールアプリ (.exe)
   android/        Android 用コントロールアプリ (.apk)
 docs/
-  Manual          組み立てマニュアル (PDF)
+  si473x_キット製作マニュアル          組み立てマニュアル (PDF)
   Si473x_Radio_Manual.pdf  操作マニュアル
   Schematic       回路図 (PDF)
 ```
