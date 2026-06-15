@@ -1,0 +1,1402 @@
+[
+  {
+    "freq": 121.5,
+    "name": "航空緊急",
+    "icao": "",
+    "airport": "全国共通",
+    "area": "全国",
+    "type": "EMG"
+  },
+  {
+    "freq": 123.1,
+    "name": "捜索救難",
+    "icao": "",
+    "airport": "全国共通",
+    "area": "全国",
+    "type": "EMG"
+  },
+  {
+    "freq": 118.1,
+    "name": "羽田TWR",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "TWR"
+  },
+  {
+    "freq": 118.575,
+    "name": "羽田TWR2",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "TWR"
+  },
+  {
+    "freq": 118.725,
+    "name": "羽田TWR3",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "TWR"
+  },
+  {
+    "freq": 124.35,
+    "name": "羽田TWR4",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "TWR"
+  },
+  {
+    "freq": 118.8,
+    "name": "羽田TWR5",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.1,
+    "name": "羽田APP",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "APP"
+  },
+  {
+    "freq": 119.4,
+    "name": "羽田APP2",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "APP"
+  },
+  {
+    "freq": 119.65,
+    "name": "羽田APP3",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "APP"
+  },
+  {
+    "freq": 119.7,
+    "name": "羽田APP4",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "APP"
+  },
+  {
+    "freq": 125.4,
+    "name": "羽田APP5",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "APP"
+  },
+  {
+    "freq": 126.0,
+    "name": "羽田DEP",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "DEP"
+  },
+  {
+    "freq": 120.8,
+    "name": "羽田DEP2",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "DEP"
+  },
+  {
+    "freq": 127.5,
+    "name": "羽田DEP3",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "DEP"
+  },
+  {
+    "freq": 127.6,
+    "name": "羽田DEP4",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "DEP"
+  },
+  {
+    "freq": 121.825,
+    "name": "羽田CD",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "CD"
+  },
+  {
+    "freq": 121.875,
+    "name": "羽田CD2",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "CD"
+  },
+  {
+    "freq": 118.225,
+    "name": "羽田GND",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "GND"
+  },
+  {
+    "freq": 121.625,
+    "name": "羽田GND2",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "GND"
+  },
+  {
+    "freq": 121.7,
+    "name": "羽田GND3",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "GND"
+  },
+  {
+    "freq": 121.975,
+    "name": "羽田GND4",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "GND"
+  },
+  {
+    "freq": 128.8,
+    "name": "羽田ATIS",
+    "icao": "RJTT",
+    "airport": "東京国際空港",
+    "area": "関東",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.2,
+    "name": "成田TWR",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "TWR"
+  },
+  {
+    "freq": 118.35,
+    "name": "成田TWR2",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "TWR"
+  },
+  {
+    "freq": 124.2,
+    "name": "成田DEP",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "DEP"
+  },
+  {
+    "freq": 119.6,
+    "name": "成田DEP2",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "DEP"
+  },
+  {
+    "freq": 120.6,
+    "name": "成田DEP3",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "DEP"
+  },
+  {
+    "freq": 124.4,
+    "name": "成田APP",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "APP"
+  },
+  {
+    "freq": 121.275,
+    "name": "成田APP2",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "APP"
+  },
+  {
+    "freq": 125.2,
+    "name": "成田APP3",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "APP"
+  },
+  {
+    "freq": 121.9,
+    "name": "成田CD",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "CD"
+  },
+  {
+    "freq": 121.65,
+    "name": "成田CD2",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "CD"
+  },
+  {
+    "freq": 121.95,
+    "name": "成田GND",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "GND"
+  },
+  {
+    "freq": 121.85,
+    "name": "成田GND2",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "GND"
+  },
+  {
+    "freq": 128.25,
+    "name": "成田ATIS",
+    "icao": "RJAA",
+    "airport": "成田国際空港",
+    "area": "関東",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.1,
+    "name": "伊丹TWR",
+    "icao": "RJOO",
+    "airport": "大阪国際空港",
+    "area": "近畿",
+    "type": "TWR"
+  },
+  {
+    "freq": 118.8,
+    "name": "伊丹CD",
+    "icao": "RJOO",
+    "airport": "大阪国際空港",
+    "area": "近畿",
+    "type": "CD"
+  },
+  {
+    "freq": 121.7,
+    "name": "伊丹GND",
+    "icao": "RJOO",
+    "airport": "大阪国際空港",
+    "area": "近畿",
+    "type": "GND"
+  },
+  {
+    "freq": 128.6,
+    "name": "伊丹ATIS",
+    "icao": "RJOO",
+    "airport": "大阪国際空港",
+    "area": "近畿",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.5,
+    "name": "神戸TWR",
+    "icao": "RJBE",
+    "airport": "神戸空港",
+    "area": "近畿",
+    "type": "TWR"
+  },
+  {
+    "freq": 128.075,
+    "name": "神戸ATIS",
+    "icao": "RJBE",
+    "airport": "神戸空港",
+    "area": "近畿",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.85,
+    "name": "中部TWR",
+    "icao": "RJGG",
+    "airport": "中部国際空港",
+    "area": "中部",
+    "type": "TWR"
+  },
+  {
+    "freq": 120.0,
+    "name": "中部DEP",
+    "icao": "RJGG",
+    "airport": "中部国際空港",
+    "area": "中部",
+    "type": "DEP"
+  },
+  {
+    "freq": 121.05,
+    "name": "中部APP",
+    "icao": "RJGG",
+    "airport": "中部国際空港",
+    "area": "中部",
+    "type": "APP"
+  },
+  {
+    "freq": 119.175,
+    "name": "中部APP2",
+    "icao": "RJGG",
+    "airport": "中部国際空港",
+    "area": "中部",
+    "type": "APP"
+  },
+  {
+    "freq": 125.55,
+    "name": "中部RDR",
+    "icao": "RJGG",
+    "airport": "中部国際空港",
+    "area": "中部",
+    "type": "APP"
+  },
+  {
+    "freq": 121.85,
+    "name": "中部CD",
+    "icao": "RJGG",
+    "airport": "中部国際空港",
+    "area": "中部",
+    "type": "CD"
+  },
+  {
+    "freq": 121.8,
+    "name": "中部GND",
+    "icao": "RJGG",
+    "airport": "中部国際空港",
+    "area": "中部",
+    "type": "GND"
+  },
+  {
+    "freq": 127.075,
+    "name": "中部ATIS",
+    "icao": "RJGG",
+    "airport": "中部国際空港",
+    "area": "中部",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.7,
+    "name": "名古屋TWR",
+    "icao": "RJNA",
+    "airport": "名古屋空港",
+    "area": "中部",
+    "type": "TWR"
+  },
+  {
+    "freq": 121.75,
+    "name": "名古屋CD",
+    "icao": "RJNA",
+    "airport": "名古屋空港",
+    "area": "中部",
+    "type": "CD"
+  },
+  {
+    "freq": 121.7,
+    "name": "名古屋GND",
+    "icao": "RJNA",
+    "airport": "名古屋空港",
+    "area": "中部",
+    "type": "GND"
+  },
+  {
+    "freq": 128.45,
+    "name": "名古屋ATIS",
+    "icao": "RJNA",
+    "airport": "名古屋空港",
+    "area": "中部",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.35,
+    "name": "小松TWR",
+    "icao": "RJNK",
+    "airport": "小松空港",
+    "area": "中部",
+    "type": "TWR"
+  },
+  {
+    "freq": 120.1,
+    "name": "小松DEP/APP",
+    "icao": "RJNK",
+    "airport": "小松空港",
+    "area": "中部",
+    "type": "APP"
+  },
+  {
+    "freq": 121.7,
+    "name": "小松GND",
+    "icao": "RJNK",
+    "airport": "小松空港",
+    "area": "中部",
+    "type": "GND"
+  },
+  {
+    "freq": 118.7,
+    "name": "新千歳TWR",
+    "icao": "RJCC",
+    "airport": "新千歳空港",
+    "area": "北海道",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.1,
+    "name": "新千歳APP",
+    "icao": "RJCC",
+    "airport": "新千歳空港",
+    "area": "北海道",
+    "type": "APP"
+  },
+  {
+    "freq": 119.7,
+    "name": "新千歳DEP",
+    "icao": "RJCC",
+    "airport": "新千歳空港",
+    "area": "北海道",
+    "type": "DEP"
+  },
+  {
+    "freq": 121.8,
+    "name": "新千歳GND",
+    "icao": "RJCC",
+    "airport": "新千歳空港",
+    "area": "北海道",
+    "type": "GND"
+  },
+  {
+    "freq": 128.45,
+    "name": "新千歳ATIS",
+    "icao": "RJCC",
+    "airport": "新千歳空港",
+    "area": "北海道",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.4,
+    "name": "福岡TWR",
+    "icao": "RJFF",
+    "airport": "福岡空港",
+    "area": "九州",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.1,
+    "name": "福岡DEP",
+    "icao": "RJFF",
+    "airport": "福岡空港",
+    "area": "九州",
+    "type": "DEP"
+  },
+  {
+    "freq": 127.9,
+    "name": "福岡DEP2",
+    "icao": "RJFF",
+    "airport": "福岡空港",
+    "area": "九州",
+    "type": "DEP"
+  },
+  {
+    "freq": 119.65,
+    "name": "福岡APP",
+    "icao": "RJFF",
+    "airport": "福岡空港",
+    "area": "九州",
+    "type": "APP"
+  },
+  {
+    "freq": 121.125,
+    "name": "福岡APP2",
+    "icao": "RJFF",
+    "airport": "福岡空港",
+    "area": "九州",
+    "type": "APP"
+  },
+  {
+    "freq": 121.925,
+    "name": "福岡CD",
+    "icao": "RJFF",
+    "airport": "福岡空港",
+    "area": "九州",
+    "type": "CD"
+  },
+  {
+    "freq": 121.7,
+    "name": "福岡GND",
+    "icao": "RJFF",
+    "airport": "福岡空港",
+    "area": "九州",
+    "type": "GND"
+  },
+  {
+    "freq": 127.2,
+    "name": "福岡ATIS",
+    "icao": "RJFF",
+    "airport": "福岡空港",
+    "area": "九州",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.1,
+    "name": "那覇TWR",
+    "icao": "ROAH",
+    "airport": "那覇空港",
+    "area": "沖縄",
+    "type": "TWR"
+  },
+  {
+    "freq": 118.75,
+    "name": "那覇TWR2",
+    "icao": "ROAH",
+    "airport": "那覇空港",
+    "area": "沖縄",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.1,
+    "name": "那覇DEP/APP",
+    "icao": "ROAH",
+    "airport": "那覇空港",
+    "area": "沖縄",
+    "type": "APP"
+  },
+  {
+    "freq": 126.5,
+    "name": "那覇DEP2",
+    "icao": "ROAH",
+    "airport": "那覇空港",
+    "area": "沖縄",
+    "type": "DEP"
+  },
+  {
+    "freq": 122.075,
+    "name": "那覇CD",
+    "icao": "ROAH",
+    "airport": "那覇空港",
+    "area": "沖縄",
+    "type": "CD"
+  },
+  {
+    "freq": 121.8,
+    "name": "那覇GND",
+    "icao": "ROAH",
+    "airport": "那覇空港",
+    "area": "沖縄",
+    "type": "GND"
+  },
+  {
+    "freq": 121.9,
+    "name": "那覇GND2",
+    "icao": "ROAH",
+    "airport": "那覇空港",
+    "area": "沖縄",
+    "type": "GND"
+  },
+  {
+    "freq": 127.8,
+    "name": "那覇ATIS",
+    "icao": "ROAH",
+    "airport": "那覇空港",
+    "area": "沖縄",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.2,
+    "name": "仙台TWR",
+    "icao": "RJSS",
+    "airport": "仙台空港",
+    "area": "東北",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.4,
+    "name": "仙台APP",
+    "icao": "RJSS",
+    "airport": "仙台空港",
+    "area": "東北",
+    "type": "APP"
+  },
+  {
+    "freq": 121.8,
+    "name": "仙台GND",
+    "icao": "RJSS",
+    "airport": "仙台空港",
+    "area": "東北",
+    "type": "GND"
+  },
+  {
+    "freq": 128.5,
+    "name": "仙台ATIS",
+    "icao": "RJSS",
+    "airport": "仙台空港",
+    "area": "東北",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.2,
+    "name": "広島TWR",
+    "icao": "RJOA",
+    "airport": "広島空港",
+    "area": "中国",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.7,
+    "name": "広島APP",
+    "icao": "RJOA",
+    "airport": "広島空港",
+    "area": "中国",
+    "type": "APP"
+  },
+  {
+    "freq": 128.25,
+    "name": "広島ATIS",
+    "icao": "RJOA",
+    "airport": "広島空港",
+    "area": "中国",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.2,
+    "name": "鹿児島TWR",
+    "icao": "RJFK",
+    "airport": "鹿児島空港",
+    "area": "九州",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.4,
+    "name": "鹿児島DEP",
+    "icao": "RJFK",
+    "airport": "鹿児島空港",
+    "area": "九州",
+    "type": "DEP"
+  },
+  {
+    "freq": 120.1,
+    "name": "鹿児島DEP2",
+    "icao": "RJFK",
+    "airport": "鹿児島空港",
+    "area": "九州",
+    "type": "DEP"
+  },
+  {
+    "freq": 126.0,
+    "name": "鹿児島APP",
+    "icao": "RJFK",
+    "airport": "鹿児島空港",
+    "area": "九州",
+    "type": "APP"
+  },
+  {
+    "freq": 121.8,
+    "name": "鹿児島CD",
+    "icao": "RJFK",
+    "airport": "鹿児島空港",
+    "area": "九州",
+    "type": "CD"
+  },
+  {
+    "freq": 121.7,
+    "name": "鹿児島GND",
+    "icao": "RJFK",
+    "airport": "鹿児島空港",
+    "area": "九州",
+    "type": "GND"
+  },
+  {
+    "freq": 127.05,
+    "name": "鹿児島ATIS",
+    "icao": "RJFK",
+    "airport": "鹿児島空港",
+    "area": "九州",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.7,
+    "name": "熊本TWR",
+    "icao": "RJFT",
+    "airport": "熊本空港",
+    "area": "九州",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.0,
+    "name": "熊本APP",
+    "icao": "RJFT",
+    "airport": "熊本空港",
+    "area": "九州",
+    "type": "APP"
+  },
+  {
+    "freq": 126.5,
+    "name": "熊本DEP",
+    "icao": "RJFT",
+    "airport": "熊本空港",
+    "area": "九州",
+    "type": "DEP"
+  },
+  {
+    "freq": 121.8,
+    "name": "熊本GND",
+    "icao": "RJFT",
+    "airport": "熊本空港",
+    "area": "九州",
+    "type": "GND"
+  },
+  {
+    "freq": 128.8,
+    "name": "熊本ATIS",
+    "icao": "RJFT",
+    "airport": "熊本空港",
+    "area": "九州",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.5,
+    "name": "長崎TWR",
+    "icao": "RJFU",
+    "airport": "長崎空港",
+    "area": "九州",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.175,
+    "name": "長崎APP",
+    "icao": "RJFU",
+    "airport": "長崎空港",
+    "area": "九州",
+    "type": "APP"
+  },
+  {
+    "freq": 121.0,
+    "name": "長崎DEP",
+    "icao": "RJFU",
+    "airport": "長崎空港",
+    "area": "九州",
+    "type": "DEP"
+  },
+  {
+    "freq": 121.6,
+    "name": "長崎GND",
+    "icao": "RJFU",
+    "airport": "長崎空港",
+    "area": "九州",
+    "type": "GND"
+  },
+  {
+    "freq": 126.85,
+    "name": "長崎ATIS",
+    "icao": "RJFU",
+    "airport": "長崎空港",
+    "area": "九州",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.8,
+    "name": "大分TWR",
+    "icao": "RJFO",
+    "airport": "大分空港",
+    "area": "九州",
+    "type": "TWR"
+  },
+  {
+    "freq": 120.6,
+    "name": "大分APP",
+    "icao": "RJFO",
+    "airport": "大分空港",
+    "area": "九州",
+    "type": "APP"
+  },
+  {
+    "freq": 127.7,
+    "name": "大分DEP",
+    "icao": "RJFO",
+    "airport": "大分空港",
+    "area": "九州",
+    "type": "DEP"
+  },
+  {
+    "freq": 121.6,
+    "name": "大分GND",
+    "icao": "RJFO",
+    "airport": "大分空港",
+    "area": "九州",
+    "type": "GND"
+  },
+  {
+    "freq": 127.8,
+    "name": "大分ATIS",
+    "icao": "RJFO",
+    "airport": "大分空港",
+    "area": "九州",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.3,
+    "name": "宮崎TWR",
+    "icao": "RJFM",
+    "airport": "宮崎空港",
+    "area": "九州",
+    "type": "TWR"
+  },
+  {
+    "freq": 120.1,
+    "name": "宮崎DEP",
+    "icao": "RJFM",
+    "airport": "宮崎空港",
+    "area": "九州",
+    "type": "DEP"
+  },
+  {
+    "freq": 120.9,
+    "name": "宮崎APP",
+    "icao": "RJFM",
+    "airport": "宮崎空港",
+    "area": "九州",
+    "type": "APP"
+  },
+  {
+    "freq": 121.9,
+    "name": "宮崎GND",
+    "icao": "RJFM",
+    "airport": "宮崎空港",
+    "area": "九州",
+    "type": "GND"
+  },
+  {
+    "freq": 126.8,
+    "name": "宮崎ATIS",
+    "icao": "RJFM",
+    "airport": "宮崎空港",
+    "area": "九州",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.1,
+    "name": "函館TWR",
+    "icao": "RJCH",
+    "airport": "函館空港",
+    "area": "北海道",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.7,
+    "name": "函館APP",
+    "icao": "RJCH",
+    "airport": "函館空港",
+    "area": "北海道",
+    "type": "APP"
+  },
+  {
+    "freq": 128.8,
+    "name": "函館ATIS",
+    "icao": "RJCH",
+    "airport": "函館空港",
+    "area": "北海道",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.15,
+    "name": "松山TWR",
+    "icao": "RJOM",
+    "airport": "松山空港",
+    "area": "四国",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.5,
+    "name": "松山APP",
+    "icao": "RJOM",
+    "airport": "松山空港",
+    "area": "四国",
+    "type": "APP"
+  },
+  {
+    "freq": 128.55,
+    "name": "松山ATIS",
+    "icao": "RJOM",
+    "airport": "松山空港",
+    "area": "四国",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.0,
+    "name": "高松TWR",
+    "icao": "RJOT",
+    "airport": "高松空港",
+    "area": "四国",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.15,
+    "name": "高松APP",
+    "icao": "RJOT",
+    "airport": "高松空港",
+    "area": "四国",
+    "type": "APP"
+  },
+  {
+    "freq": 128.2,
+    "name": "高松ATIS",
+    "icao": "RJOT",
+    "airport": "高松空港",
+    "area": "四国",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.65,
+    "name": "岡山TWR",
+    "icao": "RJOB",
+    "airport": "岡山空港",
+    "area": "中国",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.7,
+    "name": "岡山APP",
+    "icao": "RJOB",
+    "airport": "岡山空港",
+    "area": "中国",
+    "type": "APP"
+  },
+  {
+    "freq": 128.3,
+    "name": "岡山ATIS",
+    "icao": "RJOB",
+    "airport": "岡山空港",
+    "area": "中国",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.2,
+    "name": "新潟TWR",
+    "icao": "RJSN",
+    "airport": "新潟空港",
+    "area": "信越",
+    "type": "TWR"
+  },
+  {
+    "freq": 119.9,
+    "name": "新潟APP",
+    "icao": "RJSN",
+    "airport": "新潟空港",
+    "area": "信越",
+    "type": "APP"
+  },
+  {
+    "freq": 128.05,
+    "name": "新潟ATIS",
+    "icao": "RJSN",
+    "airport": "新潟空港",
+    "area": "信越",
+    "type": "ATIS"
+  },
+  {
+    "freq": 118.3,
+    "name": "下地島TWR",
+    "icao": "RORS",
+    "airport": "下地島空港",
+    "area": "沖縄",
+    "type": "TWR"
+  },
+  {
+    "freq": 125.0,
+    "name": "下地島DEP",
+    "icao": "RORS",
+    "airport": "下地島空港",
+    "area": "沖縄",
+    "type": "DEP"
+  },
+  {
+    "freq": 121.2,
+    "name": "下地島APP",
+    "icao": "RORS",
+    "airport": "下地島空港",
+    "area": "沖縄",
+    "type": "APP"
+  },
+  {
+    "freq": 121.7,
+    "name": "下地島GND",
+    "icao": "RORS",
+    "airport": "下地島空港",
+    "area": "沖縄",
+    "type": "GND"
+  },
+  {
+    "freq": 118.1,
+    "name": "石垣TWR",
+    "icao": "ROIG",
+    "airport": "石垣空港",
+    "area": "沖縄",
+    "type": "TWR"
+  },
+  {
+    "freq": 120.3,
+    "name": "石垣APP",
+    "icao": "ROIG",
+    "airport": "石垣空港",
+    "area": "沖縄",
+    "type": "APP"
+  },
+  {
+    "freq": 124.3,
+    "name": "東京ACC北",
+    "icao": "RJTG",
+    "airport": "東京ACC",
+    "area": "関東",
+    "type": "ACC"
+  },
+  {
+    "freq": 125.9,
+    "name": "東京ACC南",
+    "icao": "RJTG",
+    "airport": "東京ACC",
+    "area": "関東",
+    "type": "ACC"
+  },
+  {
+    "freq": 133.0,
+    "name": "東京ACC東",
+    "icao": "RJTG",
+    "airport": "東京ACC",
+    "area": "関東",
+    "type": "ACC"
+  },
+  {
+    "freq": 126.0,
+    "name": "東京ACC西",
+    "icao": "RJTG",
+    "airport": "東京ACC",
+    "area": "関東",
+    "type": "ACC"
+  },
+  {
+    "freq": 124.1,
+    "name": "福岡ACC北",
+    "icao": "RJFA",
+    "airport": "福岡ACC",
+    "area": "九州",
+    "type": "ACC"
+  },
+  {
+    "freq": 124.6,
+    "name": "福岡ACC南",
+    "icao": "RJFA",
+    "airport": "福岡ACC",
+    "area": "九州",
+    "type": "ACC"
+  },
+  {
+    "freq": 132.3,
+    "name": "福岡ACC東",
+    "icao": "RJFA",
+    "airport": "福岡ACC",
+    "area": "九州",
+    "type": "ACC"
+  },
+  {
+    "freq": 120.1,
+    "name": "札幌ACC",
+    "icao": "RJCG",
+    "airport": "札幌ACC",
+    "area": "北海道",
+    "type": "ACC"
+  },
+  {
+    "freq": 124.5,
+    "name": "那覇ACC",
+    "icao": "ROAH",
+    "airport": "那覇ACC",
+    "area": "沖縄",
+    "type": "ACC"
+  },
+  {
+    "freq": 118.2,
+    "name": "関西TWR",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "TWR"
+  },
+  {
+    "freq": 118.05,
+    "name": "関西TWR2",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "TWR"
+  },
+  {
+    "freq": 126.2,
+    "name": "関西TWR3",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "TWR"
+  },
+  {
+    "freq": 121.1,
+    "name": "関西TCA(P)",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "TCA"
+  },
+  {
+    "freq": 125.3,
+    "name": "関西TCA2",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "TCA"
+  },
+  {
+    "freq": 119.025,
+    "name": "関西TCA3",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "TCA"
+  },
+  {
+    "freq": 121.9,
+    "name": "関西CLR",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "CD"
+  },
+  {
+    "freq": 126.2,
+    "name": "関西CLR2",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "CD"
+  },
+  {
+    "freq": 121.6,
+    "name": "関西GND",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "GND"
+  },
+  {
+    "freq": 121.65,
+    "name": "関西GND2",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "GND"
+  },
+  {
+    "freq": 118.575,
+    "name": "関西GND3",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "GND"
+  },
+  {
+    "freq": 126.2,
+    "name": "関西GND4",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "GND"
+  },
+  {
+    "freq": 119.2,
+    "name": "関西DEP",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "DEP"
+  },
+  {
+    "freq": 120.65,
+    "name": "関西DEP2",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "DEP"
+  },
+  {
+    "freq": 119.5,
+    "name": "関西DEP3",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "DEP"
+  },
+  {
+    "freq": 119.75,
+    "name": "関西DEP4",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "DEP"
+  },
+  {
+    "freq": 124.8,
+    "name": "関西DEP5",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "DEP"
+  },
+  {
+    "freq": 125.0,
+    "name": "関西DEP6",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "DEP"
+  },
+  {
+    "freq": 120.4,
+    "name": "関西DEP7",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "DEP"
+  },
+  {
+    "freq": 121.2,
+    "name": "関西DEP8",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "DEP"
+  },
+  {
+    "freq": 120.25,
+    "name": "関西APP",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 120.45,
+    "name": "関西APP2",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 125.5,
+    "name": "関西APP3",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 124.7,
+    "name": "関西APP4",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 121.15,
+    "name": "関西APP5",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 120.85,
+    "name": "関西APP6",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 125.0,
+    "name": "関西APP7",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 119.75,
+    "name": "関西APP8",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 124.8,
+    "name": "関西APP9",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 121.2,
+    "name": "関西APP10",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 120.4,
+    "name": "関西APP11",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 127.575,
+    "name": "関西APP12",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "APP"
+  },
+  {
+    "freq": 127.85,
+    "name": "関西ATIS",
+    "icao": "RJBB",
+    "airport": "関西国際空港",
+    "area": "近畿",
+    "type": "ATIS"
+  }
+]

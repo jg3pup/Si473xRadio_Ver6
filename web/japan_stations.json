@@ -1,0 +1,2144 @@
+[
+  {
+    "freq": 594,
+    "name": "NHK第1東京",
+    "call": "JOAK",
+    "pref": "東京都",
+    "type": "AM"
+  },
+  {
+    "freq": 666,
+    "name": "NHK第1大阪",
+    "call": "JOAY",
+    "pref": "大阪府",
+    "type": "AM"
+  },
+  {
+    "freq": 612,
+    "name": "NHK第1名古屋",
+    "call": "JOAK",
+    "pref": "愛知県",
+    "type": "AM"
+  },
+  {
+    "freq": 531,
+    "name": "NHK第1北海道",
+    "call": "JOIK",
+    "pref": "北海道",
+    "type": "AM"
+  },
+  {
+    "freq": 612,
+    "name": "NHK第1仙台",
+    "call": "JOHK",
+    "pref": "宮城県",
+    "type": "AM"
+  },
+  {
+    "freq": 747,
+    "name": "NHK第1秋田",
+    "call": "JOUK",
+    "pref": "秋田県",
+    "type": "AM"
+  },
+  {
+    "freq": 576,
+    "name": "NHK第1山形",
+    "call": "JOZK",
+    "pref": "山形県",
+    "type": "AM"
+  },
+  {
+    "freq": 891,
+    "name": "NHK第1福島",
+    "call": "JOFK",
+    "pref": "福島県",
+    "type": "AM"
+  },
+  {
+    "freq": 594,
+    "name": "NHK第1水戸",
+    "call": "JOQK",
+    "pref": "茨城県",
+    "type": "AM"
+  },
+  {
+    "freq": 594,
+    "name": "NHK第1宇都宮",
+    "call": "JOJK",
+    "pref": "栃木県",
+    "type": "AM"
+  },
+  {
+    "freq": 594,
+    "name": "NHK第1前橋",
+    "call": "JOUK",
+    "pref": "群馬県",
+    "type": "AM"
+  },
+  {
+    "freq": 594,
+    "name": "NHK第1さいたま",
+    "call": "JOUK",
+    "pref": "埼玉県",
+    "type": "AM"
+  },
+  {
+    "freq": 594,
+    "name": "NHK第1千葉",
+    "call": "JOUK",
+    "pref": "千葉県",
+    "type": "AM"
+  },
+  {
+    "freq": 594,
+    "name": "NHK第1横浜",
+    "call": "JOUK",
+    "pref": "神奈川県",
+    "type": "AM"
+  },
+  {
+    "freq": 765,
+    "name": "NHK第1新潟",
+    "call": "JODK",
+    "pref": "新潟県",
+    "type": "AM"
+  },
+  {
+    "freq": 594,
+    "name": "NHK第1金沢",
+    "call": "JOIK",
+    "pref": "石川県",
+    "type": "AM"
+  },
+  {
+    "freq": 891,
+    "name": "NHK第1静岡",
+    "call": "JOPK",
+    "pref": "静岡県",
+    "type": "AM"
+  },
+  {
+    "freq": 558,
+    "name": "NHK第1京都",
+    "call": "JORK",
+    "pref": "京都府",
+    "type": "AM"
+  },
+  {
+    "freq": 666,
+    "name": "NHK第1神戸",
+    "call": "JOYK",
+    "pref": "兵庫県",
+    "type": "AM"
+  },
+  {
+    "freq": 693,
+    "name": "NHK第1奈良",
+    "call": "JONK",
+    "pref": "奈良県",
+    "type": "AM"
+  },
+  {
+    "freq": 594,
+    "name": "NHK第1和歌山",
+    "call": "JOWK",
+    "pref": "和歌山県",
+    "type": "AM"
+  },
+  {
+    "freq": 1017,
+    "name": "NHK第1松江",
+    "call": "JOGK",
+    "pref": "島根県",
+    "type": "AM"
+  },
+  {
+    "freq": 900,
+    "name": "NHK第1岡山",
+    "call": "JOQK",
+    "pref": "岡山県",
+    "type": "AM"
+  },
+  {
+    "freq": 1071,
+    "name": "NHK第1広島",
+    "call": "JOFK",
+    "pref": "広島県",
+    "type": "AM"
+  },
+  {
+    "freq": 702,
+    "name": "NHK第1高松",
+    "call": "JOHK",
+    "pref": "香川県",
+    "type": "AM"
+  },
+  {
+    "freq": 801,
+    "name": "NHK第1松山",
+    "call": "JOTK",
+    "pref": "愛媛県",
+    "type": "AM"
+  },
+  {
+    "freq": 585,
+    "name": "NHK第1福岡",
+    "call": "JOLK",
+    "pref": "福岡県",
+    "type": "AM"
+  },
+  {
+    "freq": 630,
+    "name": "NHK第1熊本",
+    "call": "JOOK",
+    "pref": "熊本県",
+    "type": "AM"
+  },
+  {
+    "freq": 792,
+    "name": "NHK第1鹿児島",
+    "call": "JOLSK",
+    "pref": "鹿児島県",
+    "type": "AM"
+  },
+  {
+    "freq": 891,
+    "name": "NHK第1那覇",
+    "call": "JORK",
+    "pref": "沖縄県",
+    "type": "AM"
+  },
+  {
+    "freq": 693,
+    "name": "NHK第2東京",
+    "call": "JOAB",
+    "pref": "東京都",
+    "type": "AM"
+  },
+  {
+    "freq": 828,
+    "name": "NHK第2大阪",
+    "call": "JOAB",
+    "pref": "大阪府",
+    "type": "AM"
+  },
+  {
+    "freq": 747,
+    "name": "NHK第2名古屋",
+    "call": "JOAB",
+    "pref": "愛知県",
+    "type": "AM"
+  },
+  {
+    "freq": 954,
+    "name": "TBSラジオ",
+    "call": "JOKR",
+    "pref": "東京都",
+    "type": "AM"
+  },
+  {
+    "freq": 1134,
+    "name": "文化放送",
+    "call": "JOQR",
+    "pref": "東京都",
+    "type": "AM"
+  },
+  {
+    "freq": 1242,
+    "name": "ニッポン放送",
+    "call": "JOLF",
+    "pref": "東京都",
+    "type": "AM"
+  },
+  {
+    "freq": 1422,
+    "name": "ラジオ日本",
+    "call": "JORF",
+    "pref": "神奈川県",
+    "type": "AM"
+  },
+  {
+    "freq": 810,
+    "name": "AFN",
+    "call": "WVTR",
+    "pref": "東京都",
+    "type": "AM"
+  },
+  {
+    "freq": 1179,
+    "name": "MBSラジオ",
+    "call": "JOOR",
+    "pref": "大阪府",
+    "type": "AM"
+  },
+  {
+    "freq": 1008,
+    "name": "ABCラジオ",
+    "call": "JOAY",
+    "pref": "大阪府",
+    "type": "AM"
+  },
+  {
+    "freq": 1314,
+    "name": "OBCラジオ大阪",
+    "call": "JOAY",
+    "pref": "大阪府",
+    "type": "AM"
+  },
+  {
+    "freq": 558,
+    "name": "ラジオ関西",
+    "call": "JOCR",
+    "pref": "兵庫県",
+    "type": "AM"
+  },
+  {
+    "freq": 864,
+    "name": "和歌山放送",
+    "call": "JOWR",
+    "pref": "和歌山県",
+    "type": "AM"
+  },
+  {
+    "freq": 1143,
+    "name": "KBS京都",
+    "call": "JOBR",
+    "pref": "京都府",
+    "type": "AM"
+  },
+  {
+    "freq": 1053,
+    "name": "CBCラジオ",
+    "call": "JOAR",
+    "pref": "愛知県",
+    "type": "AM"
+  },
+  {
+    "freq": 1332,
+    "name": "東海ラジオ",
+    "call": "JOSF",
+    "pref": "愛知県",
+    "type": "AM"
+  },
+  {
+    "freq": 1431,
+    "name": "Radio NEO",
+    "call": "JOCF",
+    "pref": "愛知県",
+    "type": "AM"
+  },
+  {
+    "freq": 1287,
+    "name": "HBCラジオ",
+    "call": "JOHR",
+    "pref": "北海道",
+    "type": "AM"
+  },
+  {
+    "freq": 1440,
+    "name": "STV ラジオ",
+    "call": "JOIR",
+    "pref": "北海道",
+    "type": "AM"
+  },
+  {
+    "freq": 1260,
+    "name": "TBC東北放送",
+    "call": "JOIR",
+    "pref": "宮城県",
+    "type": "AM"
+  },
+  {
+    "freq": 1260,
+    "name": "秋田放送",
+    "call": "JOER",
+    "pref": "秋田県",
+    "type": "AM"
+  },
+  {
+    "freq": 1386,
+    "name": "山形放送",
+    "call": "JOYR",
+    "pref": "山形県",
+    "type": "AM"
+  },
+  {
+    "freq": 1197,
+    "name": "ラジオ福島",
+    "call": "JOFR",
+    "pref": "福島県",
+    "type": "AM"
+  },
+  {
+    "freq": 1197,
+    "name": "茨城放送",
+    "call": "JOYR",
+    "pref": "茨城県",
+    "type": "AM"
+  },
+  {
+    "freq": 1530,
+    "name": "栃木放送",
+    "call": "JOTR",
+    "pref": "栃木県",
+    "type": "AM"
+  },
+  {
+    "freq": 1251,
+    "name": "群馬テレビ(前橋)",
+    "call": "JOQR",
+    "pref": "群馬県",
+    "type": "AM"
+  },
+  {
+    "freq": 1269,
+    "name": "ラジオ高崎",
+    "call": "JOZZ",
+    "pref": "群馬県",
+    "type": "AM"
+  },
+  {
+    "freq": 1665,
+    "name": "NST新潟放送",
+    "call": "JODR",
+    "pref": "新潟県",
+    "type": "AM"
+  },
+  {
+    "freq": 1053,
+    "name": "北陸放送(MRO)",
+    "call": "JOLR",
+    "pref": "石川県",
+    "type": "AM"
+  },
+  {
+    "freq": 1431,
+    "name": "福井放送",
+    "call": "JOPR",
+    "pref": "福井県",
+    "type": "AM"
+  },
+  {
+    "freq": 1341,
+    "name": "山梨放送",
+    "call": "JOQR",
+    "pref": "山梨県",
+    "type": "AM"
+  },
+  {
+    "freq": 1116,
+    "name": "信越放送(SBC)",
+    "call": "JOYR",
+    "pref": "長野県",
+    "type": "AM"
+  },
+  {
+    "freq": 1269,
+    "name": "静岡放送(SBS)",
+    "call": "JOWR",
+    "pref": "静岡県",
+    "type": "AM"
+  },
+  {
+    "freq": 1431,
+    "name": "岐阜放送",
+    "call": "JOIR",
+    "pref": "岐阜県",
+    "type": "AM"
+  },
+  {
+    "freq": 1458,
+    "name": "三重放送",
+    "call": "JOVR",
+    "pref": "三重県",
+    "type": "AM"
+  },
+  {
+    "freq": 900,
+    "name": "山陰放送(BSS)",
+    "call": "JOER",
+    "pref": "鳥取県",
+    "type": "AM"
+  },
+  {
+    "freq": 1494,
+    "name": "山陽放送(RSK)",
+    "call": "JOQR",
+    "pref": "岡山県",
+    "type": "AM"
+  },
+  {
+    "freq": 1350,
+    "name": "中国放送(RCC)",
+    "call": "JOFR",
+    "pref": "広島県",
+    "type": "AM"
+  },
+  {
+    "freq": 864,
+    "name": "山口放送(KRY)",
+    "call": "JOYR",
+    "pref": "山口県",
+    "type": "AM"
+  },
+  {
+    "freq": 1008,
+    "name": "西日本放送(RNC)",
+    "call": "JOHR",
+    "pref": "香川県",
+    "type": "AM"
+  },
+  {
+    "freq": 1269,
+    "name": "四国放送(JRT)",
+    "call": "JOQR",
+    "pref": "徳島県",
+    "type": "AM"
+  },
+  {
+    "freq": 1116,
+    "name": "南海放送(RNB)",
+    "call": "JOTR",
+    "pref": "愛媛県",
+    "type": "AM"
+  },
+  {
+    "freq": 900,
+    "name": "高知放送(RKC)",
+    "call": "JORK",
+    "pref": "高知県",
+    "type": "AM"
+  },
+  {
+    "freq": 1278,
+    "name": "RKBラジオ",
+    "call": "JOFR",
+    "pref": "福岡県",
+    "type": "AM"
+  },
+  {
+    "freq": 1413,
+    "name": "KBCラジオ",
+    "call": "JOAR",
+    "pref": "福岡県",
+    "type": "AM"
+  },
+  {
+    "freq": 1233,
+    "name": "長崎放送(NBC)",
+    "call": "JOLR",
+    "pref": "長崎県",
+    "type": "AM"
+  },
+  {
+    "freq": 1098,
+    "name": "熊本放送(RKK)",
+    "call": "JOQR",
+    "pref": "熊本県",
+    "type": "AM"
+  },
+  {
+    "freq": 1098,
+    "name": "大分放送(OBS)",
+    "call": "JOER",
+    "pref": "大分県",
+    "type": "AM"
+  },
+  {
+    "freq": 936,
+    "name": "宮崎放送(MRT)",
+    "call": "JOTR",
+    "pref": "宮崎県",
+    "type": "AM"
+  },
+  {
+    "freq": 1107,
+    "name": "南日本放送(MBC)",
+    "call": "JOQR",
+    "pref": "鹿児島県",
+    "type": "AM"
+  },
+  {
+    "freq": 864,
+    "name": "ラジオ沖縄(ROK)",
+    "call": "JORR",
+    "pref": "沖縄県",
+    "type": "AM"
+  },
+  {
+    "freq": 738,
+    "name": "琉球放送(RBC)",
+    "call": "JORR",
+    "pref": "沖縄県",
+    "type": "AM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM東京",
+    "call": "JOAU-FM",
+    "pref": "東京都",
+    "type": "FM"
+  },
+  {
+    "freq": 88.1,
+    "name": "NHK FM大阪",
+    "call": "JOBK-FM",
+    "pref": "大阪府",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM名古屋",
+    "call": "JOCU-FM",
+    "pref": "愛知県",
+    "type": "FM"
+  },
+  {
+    "freq": 85.2,
+    "name": "NHK FM北海道",
+    "call": "JOIU-FM",
+    "pref": "北海道",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM仙台",
+    "call": "JOHU-FM",
+    "pref": "宮城県",
+    "type": "FM"
+  },
+  {
+    "freq": 83.4,
+    "name": "NHK FM秋田",
+    "call": "JOUU-FM",
+    "pref": "秋田県",
+    "type": "FM"
+  },
+  {
+    "freq": 81.3,
+    "name": "NHK FM山形",
+    "call": "JOZU-FM",
+    "pref": "山形県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM福島",
+    "call": "JOFU-FM",
+    "pref": "福島県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM水戸",
+    "call": "JOQU-FM",
+    "pref": "茨城県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM宇都宮",
+    "call": "JOJU-FM",
+    "pref": "栃木県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM前橋",
+    "call": "JOUU-FM",
+    "pref": "群馬県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM横浜",
+    "call": "JOUU-FM",
+    "pref": "神奈川県",
+    "type": "FM"
+  },
+  {
+    "freq": 84.7,
+    "name": "NHK FM新潟",
+    "call": "JODU-FM",
+    "pref": "新潟県",
+    "type": "FM"
+  },
+  {
+    "freq": 83.0,
+    "name": "NHK FM富山",
+    "call": "JOLU-FM",
+    "pref": "富山県",
+    "type": "FM"
+  },
+  {
+    "freq": 83.5,
+    "name": "NHK FM金沢",
+    "call": "JOIU-FM",
+    "pref": "石川県",
+    "type": "FM"
+  },
+  {
+    "freq": 83.4,
+    "name": "NHK FM福井",
+    "call": "JOPU-FM",
+    "pref": "福井県",
+    "type": "FM"
+  },
+  {
+    "freq": 80.4,
+    "name": "NHK FM甲府",
+    "call": "JOQU-FM",
+    "pref": "山梨県",
+    "type": "FM"
+  },
+  {
+    "freq": 84.0,
+    "name": "NHK FM長野",
+    "call": "JOEU-FM",
+    "pref": "長野県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM静岡",
+    "call": "JOPU-FM",
+    "pref": "静岡県",
+    "type": "FM"
+  },
+  {
+    "freq": 84.0,
+    "name": "NHK FM岐阜",
+    "call": "JOIU-FM",
+    "pref": "岐阜県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM津",
+    "call": "JOUU-FM",
+    "pref": "三重県",
+    "type": "FM"
+  },
+  {
+    "freq": 88.8,
+    "name": "NHK FM京都",
+    "call": "JORU-FM",
+    "pref": "京都府",
+    "type": "FM"
+  },
+  {
+    "freq": 83.3,
+    "name": "NHK FM神戸",
+    "call": "JOYU-FM",
+    "pref": "兵庫県",
+    "type": "FM"
+  },
+  {
+    "freq": 83.3,
+    "name": "NHK FM奈良",
+    "call": "JONU-FM",
+    "pref": "奈良県",
+    "type": "FM"
+  },
+  {
+    "freq": 84.7,
+    "name": "NHK FM和歌山",
+    "call": "JOWU-FM",
+    "pref": "和歌山県",
+    "type": "FM"
+  },
+  {
+    "freq": 83.8,
+    "name": "NHK FM鳥取",
+    "call": "JOLU-FM",
+    "pref": "鳥取県",
+    "type": "FM"
+  },
+  {
+    "freq": 83.0,
+    "name": "NHK FM松江",
+    "call": "JOGU-FM",
+    "pref": "島根県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM岡山",
+    "call": "JOQU-FM",
+    "pref": "岡山県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM広島",
+    "call": "JOFU-FM",
+    "pref": "広島県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM山口",
+    "call": "JOYU-FM",
+    "pref": "山口県",
+    "type": "FM"
+  },
+  {
+    "freq": 84.0,
+    "name": "NHK FM徳島",
+    "call": "JOHU-FM",
+    "pref": "徳島県",
+    "type": "FM"
+  },
+  {
+    "freq": 88.5,
+    "name": "NHK FM高松",
+    "call": "JOHU-FM",
+    "pref": "香川県",
+    "type": "FM"
+  },
+  {
+    "freq": 83.7,
+    "name": "NHK FM松山",
+    "call": "JOTU-FM",
+    "pref": "愛媛県",
+    "type": "FM"
+  },
+  {
+    "freq": 84.0,
+    "name": "NHK FM高知",
+    "call": "JORU-FM",
+    "pref": "高知県",
+    "type": "FM"
+  },
+  {
+    "freq": 84.8,
+    "name": "NHK FM福岡",
+    "call": "JOLU-FM",
+    "pref": "福岡県",
+    "type": "FM"
+  },
+  {
+    "freq": 84.6,
+    "name": "NHK FM佐賀",
+    "call": "JOUU-FM",
+    "pref": "佐賀県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM長崎",
+    "call": "JOLU-FM",
+    "pref": "長崎県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM熊本",
+    "call": "JOOU-FM",
+    "pref": "熊本県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "NHK FM大分",
+    "call": "JOEU-FM",
+    "pref": "大分県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.3,
+    "name": "NHK FM宮崎",
+    "call": "JOTU-FM",
+    "pref": "宮崎県",
+    "type": "FM"
+  },
+  {
+    "freq": 88.0,
+    "name": "NHK FM鹿児島",
+    "call": "JOSU-FM",
+    "pref": "鹿児島県",
+    "type": "FM"
+  },
+  {
+    "freq": 87.3,
+    "name": "NHK FM那覇",
+    "call": "JORU-FM",
+    "pref": "沖縄県",
+    "type": "FM"
+  },
+  {
+    "freq": 80.0,
+    "name": "TOKYO FM",
+    "call": "JOAU-FM",
+    "pref": "東京都",
+    "type": "FM"
+  },
+  {
+    "freq": 81.3,
+    "name": "J-WAVE",
+    "call": "JOAV-FM",
+    "pref": "東京都",
+    "type": "FM"
+  },
+  {
+    "freq": 76.1,
+    "name": "J-WAVE(補完)",
+    "call": "JOAV-FM",
+    "pref": "東京都",
+    "type": "FM"
+  },
+  {
+    "freq": 90.5,
+    "name": "TBSラジオFM",
+    "call": "JOKR-FM",
+    "pref": "東京都",
+    "type": "FM"
+  },
+  {
+    "freq": 93.0,
+    "name": "ニッポン放送FM",
+    "call": "JOLF-FM",
+    "pref": "東京都",
+    "type": "FM"
+  },
+  {
+    "freq": 91.6,
+    "name": "文化放送FM",
+    "call": "JOQR-FM",
+    "pref": "東京都",
+    "type": "FM"
+  },
+  {
+    "freq": 89.7,
+    "name": "InterFM897",
+    "call": "JODW-FM",
+    "pref": "東京都",
+    "type": "FM"
+  },
+  {
+    "freq": 78.0,
+    "name": "FM西東京",
+    "call": "JOZZ3AE-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 80.2,
+    "name": "FM802",
+    "call": "JOFV-FM",
+    "pref": "大阪府",
+    "type": "FM"
+  },
+  {
+    "freq": 85.1,
+    "name": "fm osaka",
+    "call": "JOBU-FM",
+    "pref": "大阪府",
+    "type": "FM"
+  },
+  {
+    "freq": 79.2,
+    "name": "MBSラジオFM",
+    "call": "JOOR-FM",
+    "pref": "大阪府",
+    "type": "FM"
+  },
+  {
+    "freq": 93.3,
+    "name": "ABCラジオFM",
+    "call": "JOAY-FM",
+    "pref": "大阪府",
+    "type": "FM"
+  },
+  {
+    "freq": 76.5,
+    "name": "FM COCOLO",
+    "call": "JOAW-FM",
+    "pref": "大阪府",
+    "type": "FM"
+  },
+  {
+    "freq": 77.8,
+    "name": "ZIP-FM",
+    "call": "JOQV-FM",
+    "pref": "愛知県",
+    "type": "FM"
+  },
+  {
+    "freq": 80.7,
+    "name": "FM愛知",
+    "call": "JOCU-FM",
+    "pref": "愛知県",
+    "type": "FM"
+  },
+  {
+    "freq": 78.9,
+    "name": "CBCラジオFM",
+    "call": "JOAR-FM",
+    "pref": "愛知県",
+    "type": "FM"
+  },
+  {
+    "freq": 92.9,
+    "name": "東海ラジオFM",
+    "call": "JOSF-FM",
+    "pref": "愛知県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "HBC ラジオFM",
+    "call": "JOHR-FM",
+    "pref": "北海道",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "North Wave",
+    "call": "JOPV-FM",
+    "pref": "北海道",
+    "type": "FM"
+  },
+  {
+    "freq": 80.4,
+    "name": "AIR-G'",
+    "call": "JOTV-FM",
+    "pref": "北海道",
+    "type": "FM"
+  },
+  {
+    "freq": 84.1,
+    "name": "Date fm",
+    "call": "JORU-FM",
+    "pref": "宮城県",
+    "type": "FM"
+  },
+  {
+    "freq": 79.5,
+    "name": "TBC東北放送FM",
+    "call": "JOIR-FM",
+    "pref": "宮城県",
+    "type": "FM"
+  },
+  {
+    "freq": 77.1,
+    "name": "FM秋田",
+    "call": "JOIU-FM",
+    "pref": "秋田県",
+    "type": "FM"
+  },
+  {
+    "freq": 79.4,
+    "name": "Rhythm Station",
+    "call": "JOZU-FM",
+    "pref": "山形県",
+    "type": "FM"
+  },
+  {
+    "freq": 76.2,
+    "name": "ふくしまFM",
+    "call": "JOFU-FM",
+    "pref": "福島県",
+    "type": "FM"
+  },
+  {
+    "freq": 77.7,
+    "name": "茨城放送FM",
+    "call": "JOYR-FM",
+    "pref": "茨城県",
+    "type": "FM"
+  },
+  {
+    "freq": 76.4,
+    "name": "RADIO BERRY",
+    "call": "JOJU-FM",
+    "pref": "栃木県",
+    "type": "FM"
+  },
+  {
+    "freq": 86.3,
+    "name": "FM GUNMA",
+    "call": "JOUU-FM",
+    "pref": "群馬県",
+    "type": "FM"
+  },
+  {
+    "freq": 78.6,
+    "name": "NACK5",
+    "call": "JOBU-FM",
+    "pref": "埼玉県",
+    "type": "FM"
+  },
+  {
+    "freq": 80.7,
+    "name": "bayfm78",
+    "call": "JOEU-FM",
+    "pref": "千葉県",
+    "type": "FM"
+  },
+  {
+    "freq": 84.7,
+    "name": "FMヨコハマ",
+    "call": "JODU-FM",
+    "pref": "神奈川県",
+    "type": "FM"
+  },
+  {
+    "freq": 79.0,
+    "name": "FM NIIGATA",
+    "call": "JOWV-FM",
+    "pref": "新潟県",
+    "type": "FM"
+  },
+  {
+    "freq": 77.7,
+    "name": "FMとやま",
+    "call": "JOLV-FM",
+    "pref": "富山県",
+    "type": "FM"
+  },
+  {
+    "freq": 80.5,
+    "name": "FM石川",
+    "call": "JOIV-FM",
+    "pref": "石川県",
+    "type": "FM"
+  },
+  {
+    "freq": 76.1,
+    "name": "FM福井",
+    "call": "JOLU-FM",
+    "pref": "福井県",
+    "type": "FM"
+  },
+  {
+    "freq": 83.0,
+    "name": "FM富士",
+    "call": "JOCV-FM",
+    "pref": "山梨県",
+    "type": "FM"
+  },
+  {
+    "freq": 79.7,
+    "name": "FM長野",
+    "call": "JOEV-FM",
+    "pref": "長野県",
+    "type": "FM"
+  },
+  {
+    "freq": 88.8,
+    "name": "K-MIX",
+    "call": "JOPV-FM",
+    "pref": "静岡県",
+    "type": "FM"
+  },
+  {
+    "freq": 80.0,
+    "name": "FM岐阜(Radio80)",
+    "call": "JOIV-FM",
+    "pref": "岐阜県",
+    "type": "FM"
+  },
+  {
+    "freq": 78.9,
+    "name": "FM三重",
+    "call": "JOUV-FM",
+    "pref": "三重県",
+    "type": "FM"
+  },
+  {
+    "freq": 89.4,
+    "name": "α-STATION",
+    "call": "JORV-FM",
+    "pref": "京都府",
+    "type": "FM"
+  },
+  {
+    "freq": 89.9,
+    "name": "KBS京都FM",
+    "call": "JOBR-FM",
+    "pref": "京都府",
+    "type": "FM"
+  },
+  {
+    "freq": 89.9,
+    "name": "Kiss FM KOBE",
+    "call": "JOEV-FM",
+    "pref": "兵庫県",
+    "type": "FM"
+  },
+  {
+    "freq": 89.9,
+    "name": "FM802(神戸)",
+    "call": "JOFV-FM",
+    "pref": "兵庫県",
+    "type": "FM"
+  },
+  {
+    "freq": 88.1,
+    "name": "FM奈良",
+    "call": "JONV-FM",
+    "pref": "奈良県",
+    "type": "FM"
+  },
+  {
+    "freq": 87.7,
+    "name": "FM和歌山",
+    "call": "JOWV-FM",
+    "pref": "和歌山県",
+    "type": "FM"
+  },
+  {
+    "freq": 79.5,
+    "name": "FM山陰",
+    "call": "JOEV-FM",
+    "pref": "鳥取県",
+    "type": "FM"
+  },
+  {
+    "freq": 81.9,
+    "name": "FM山陰(松江)",
+    "call": "JOGV-FM",
+    "pref": "島根県",
+    "type": "FM"
+  },
+  {
+    "freq": 76.8,
+    "name": "FM岡山",
+    "call": "JOQV-FM",
+    "pref": "岡山県",
+    "type": "FM"
+  },
+  {
+    "freq": 81.3,
+    "name": "HFM広島",
+    "call": "JOFV-FM",
+    "pref": "広島県",
+    "type": "FM"
+  },
+  {
+    "freq": 79.0,
+    "name": "KRY山口FM",
+    "call": "JOYV-FM",
+    "pref": "山口県",
+    "type": "FM"
+  },
+  {
+    "freq": 79.1,
+    "name": "FM徳島",
+    "call": "JOHV-FM",
+    "pref": "徳島県",
+    "type": "FM"
+  },
+  {
+    "freq": 78.6,
+    "name": "FM香川",
+    "call": "JOHV-FM",
+    "pref": "香川県",
+    "type": "FM"
+  },
+  {
+    "freq": 80.0,
+    "name": "FM愛媛",
+    "call": "JOTV-FM",
+    "pref": "愛媛県",
+    "type": "FM"
+  },
+  {
+    "freq": 81.6,
+    "name": "FM高知(ハースト)",
+    "call": "JORV-FM",
+    "pref": "高知県",
+    "type": "FM"
+  },
+  {
+    "freq": 80.7,
+    "name": "CROSS FM",
+    "call": "JORV-FM",
+    "pref": "福岡県",
+    "type": "FM"
+  },
+  {
+    "freq": 76.1,
+    "name": "Love FM",
+    "call": "JOFW-FM",
+    "pref": "福岡県",
+    "type": "FM"
+  },
+  {
+    "freq": 77.4,
+    "name": "FM福岡",
+    "call": "JOEV-FM",
+    "pref": "福岡県",
+    "type": "FM"
+  },
+  {
+    "freq": 94.7,
+    "name": "RKBラジオFM",
+    "call": "JOFR-FM",
+    "pref": "福岡県",
+    "type": "FM"
+  },
+  {
+    "freq": 89.7,
+    "name": "KBCラジオFM",
+    "call": "JOAR-FM",
+    "pref": "福岡県",
+    "type": "FM"
+  },
+  {
+    "freq": 79.7,
+    "name": "FM佐賀",
+    "call": "JOUV-FM",
+    "pref": "佐賀県",
+    "type": "FM"
+  },
+  {
+    "freq": 79.0,
+    "name": "FM長崎",
+    "call": "JOLV-FM",
+    "pref": "長崎県",
+    "type": "FM"
+  },
+  {
+    "freq": 77.7,
+    "name": "FMK熊本",
+    "call": "JOOV-FM",
+    "pref": "熊本県",
+    "type": "FM"
+  },
+  {
+    "freq": 79.7,
+    "name": "FM大分",
+    "call": "JOEV-FM",
+    "pref": "大分県",
+    "type": "FM"
+  },
+  {
+    "freq": 78.3,
+    "name": "FM宮崎",
+    "call": "JOTV-FM",
+    "pref": "宮崎県",
+    "type": "FM"
+  },
+  {
+    "freq": 78.9,
+    "name": "MBC南日本FM",
+    "call": "JOSV-FM",
+    "pref": "鹿児島県",
+    "type": "FM"
+  },
+  {
+    "freq": 87.3,
+    "name": "FM沖縄",
+    "call": "JOOV-FM",
+    "pref": "沖縄県",
+    "type": "FM"
+  },
+  {
+    "freq": 82.5,
+    "name": "FMりべーる",
+    "call": "JOZZ1AA-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.2,
+    "name": "三角山放送局",
+    "call": "JOZZ1AB-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.2,
+    "name": "FMしろいし",
+    "call": "JOZZ1AC-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.5,
+    "name": "FMアップル",
+    "call": "JOZZ1AD-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.9,
+    "name": "FM★JAGA",
+    "call": "JOZZ1AE-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.8,
+    "name": "FMびゅー",
+    "call": "JOZZ1AF-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 77.8,
+    "name": "RadioCity",
+    "call": "JOZZ1AG-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.2,
+    "name": "e-niwa",
+    "call": "JOZZ1AH-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 87.0,
+    "name": "FMとまこまい",
+    "call": "JOZZ1AI-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.5,
+    "name": "FMウイング",
+    "call": "JOZZ1AJ-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.5,
+    "name": "FM RAKUS",
+    "call": "JOZZ1AK-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 81.8,
+    "name": "FMもえる",
+    "call": "JOZZ1AL-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.2,
+    "name": "FMはまなす",
+    "call": "JOZZ1AM-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.0,
+    "name": "FMおびひろ",
+    "call": "JOZZ1AN-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 83.5,
+    "name": "FM WING",
+    "call": "JOZZ1AO-FM",
+    "pref": "北海道",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.2,
+    "name": "FMいわき",
+    "call": "JOZZ2AA-FM",
+    "pref": "福島県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.5,
+    "name": "ラジオ3",
+    "call": "JOZZ2AB-FM",
+    "pref": "岩手県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.2,
+    "name": "エフエムたいはく",
+    "call": "JOZZ2AC-FM",
+    "pref": "宮城県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.3,
+    "name": "H@!FM",
+    "call": "JOZZ2AD-FM",
+    "pref": "宮城県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.2,
+    "name": "FMあおぞら",
+    "call": "JOZZ2AE-FM",
+    "pref": "山形県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.7,
+    "name": "FMゆーとぴあ",
+    "call": "JOZZ2AF-FM",
+    "pref": "秋田県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.3,
+    "name": "ビーエフエム",
+    "call": "JOZZ2AG-FM",
+    "pref": "青森県",
+    "type": "CFM"
+  },
+  {
+    "freq": 83.2,
+    "name": "FMさがみ",
+    "call": "JOZZ3AA-FM",
+    "pref": "神奈川県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.4,
+    "name": "FM湘南ナパサ",
+    "call": "JOZZ3AB-FM",
+    "pref": "神奈川県",
+    "type": "CFM"
+  },
+  {
+    "freq": 84.0,
+    "name": "Fm yokohama",
+    "call": "JOZZ3AC-FM",
+    "pref": "神奈川県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.0,
+    "name": "FM西東京",
+    "call": "JOZZ3AE-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 84.7,
+    "name": "FMたちかわ",
+    "call": "JOZZ3AF-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 83.4,
+    "name": "調布FM",
+    "call": "JOZZ3AG-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 87.6,
+    "name": "むさしのFM",
+    "call": "JOZZ3AH-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 85.9,
+    "name": "FMひがしくるめ",
+    "call": "JOZZ3AI-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 87.4,
+    "name": "FM世田谷",
+    "call": "JOZZ3AJ-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.3,
+    "name": "レインボータウンFM",
+    "call": "JOZZ3AK-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 83.2,
+    "name": "エフエム墨田",
+    "call": "JOZZ3AL-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 88.0,
+    "name": "FMはちおうじ",
+    "call": "JOZZ3AM-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 85.1,
+    "name": "エフエムひの",
+    "call": "JOZZ3AN-FM",
+    "pref": "東京都",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.8,
+    "name": "ラヂオつくば",
+    "call": "JOZZ3AO-FM",
+    "pref": "茨城県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.3,
+    "name": "FMかしま",
+    "call": "JOZZ3AP-FM",
+    "pref": "茨城県",
+    "type": "CFM"
+  },
+  {
+    "freq": 77.5,
+    "name": "FMくきざき",
+    "call": "JOZZ3AQ-FM",
+    "pref": "茨城県",
+    "type": "CFM"
+  },
+  {
+    "freq": 88.3,
+    "name": "FMとちぎ",
+    "call": "JOZZ3AR-FM",
+    "pref": "栃木県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.5,
+    "name": "FMおやま",
+    "call": "JOZZ3AS-FM",
+    "pref": "栃木県",
+    "type": "CFM"
+  },
+  {
+    "freq": 88.1,
+    "name": "FMさくら",
+    "call": "JOZZ3AT-FM",
+    "pref": "栃木県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.3,
+    "name": "FMおおた",
+    "call": "JOZZ3AU-FM",
+    "pref": "群馬県",
+    "type": "CFM"
+  },
+  {
+    "freq": 77.3,
+    "name": "FMまえばし",
+    "call": "JOZZ3AV-FM",
+    "pref": "群馬県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.7,
+    "name": "FMたかさき",
+    "call": "JOZZ3AW-FM",
+    "pref": "群馬県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.0,
+    "name": "FMひばりヶ丘",
+    "call": "JOZZ3AX-FM",
+    "pref": "埼玉県",
+    "type": "CFM"
+  },
+  {
+    "freq": 83.4,
+    "name": "FM NACK5(補完)",
+    "call": "JOZZ3AY-FM",
+    "pref": "埼玉県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.2,
+    "name": "FMチャッピー",
+    "call": "JOZZ3AZ-FM",
+    "pref": "千葉県",
+    "type": "CFM"
+  },
+  {
+    "freq": 84.2,
+    "name": "ベイエフエム",
+    "call": "JOEU-FM",
+    "pref": "千葉県",
+    "type": "FM"
+  },
+  {
+    "freq": 76.5,
+    "name": "FM千里",
+    "call": "JOZZ3AD-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.8,
+    "name": "FM OH!",
+    "call": "JOZZ4AA-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 77.0,
+    "name": "FM北大阪",
+    "call": "JOZZ4AB-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 83.0,
+    "name": "FM豊中",
+    "call": "JOZZ4AC-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 84.0,
+    "name": "FMちゃお",
+    "call": "JOZZ4AD-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.3,
+    "name": "FM箕面",
+    "call": "JOZZ4AE-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.0,
+    "name": "FM東大阪",
+    "call": "JOZZ4AF-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 81.4,
+    "name": "FM hanako",
+    "call": "JOZZ4AG-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 89.0,
+    "name": "FMだいご",
+    "call": "JOZZ4AH-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 83.7,
+    "name": "FMたかつき",
+    "call": "JOZZ4AI-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.3,
+    "name": "FM宝塚",
+    "call": "JOZZ4AJ-FM",
+    "pref": "兵庫県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.5,
+    "name": "FMゆずのき",
+    "call": "JOZZ4AK-FM",
+    "pref": "兵庫県",
+    "type": "CFM"
+  },
+  {
+    "freq": 81.0,
+    "name": "ハーバーステーション",
+    "call": "JOZZ4AL-FM",
+    "pref": "兵庫県",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.3,
+    "name": "FMわぃわぃ",
+    "call": "JOZZ4AM-FM",
+    "pref": "兵庫県",
+    "type": "CFM"
+  },
+  {
+    "freq": 87.0,
+    "name": "FMゲンキ",
+    "call": "JOZZ4AN-FM",
+    "pref": "兵庫県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.0,
+    "name": "FMキタ",
+    "call": "JOZZ4AO-FM",
+    "pref": "兵庫県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.5,
+    "name": "FMコミュニティ京都",
+    "call": "JOZZ4AP-FM",
+    "pref": "京都府",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.3,
+    "name": "FMひらかた",
+    "call": "JOZZ4AQ-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.7,
+    "name": "ラヂオきしわだ",
+    "call": "JOZZ7BK-FM",
+    "pref": "大阪府",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.4,
+    "name": "エフエムびわ湖",
+    "call": "JOZZ4AR-FM",
+    "pref": "滋賀県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.5,
+    "name": "FMおおつ",
+    "call": "JOZZ4AS-FM",
+    "pref": "滋賀県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.4,
+    "name": "なら どっとFM",
+    "call": "JOZZ4AT-FM",
+    "pref": "奈良県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.3,
+    "name": "FM五條",
+    "call": "JOZZ4AU-FM",
+    "pref": "奈良県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.8,
+    "name": "フレンドパーク806",
+    "call": "JOZZ4AV-FM",
+    "pref": "和歌山県",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.5,
+    "name": "FM岐阜",
+    "call": "JOZZ4AW-FM",
+    "pref": "岐阜県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.1,
+    "name": "FMいるか",
+    "call": "JOZZ4AX-FM",
+    "pref": "愛知県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.5,
+    "name": "エフエムとよた",
+    "call": "JOZZ4AY-FM",
+    "pref": "愛知県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.3,
+    "name": "ミュースター",
+    "call": "JOZZ4AZ-FM",
+    "pref": "愛知県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.9,
+    "name": "FM鈴鹿",
+    "call": "JOZZ4BA-FM",
+    "pref": "三重県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.4,
+    "name": "FMよっかいち",
+    "call": "JOZZ4BB-FM",
+    "pref": "三重県",
+    "type": "CFM"
+  },
+  {
+    "freq": 77.5,
+    "name": "FM福井",
+    "call": "JOZZ4BC-FM",
+    "pref": "福井県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.3,
+    "name": "FM金沢",
+    "call": "JOZZ4BD-FM",
+    "pref": "石川県",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.1,
+    "name": "FMかほく",
+    "call": "JOZZ4BE-FM",
+    "pref": "石川県",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.4,
+    "name": "FMとなみ野",
+    "call": "JOZZ4BF-FM",
+    "pref": "富山県",
+    "type": "CFM"
+  },
+  {
+    "freq": 77.9,
+    "name": "FM山梨",
+    "call": "JOZZ4BG-FM",
+    "pref": "山梨県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.6,
+    "name": "FMあずみの",
+    "call": "JOZZ4BH-FM",
+    "pref": "長野県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.1,
+    "name": "エフエム新潟",
+    "call": "JOZZ4BI-FM",
+    "pref": "新潟県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.3,
+    "name": "FMしみず",
+    "call": "JOZZ4BJ-FM",
+    "pref": "静岡県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.0,
+    "name": "FM Haro!",
+    "call": "JOZZ6AB-FM",
+    "pref": "静岡県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.2,
+    "name": "FMおのみち",
+    "call": "JOZZ5AA-FM",
+    "pref": "広島県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.5,
+    "name": "FM東広島",
+    "call": "JOZZ5AB-FM",
+    "pref": "広島県",
+    "type": "CFM"
+  },
+  {
+    "freq": 77.5,
+    "name": "FM福山",
+    "call": "JOZZ5AC-FM",
+    "pref": "広島県",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.3,
+    "name": "FMゆめウェーブ",
+    "call": "JOZZ5AD-FM",
+    "pref": "山口県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.2,
+    "name": "エフエムやまぐち",
+    "call": "JOZZ5AE-FM",
+    "pref": "山口県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.5,
+    "name": "FM倉敷",
+    "call": "JOZZ5AF-FM",
+    "pref": "岡山県",
+    "type": "CFM"
+  },
+  {
+    "freq": 77.7,
+    "name": "FMくらしき",
+    "call": "JOZZ5AG-FM",
+    "pref": "岡山県",
+    "type": "CFM"
+  },
+  {
+    "freq": 83.4,
+    "name": "FMポート",
+    "call": "JOZZ5AH-FM",
+    "pref": "島根県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.3,
+    "name": "エフエム鳥取",
+    "call": "JOZZ5AI-FM",
+    "pref": "鳥取県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.6,
+    "name": "FMさかいで",
+    "call": "JOZZ5AJ-FM",
+    "pref": "香川県",
+    "type": "CFM"
+  },
+  {
+    "freq": 76.5,
+    "name": "FMびざん",
+    "call": "JOZZ5AK-FM",
+    "pref": "徳島県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.4,
+    "name": "S-WAVE",
+    "call": "JOZZ5AL-FM",
+    "pref": "愛媛県",
+    "type": "CFM"
+  },
+  {
+    "freq": 81.0,
+    "name": "Hello! FM",
+    "call": "JOZZ5AM-FM",
+    "pref": "愛媛県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.1,
+    "name": "FMコウチ",
+    "call": "JOZZ5AN-FM",
+    "pref": "高知県",
+    "type": "CFM"
+  },
+  {
+    "freq": 77.7,
+    "name": "FMふくおか",
+    "call": "JOZZ6AA-FM",
+    "pref": "福岡県",
+    "type": "CFM"
+  },
+  {
+    "freq": 84.0,
+    "name": "シティFM佐世保",
+    "call": "JOZZ6AC-FM",
+    "pref": "長崎県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.5,
+    "name": "FMながさき",
+    "call": "JOZZ6AD-FM",
+    "pref": "長崎県",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.5,
+    "name": "FMいまり",
+    "call": "JOZZ6AE-FM",
+    "pref": "佐賀県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.3,
+    "name": "FM天草",
+    "call": "JOZZ6AF-FM",
+    "pref": "熊本県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.1,
+    "name": "ふれあいステーション",
+    "call": "JOZZ6AG-FM",
+    "pref": "大分県",
+    "type": "CFM"
+  },
+  {
+    "freq": 77.1,
+    "name": "FM都城",
+    "call": "JOZZ6AH-FM",
+    "pref": "宮崎県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.0,
+    "name": "FMきりしま",
+    "call": "JOZZ6AI-FM",
+    "pref": "鹿児島県",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.0,
+    "name": "FMたんか",
+    "call": "JOZZ7AA-FM",
+    "pref": "沖縄県",
+    "type": "CFM"
+  },
+  {
+    "freq": 78.6,
+    "name": "FMもとぶ",
+    "call": "JOZZ7AB-FM",
+    "pref": "沖縄県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.2,
+    "name": "FMよみたん",
+    "call": "JOZZ7AC-FM",
+    "pref": "沖縄県",
+    "type": "CFM"
+  },
+  {
+    "freq": 82.4,
+    "name": "FMコザ",
+    "call": "JOZZ7AD-FM",
+    "pref": "沖縄県",
+    "type": "CFM"
+  },
+  {
+    "freq": 80.6,
+    "name": "FM21",
+    "call": "JOZZ7AE-FM",
+    "pref": "沖縄県",
+    "type": "CFM"
+  },
+  {
+    "freq": 79.8,
+    "name": "FMうるま",
+    "call": "JOZZ7AF-FM",
+    "pref": "沖縄県",
+    "type": "CFM"
+  }
+]
