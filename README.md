@@ -39,8 +39,9 @@ app/
   windows/        Windows 用コントロールアプリ (.exe)
   android/        Android 用コントロールアプリ (.apk)
 docs/
-  Manual          組み立てマニュアル (PDF)
-  Schematic       回路図 (PDF)
+  Si473x_Radio_Manual.pdf    操作説明書
+  Manual                     組み立てマニュアル (PDF)
+  Schematic                  回路図 (PDF)
 ```
 
 ---
@@ -49,20 +50,62 @@ docs/
 
 詳細は `docs/` フォルダ内の組み立てマニュアルをご参照ください。
 
-### ファームウェア書き込み
+### RP2040 ファームウェア書き換え
 
-**RP2040 (Raspberry Pi Pico Zero)**
-1. BOOTSEL ボタンを押しながら USB 接続
-2. 表示された RPI-RP2 ドライブに `.uf2` ファイルをコピー
+Arduino IDE は不要です。UF2 ファイルをコピーするだけで書き換えできます。
 
-**ESP32-C3 (XIAO ESP32-C3)**
-1. [esptool / espboards.dev](https://espboards.dev) を使用
-2. `.merged.bin` を アドレス `0x0` に書き込み
+**必要なもの**
+- `.uf2` ファイル（本リリースページからダウンロード）
+- データ転送対応 USB ケーブル（充電専用ケーブルは不可）
 
-### Web リモコン（remote.html）の更新
+**手順**
+1. データ転送対応 USB ケーブルでラジオ本体と PC を接続
+2. **BAND+ と BAND− を両方押したまま POWER ボタンで電源 ON**  
+   → LED が青く 0.5 秒点灯したらボタンを離す  
+   → PC に「RPI-RP2」ドライブとして認識される
+3. 「RPI-RP2」ドライブに `.uf2` ファイルをドラッグ＆ドロップ
+4. 自動で書き込みが完了しラジオが再起動する
 
-1. ESP32-C3 の Web UI（`http://[IPアドレス]/`）にアクセス
-2. `/upload` エンドポイントから `remote.html.gz` をアップロード
+> ⚠️ RPI-RP2 が認識されない場合は USB ケーブルを確認してください（充電専用ケーブルは不可）。
+
+---
+
+### ESP32-C3 ファームウェア書き換え
+
+Arduino IDE は不要です。Chrome ブラウザと [espboards.dev](https://www.espboards.dev/tools/program/) で書き込めます。
+
+**必要なもの**
+- マージ済み `.bin` ファイル（本リリースページからダウンロード）
+- データ転送対応 USB ケーブル
+- Google Chrome または Microsoft Edge（最新版）
+
+> ⚠️ **書き換え前に必ず WiFi スライドスイッチ（SW7）を OFF にしてください。**  
+> ON のままだとラジオ本体の電源と競合し、誤動作や故障の原因になります。
+
+**手順**
+1. Chrome / Edge で https://www.espboards.dev/tools/program/ を開く
+2. WiFi スライドスイッチ（SW7）を **OFF** にしてから USB ケーブルで XIAO ESP32-C3 の USB ポートと PC を接続
+3. 「Connect」ボタンをクリック → COM ポートを選択して「接続」
+4. `.bin` ファイルを指定、アドレスは **`0x0`** を指定
+5. 「Flash（Program）」をクリックして書き込み開始
+6. 書き込み完了後、USB ケーブルを抜いてから WiFi スイッチを ON に戻す
+
+---
+
+### Web リモコン・局データのアップロード
+
+ESP32-C3 FW 書き換え後は LittleFS が消去されるため、以下のファイルを再アップロードしてください。
+
+1. ラジオを STA モードで起動し、Chrome で `http://[IPアドレス]/upload` にアクセス
+2. 以下のファイルを順にアップロード
+
+| ファイル | アップロード欄 |
+|----------|--------------|
+| `remote.html.gz` | ① Web リモコン HTML |
+| `japan_stations.json` | ② 国内放送局データ |
+| `air_stations.json` | ④ AIR 局データ |
+
+3. アップロード完了後、WEB リモコンの「国内局」→「ESP から読み込む」で局データを反映
 
 ### Android アプリのインストール
 
@@ -83,6 +126,12 @@ docs/
 - 本キットは趣味目的の個人製作品です。動作を保証するものではありません。
 - 製作・使用による損害について、頒布者は一切の責任を負いません。
 - 航空無線（AIR バンド）は**受信専用**です。送信は法律で禁止されています。
+
+---
+
+## お問い合わせ
+
+不具合・ご質問は [Issues](../../issues) よりお知らせください。
 
 ---
 
