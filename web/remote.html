@@ -1838,18 +1838,18 @@ body, html {
           <option value="1">LW (150–279 kHz)</option>
           <option value="2" selected>MW (531–1710 kHz)</option>
           <optgroup label="SW メーターバンド">
-            <option value="7">120m (2300–2495)</option>
-            <option value="8"> 90m (3200–3400)</option>
-            <option value="9"> 60m (4750–5060)</option>
-            <option value="10">49m (5900–6200)</option>
-            <option value="11">41m (7200–7450)</option>
-            <option value="12">31m (9400–9900)</option>
-            <option value="13">25m (11600–12100)</option>
-            <option value="14">22m (13570–13870)</option>
-            <option value="15">19m (15100–15800)</option>
-            <option value="16">16m (17480–17900)</option>
-            <option value="18">13m (21450–21850)</option>
-            <option value="19">11m (25600–26100)</option>
+            <option value="3"> 120m (2300–2495)</option>
+            <option value="4">  90m (3200–3400)</option>
+            <option value="6">  60m (4750–5060)</option>
+            <option value="7">  49m (5900–6200)</option>
+            <option value="8">  41m (7200–7600)</option>
+            <option value="9">  31m (9400–9900)</option>
+            <option value="10"> 25m (11600–12100)</option>
+            <option value="11"> 22m (13570–13870)</option>
+            <option value="12"> 19m (15100–15800)</option>
+            <option value="13"> 16m (17480–17900)</option>
+            <option value="15"> 13m (21450–21850)</option>
+            <option value="16"> 11m (25670–26100)</option>
           </optgroup>
           <option value="17">SW 全域 (2300–30000)</option>
           <option value="99">AIR (118–137 MHz)</option>
@@ -2575,19 +2575,32 @@ function fwModeCode(selectedMode, uiBandStr){
       case "1": return {min:150,   max:279,    label:"LW: 150–279 kHz",     step:1};
       case "2":  return {min:531,   max:1710,   label:"MW: 531–1710 kHz",     step:9};
       // == SW メーターバンド（UIのみ・スキャン範囲を限定） ==
-      case "7":  return {min:2300,  max:2495,  label:"SW 120m: 2300–2495 kHz", step:5};
-      case "8":  return {min:3200,  max:3400,  label:"SW  90m: 3200–3400 kHz", step:5};
-      case "9":  return {min:4750,  max:5060,  label:"SW  60m: 4750–5060 kHz", step:5};
-      case "10": return {min:5900,  max:6200,  label:"SW  49m: 5900–6200 kHz", step:5};
-      case "11": return {min:7200,  max:7450,  label:"SW  41m: 7200–7450 kHz", step:5};
-      case "12": return {min:9400,  max:9900,  label:"SW  31m: 9400–9900 kHz", step:5};
-      case "13": return {min:11600, max:12100, label:"SW  25m: 11600–12100 kHz", step:5};
-      case "14": return {min:13570, max:13870, label:"SW  22m: 13570–13870 kHz", step:5};
-      case "15": return {min:15100, max:15800, label:"SW  19m: 15100–15800 kHz", step:5};
-      case "16": return {min:17480, max:17900, label:"SW  16m: 17480–17900 kHz", step:5};
-      case "18": return {min:21450, max:21850, label:"SW  13m: 21450–21850 kHz", step:5};
-      case "19": return {min:25600, max:26100, label:"SW  11m: 25600–26100 kHz", step:5};      
-      case "17": return {min:2300,  max:30000, label:"SW: 2300–30000 kHz",      step:5};
+      // SW メーターバンド（BANDS[]インデックス直接対応）
+      case "3":  return {min:2300,  max:2495,  label:"SW 120m: 2300–2495 kHz",   step:5};
+      case "4":  return {min:3200,  max:3400,  label:"SW  90m: 3200–3400 kHz",   step:5};
+      case "5":  return {min:3900,  max:4000,  label:"SW  75m: 3900–4000 kHz",   step:5};
+      case "6":  return {min:4750,  max:5060,  label:"SW  60m: 4750–5060 kHz",   step:5};
+      case "7":  return {min:5900,  max:6200,  label:"SW  49m: 5900–6200 kHz",   step:5};
+      case "8":  return {min:7200,  max:7600,  label:"SW  41m: 7200–7600 kHz",   step:5};
+      case "9":  return {min:9400,  max:9900,  label:"SW  31m: 9400–9900 kHz",   step:5};
+      case "10": return {min:11600, max:12100, label:"SW  25m: 11600–12100 kHz", step:5};
+      case "11": return {min:13570, max:13870, label:"SW  22m: 13570–13870 kHz", step:5};
+      case "12": return {min:15100, max:15800, label:"SW  19m: 15100–15800 kHz", step:5};
+      case "13": return {min:17480, max:17900, label:"SW  16m: 17480–17900 kHz", step:5};
+      case "14": return {min:18900, max:19020, label:"SW  15m: 18900–19020 kHz", step:5};
+      case "15": return {min:21450, max:21850, label:"SW  13m: 21450–21850 kHz", step:5};
+      case "16": return {min:25670, max:26100, label:"SW  11m: 25670–26100 kHz", step:5};
+      case "17": return {min:2300,  max:30000, label:"SW 全域: 2300–30000 kHz",  step:5};
+      // ハムバンド（BANDS[18..26]）
+      case "18": return {min:1800,  max:2000,  label:"Ham 160m: 1800–2000 kHz",  step:1};
+      case "19": return {min:3500,  max:4000,  label:"Ham  80m: 3500–4000 kHz",  step:1};
+      case "20": return {min:7000,  max:7300,  label:"Ham  40m: 7000–7300 kHz",  step:1};
+      case "21": return {min:10100, max:10150, label:"Ham  30m: 10100–10150 kHz",step:1};
+      case "22": return {min:14000, max:14350, label:"Ham  20m: 14000–14350 kHz",step:1};
+      case "23": return {min:18068, max:18168, label:"Ham  17m: 18068–18168 kHz",step:1};
+      case "24": return {min:21000, max:21450, label:"Ham  15m: 21000–21450 kHz",step:1};
+      case "25": return {min:24890, max:24990, label:"Ham  12m: 24890–24990 kHz",step:1};
+      case "26": return {min:28000, max:29700, label:"Ham  10m: 28000–29700 kHz",step:1};
       case "99": return {min:118000, max:137000, label:"AIR: 118.000–137.000 MHz", step:25, isAir:true};
       default:  return {min:522,   max:1710,   label:"MW: 522–1710 kHz",    step:1};
     }
@@ -2940,7 +2953,36 @@ function fwModeCode(selectedMode, uiBandStr){
         if (bandSelEl && modeSelEl) {
           // スキャン中はSTATによるbandSel書き換えを抑制（AIRスキャン中にAIR=0が返っても無視）
           const __scanActive = !!window.__scanning;
-          if (!__scanActive) {
+          // ★ バンド変更待機中はSTATによるbandSel書き換えを禁止
+          if (!__scanActive && !window.__bandChangePending) {
+          // F=値でSWサブバンドを精密に判定するヘルパー（グローバル化して__bandChangePending判定からも参照可）
+          if (!window.freqToSwBandVal) window.freqToSwBandVal = function(fkhz) {
+            if (fkhz >= 1800  && fkhz <= 2000)  return "18"; // 160m ham
+            if (fkhz >= 2300  && fkhz <= 2495)  return "3";  // 120m
+            if (fkhz >= 3200  && fkhz <= 3400)  return "4";  // 90m
+            if (fkhz >= 3500  && fkhz <= 4000)  return "19"; // 80m ham
+            if (fkhz >= 3900  && fkhz <= 4000)  return "5";  // 75m
+            if (fkhz >= 4750  && fkhz <= 5060)  return "6";  // 60m
+            if (fkhz >= 5900  && fkhz <= 6200)  return "7";  // 49m
+            if (fkhz >= 7000  && fkhz <= 7300)  return "20"; // 40m ham
+            if (fkhz >= 7200  && fkhz <= 7600)  return "8";  // 41m
+            if (fkhz >= 9400  && fkhz <= 9900)  return "9";  // 31m
+            if (fkhz >= 10100 && fkhz <= 10150) return "21"; // 30m ham
+            if (fkhz >= 11600 && fkhz <= 12100) return "10"; // 25m
+            if (fkhz >= 13570 && fkhz <= 13870) return "11"; // 22m
+            if (fkhz >= 14000 && fkhz <= 14350) return "22"; // 20m ham
+            if (fkhz >= 15100 && fkhz <= 15800) return "12"; // 19m
+            if (fkhz >= 17480 && fkhz <= 17900) return "13"; // 16m
+            if (fkhz >= 18068 && fkhz <= 18168) return "23"; // 17m ham
+            if (fkhz >= 18900 && fkhz <= 19020) return "14"; // 15m
+            if (fkhz >= 21000 && fkhz <= 21450) return "24"; // 15m ham
+            if (fkhz >= 21450 && fkhz <= 21850) return "15"; // 13m
+            if (fkhz >= 24890 && fkhz <= 24990) return "25"; // 12m ham
+            if (fkhz >= 25670 && fkhz <= 26100) return "16"; // 11m
+            if (fkhz >= 28000 && fkhz <= 29700) return "26"; // 10m ham
+            return "17"; // SW全域
+          };
+          const freqToSwBandVal = window.freqToSwBandVal;
           if (Mc === 2) { // FM
             bandSelEl.value = "0";
             modeSelEl.value = "FM";
@@ -2950,17 +2992,17 @@ function fwModeCode(selectedMode, uiBandStr){
           } else if (Mc === 3) { // MW
             bandSelEl.value = "2";
             modeSelEl.value = "AM";
-          } else if (Mc === 4) { // SW
-            bandSelEl.value = "17";
+          } else if (Mc === 4) { // SW AM: F=値で精密なサブバンドを判定
+            bandSelEl.value = freqToSwBandVal(FkHz);
             modeSelEl.value = "AM";
           } else if (Mc === 5) { // USB
-            bandSelEl.value = "17";
+            bandSelEl.value = freqToSwBandVal(FkHz);
             modeSelEl.value = "USB";
           } else if (Mc === 6) { // LSB
-            bandSelEl.value = "17";
+            bandSelEl.value = freqToSwBandVal(FkHz);
             modeSelEl.value = "LSB";
           } else if (Mc === 7) { // CW
-            bandSelEl.value = "17";
+            bandSelEl.value = freqToSwBandVal(FkHz);
             modeSelEl.value = "CW";
           }
           // AIR=1のときはAIRバンドに設定
@@ -3086,21 +3128,20 @@ function fwModeCode(selectedMode, uiBandStr){
           if (forcedByBandChange || (!userTuning && !isEditing)) {
             // バンド変更直後：FWのF値が新バンドの範囲内に収まるまで待つ
             if (forcedByBandChange) {
-              const curBand = document.getElementById('bandSel')?.value;
+              // ★ 送信したバンド番号で範囲判定（STATによる書き換え前の番号を使う）
+              const curBand = window.__bandChangePendingBand || document.getElementById('bandSel')?.value;
               const isAirBand = (curBand === '99');
               const brNow = (!isAirBand && typeof bandRange === 'function') ? bandRange(curBand) : null;
               const inRange = isAirBand || (brNow && FkHz2 >= brNow.min && FkHz2 <= brNow.max);
               if (!inRange) {
                 // まだ前バンドの周波数 → UI更新をスキップ（フラグは保持）
               } else {
-                if (typeof setFreqUIFromKHz === 'function') setFreqUIFromKHz(FkHz2, true);
-                if (typeof clampFreq === 'function') try { clampFreq(); } catch(e) {}
-                if (typeof validateFreq === 'function') try { validateFreq(); } catch(e) {}
+                // ★ STAT由来の周波数はclamp/validateしない（本体の実値をそのまま表示）
+              if (typeof setFreqUIFromKHz === 'function') setFreqUIFromKHz(FkHz2, true);
               }
             } else {
+              // ★ STAT由来の周波数はclamp/validateしない（本体の実値をそのまま表示）
               if (typeof setFreqUIFromKHz === 'function') setFreqUIFromKHz(FkHz2, true);
-              if (typeof clampFreq === 'function') try { clampFreq(); } catch(e) {}
-              if (typeof validateFreq === 'function') try { validateFreq(); } catch(e) {}
             }
           }
         }
@@ -3108,18 +3149,36 @@ function fwModeCode(selectedMode, uiBandStr){
       // バンド変更後：FWのF値が新バンド範囲内に入ったらフラグをクリア
       if (window.__bandChangePending) {
         const FkHz3 = (() => { const m3 = line.match(/\bF=(\d+)\b/); return m3 ? parseInt(m3[1],10) : NaN; })();
-        const curBand2 = document.getElementById('bandSel')?.value;
-        const isAirBand2 = (curBand2 === '99');
-        const brNow2 = (!isAirBand2 && typeof bandRange === 'function') ? bandRange(curBand2) : null;
-        const inRange2 = isAirBand2 || (brNow2 && Number.isFinite(FkHz3) && FkHz3 >= brNow2.min && FkHz3 <= brNow2.max);
+        // ★ inRange判定は「送信したバンド番号」で固定（STATによるbandSel書き換えの影響を受けない）
+        const pendBand = window.__bandChangePendingBand || document.getElementById('bandSel')?.value;
+        const isAirBand2 = (pendBand === '99');
+        const brNow2 = (!isAirBand2 && typeof bandRange === 'function') ? bandRange(pendBand) : null;
+        // ★ F値がpendBandの範囲内か、またはfreqToSwBandValがpendBandと一致するかの両方を判定
+        //    EEPROMメモリ値が誤ってバンド範囲外に記録されていた場合でも確定させる
+        const inRangeExact = isAirBand2 || (brNow2 && Number.isFinite(FkHz3) && FkHz3 >= brNow2.min && FkHz3 <= brNow2.max);
+        const inRangeByFreq = !isAirBand2 && Number.isFinite(FkHz3) && FkHz3 > 0 &&
+                              (typeof window.freqToSwBandVal === 'function' ? window.freqToSwBandVal(FkHz3) === pendBand : false);
+        const inRange2 = inRangeExact || inRangeByFreq;
         if (inRange2) {
           window.__bandChangePending = false;
+          window.__bandChangePendingBand = null;
+          // bandSelをF値から逆引きしたバンドに確定（範囲外メモリ値の場合はfreqToSwBandValで補正）
+          const bandSelEl2 = document.getElementById('bandSel');
+          const resolvedBand = (inRangeExact || isAirBand2) ? pendBand
+                             : (typeof window.freqToSwBandVal === 'function' ? window.freqToSwBandVal(FkHz3) : pendBand);
+          if (bandSelEl2 && resolvedBand) {
+            bandSelEl2.value = resolvedBand;
+          }
+          // 本体EEPROMメモリの周波数をlocalStorageにも同期
+          if (Number.isFinite(FkHz3) && FkHz3 > 0 && resolvedBand) {
+            try { window.__bandFreqSave(resolvedBand, FkHz3); } catch(e) {}
+          }
           // lastをUIの値に同期して自動送信の誤発火を防ぐ
           if (typeof window.__freqAutoSetLast === 'function') {
             const freqEl2 = document.getElementById('freq');
             if (freqEl2) window.__freqAutoSetLast(String(freqEl2.value));
           }
-          log("(Band) 本体周波数をUIに反映しました");
+          log("(Band) 本体EEPROMメモリの周波数をUIに反映しました: " + FkHz3 + " kHz (band=" + pendBand + ")");
         }
       }
     }
@@ -3500,7 +3559,7 @@ function fwModeCode(selectedMode, uiBandStr){
   // --- バンド／モード送信の重複抑制 ---
   let lastSentBand = null;
   let lastSentMode = null;
-  const validBands = new Set(["0","1","2","7","8","9","10","11","12","13","14","15","16","17"]);
+  const validBands = new Set(["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26"]);
   function buildBandCmdsFromTemplate(nUi){
     const tpl = "";  // バンド送信テンプレ廃止
     if (!tpl) return [];
@@ -3576,8 +3635,8 @@ function fwModeCode(selectedMode, uiBandStr){
       const totalHz = Math.round(vkhz * 1000);  // Hz単位
       const freqKhz = Math.floor(totalHz / 1000);
       const bfoHz   = totalHz - freqKhz * 1000;  // 0..999
-      // BFOはUSBなら正値、LSBなら負値に変換
-      const bfoFinal = (mode === "LSB") ? -bfoHz : bfoHz;
+      // BFO値はUSB/LSBともに正値で送信（RP2040側でモードに応じて処理）
+      const bfoFinal = bfoHz;
       const cmds = [{cmd: "F" + freqKhz}];
       // BFO=0の場合も必ずFBコマンドを送ってリセット
       cmds.push({cmd: "FB" + bfoFinal});
@@ -3614,11 +3673,14 @@ function fwModeCode(selectedMode, uiBandStr){
   $("bandSel").addEventListener("change", async ()=>{
     // ① 新バンドのUIを適用（スライダー範囲・STEP等を更新）
     applyBandUI();
-    // 新バンドの保存済み周波数があれば復元してからクランプ
+    // ★ 新バンドの周波数は本体EEPROMメモリ(lastFreqByBand[])が正。
+    //    STATで本体から受け取った値でUIを更新するため（③・__bandChangePending処理）、
+    //    ここでは localStorage のキャッシュで周波数ダイヤルを仮表示するだけ。
+    //    本体に周波数コマンド(F)を送らないので上書きは発生しない。
     try {
       const savedKhz = window.__bandFreqRestore(bandSel.value);
       if (savedKhz !== null) {
-        setFreqUIFromKHz(savedKhz);
+        setFreqUIFromKHz(savedKhz);  // 仮表示（本体STAT受信後に正値で上書きされる）
       }
     } catch(e) {}
     clampFreq(); validateFreq();
@@ -3655,7 +3717,10 @@ function fwModeCode(selectedMode, uiBandStr){
       }
     }
 
-    // ② バンド＋モード送信、続いて新バンドのデフォルト周波数を送信
+    // ② バンド＋モード送信
+    // ★ 本体 EEPROM のバンドメモリ値を使うため、周波数(Fコマンド)はここでは送らない。
+    //    本体がバンド切替後に lastFreqByBand[] を復元した周波数で動くので
+    //    ③ で Q を投げて STAT から実周波数を受け取り UI へ反映する。
     lastSentBand = null;  // キャッシュをクリアして強制送信
     await sendBandNow(nStr);
     await window.__sleep(160);
@@ -3668,31 +3733,34 @@ function fwModeCode(selectedMode, uiBandStr){
       window.__lastBandWasAir = true;
       try { await sendLine("XAIR"); } catch(e) {}
       await window.__sleep(80);
+      // AIRバンドのみ：本体メモリなし→UIの周波数を送信
+      try {
+        const freqCmds = buildAirFreqCmds();
+        for (const c of freqCmds) {
+          try { await sendLine(c.cmd); } catch(e) {}
+          await window.__sleep(30);
+        }
+      } catch(e) {}
+      await window.__sleep(80);
     }
+    // ★ 非AIRバンド：Fコマンド送信なし。本体EEPROMメモリの周波数をそのまま使う。
 
-    // ③ 新バンドの現在のUI周波数をFWへ送信（これでFWが新バンドの周波数に移動する）
-    try {
-      const freqCmds = isAir ? buildAirFreqCmds() : buildFreqCmds();
-      for (const c of freqCmds) {
-        try { await sendLine(c.cmd); } catch(e) {}
-        await window.__sleep(30);
-      }
-    } catch(e) {}
-    await window.__sleep(80);
-
-    // ③ 本体が移動した後の周波数をSTATで読み取る
+    // ③ 本体が移動した後の周波数をSTATで読み取ってUIへ反映
     window.__bandChangePending = true;
+    window.__bandChangePendingBand = isAir ? "99" : nStr;  // 送信したバンド番号を記録
     // タイムアウト保険：3秒後に強制解除（FWが範囲内に来なかった場合の保険）
     clearTimeout(window.__bandChangePendingTimer);
     window.__bandChangePendingTimer = setTimeout(function(){
       if (window.__bandChangePending) {
         window.__bandChangePending = false;
+        window.__bandChangePendingBand = null;  // ★ 書き換え禁止を解除
         log("(Band) 周波数同期タイムアウト（強制解除）");
+        // Qを投げてSTATを受け取り、F値からbandSel/freqを正しく更新させる
         try { if(typeof sendLine === 'function') sendLine("Q"); } catch(e) {}
       }
     }, 3000);
     try { await sendLine("Q"); } catch(e) {}
-    log("(Band) バンド変更送信完了: " + (isAir ? "AIR" : nStr) + " Mode=" + mode + " → 本体周波数を取得中...");
+    log("(Band) バンド変更送信完了: " + (isAir ? "AIR" : nStr) + " Mode=" + mode + " → 本体EEPROMメモリの周波数を取得中...");
   });
   // モード変更時：UI同期 + ラジオ本体へ即送信（modeSendと同じ手順）
   let __lastModeForOffset = (bandSel.value === "0") ? "FM" : modeSel.value;
