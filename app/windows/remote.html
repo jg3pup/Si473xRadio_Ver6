@@ -12,6 +12,54 @@
   .header{display:flex;align-items:center;gap:12px;justify-content:space-between;margin-bottom:12px}
   h1{font-size:20px;margin:0;font-weight:700;display:flex;align-items:center;gap:.6rem}
   .badge{font-size:12px;color:#a5b4fc;border:1px dashed #6366f1;padding:.08rem .45rem;border-radius:9999px}
+  /* ===== Brand / タイトル ===== */
+  .brand{display:flex;align-items:center;gap:12px;min-width:0}
+  .brand-icon{
+    position:relative;flex:none;width:42px;height:42px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 30% 25%, rgba(96,165,250,.28), rgba(15,23,42,.9) 70%);
+    border:1px solid rgba(96,165,250,.45);
+    box-shadow:0 0 0 1px rgba(255,255,255,.03) inset, 0 0 16px rgba(96,165,250,.35), 0 0 30px rgba(0,255,136,.10);
+  }
+  .brand-icon svg{color:#7dd3fc;filter:drop-shadow(0 0 6px rgba(125,211,252,.65))}
+  .brand-icon .pulse{
+    position:absolute;inset:-1px;border-radius:12px;border:1px solid rgba(0,255,136,.35);
+    animation:brandPulse 2.6s ease-out infinite;
+  }
+  @keyframes brandPulse{
+    0%{transform:scale(1);opacity:.55}
+    70%{transform:scale(1.35);opacity:0}
+    100%{transform:scale(1.35);opacity:0}
+  }
+  .brand-text{min-width:0}
+  .brand-title{margin:0;display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;line-height:1.1}
+  .brand-name{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono","Courier New",monospace;
+    font-size:22px;font-weight:800;letter-spacing:.02em;color:#f1f5f9;
+    text-shadow:0 0 18px rgba(96,165,250,.25);
+  }
+  .brand-name-accent{
+    background:linear-gradient(90deg,#60a5fa,#7dd3fc 55%,#34d3a8);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .brand-ver{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:12px;font-weight:700;letter-spacing:.06em;color:#eaffff;
+    padding:.12rem .48rem;border-radius:9999px;
+    background:rgba(0,255,136,.08);
+    border:1px solid rgba(0,255,136,.45);
+    text-shadow:0 0 8px rgba(0,255,136,.55);
+    box-shadow:0 0 10px rgba(0,255,136,.18) inset;
+  }
+  .brand-sub{
+    margin-top:3px;font-size:12px;color:var(--muted);letter-spacing:.14em;
+    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  }
+  @media(max-width:600px){
+    .brand-icon{width:36px;height:36px}
+    .brand-name{font-size:18px}
+    .brand-sub{font-size:11px;letter-spacing:.08em}
+  }
   .row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   /* ===== Mobile header polish =====
      - Prevent title from being clipped
@@ -1651,7 +1699,22 @@ body, html {
 <body>
 <div class="container">
   <div class="header">
-    <h1>Si473x Radio v6 – Webリモコン <span class="badge">57600固定</span></h1>
+    <div class="brand">
+      <span class="brand-icon" aria-hidden="true">
+        <span class="pulse"></span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="2.3"></circle>
+          <path d="M8 8.2a5.6 5.6 0 0 0 0 7.6"></path>
+          <path d="M16 8.2a5.6 5.6 0 0 1 0 7.6"></path>
+          <path d="M4.6 4.8a10.6 10.6 0 0 0 0 14.4"></path>
+          <path d="M19.4 4.8a10.6 10.6 0 0 1 0 14.4"></path>
+        </svg>
+      </span>
+      <div class="brand-text">
+        <h1 class="brand-title"><span class="brand-name">Si473x<span class="brand-name-accent">Radio</span></span><span class="brand-ver">v6</span></h1>
+        <div class="brand-sub">WEB リモコン<span class="badge">57600固定</span></div>
+      </div>
+    </div>
     <div class="hdr-groups">
       <!-- WiFiグループ -->
       <div class="hdr-box wifi">
@@ -1674,7 +1737,7 @@ body, html {
         <span class="hdr-box-label">🔊 ブラウザ再生</span>
         <button type="button" id="browserAudioBtn" class="btn" style="background:#1a6b2a;color:#fff">▶ 再生</button>
         <span id="browserAudioStatus" style="font-size:11px;color:#94a3b8;margin-left:4px"></span>
-        <audio id="streamAudio" preload="none" style="display:none"></audio>
+        <audio id="streamAudio" preload="none" crossorigin="anonymous" style="display:none"></audio>
       </div>
       <!-- USBグループ -->
       <div class="hdr-box usb">
@@ -1838,18 +1901,18 @@ body, html {
           <option value="1">LW (150–279 kHz)</option>
           <option value="2" selected>MW (531–1710 kHz)</option>
           <optgroup label="SW メーターバンド">
-            <option value="7">120m (2300–2495)</option>
-            <option value="8"> 90m (3200–3400)</option>
-            <option value="9"> 60m (4750–5060)</option>
-            <option value="10">49m (5900–6200)</option>
-            <option value="11">41m (7200–7450)</option>
-            <option value="12">31m (9400–9900)</option>
-            <option value="13">25m (11600–12100)</option>
-            <option value="14">22m (13570–13870)</option>
-            <option value="15">19m (15100–15800)</option>
-            <option value="16">16m (17480–17900)</option>
-            <option value="18">13m (21450–21850)</option>
-            <option value="19">11m (25600–26100)</option>
+            <option value="3"> 120m (2300–2495)</option>
+            <option value="4">  90m (3200–3400)</option>
+            <option value="6">  60m (4750–5060)</option>
+            <option value="7">  49m (5900–6200)</option>
+            <option value="8">  41m (7200–7600)</option>
+            <option value="9">  31m (9400–9900)</option>
+            <option value="10"> 25m (11600–12100)</option>
+            <option value="11"> 22m (13570–13870)</option>
+            <option value="12"> 19m (15100–15800)</option>
+            <option value="13"> 16m (17480–17900)</option>
+            <option value="15"> 13m (21450–21850)</option>
+            <option value="16"> 11m (25670–26100)</option>
           </optgroup>
           <option value="17">SW 全域 (2300–30000)</option>
           <option value="99">AIR (118–137 MHz)</option>
@@ -2575,19 +2638,32 @@ function fwModeCode(selectedMode, uiBandStr){
       case "1": return {min:150,   max:279,    label:"LW: 150–279 kHz",     step:1};
       case "2":  return {min:531,   max:1710,   label:"MW: 531–1710 kHz",     step:9};
       // == SW メーターバンド（UIのみ・スキャン範囲を限定） ==
-      case "7":  return {min:2300,  max:2495,  label:"SW 120m: 2300–2495 kHz", step:5};
-      case "8":  return {min:3200,  max:3400,  label:"SW  90m: 3200–3400 kHz", step:5};
-      case "9":  return {min:4750,  max:5060,  label:"SW  60m: 4750–5060 kHz", step:5};
-      case "10": return {min:5900,  max:6200,  label:"SW  49m: 5900–6200 kHz", step:5};
-      case "11": return {min:7200,  max:7450,  label:"SW  41m: 7200–7450 kHz", step:5};
-      case "12": return {min:9400,  max:9900,  label:"SW  31m: 9400–9900 kHz", step:5};
-      case "13": return {min:11600, max:12100, label:"SW  25m: 11600–12100 kHz", step:5};
-      case "14": return {min:13570, max:13870, label:"SW  22m: 13570–13870 kHz", step:5};
-      case "15": return {min:15100, max:15800, label:"SW  19m: 15100–15800 kHz", step:5};
-      case "16": return {min:17480, max:17900, label:"SW  16m: 17480–17900 kHz", step:5};
-      case "18": return {min:21450, max:21850, label:"SW  13m: 21450–21850 kHz", step:5};
-      case "19": return {min:25600, max:26100, label:"SW  11m: 25600–26100 kHz", step:5};      
-      case "17": return {min:2300,  max:30000, label:"SW: 2300–30000 kHz",      step:5};
+      // SW メーターバンド（BANDS[]インデックス直接対応）
+      case "3":  return {min:2300,  max:2495,  label:"SW 120m: 2300–2495 kHz",   step:5};
+      case "4":  return {min:3200,  max:3400,  label:"SW  90m: 3200–3400 kHz",   step:5};
+      case "5":  return {min:3900,  max:4000,  label:"SW  75m: 3900–4000 kHz",   step:5};
+      case "6":  return {min:4750,  max:5060,  label:"SW  60m: 4750–5060 kHz",   step:5};
+      case "7":  return {min:5900,  max:6200,  label:"SW  49m: 5900–6200 kHz",   step:5};
+      case "8":  return {min:7200,  max:7600,  label:"SW  41m: 7200–7600 kHz",   step:5};
+      case "9":  return {min:9400,  max:9900,  label:"SW  31m: 9400–9900 kHz",   step:5};
+      case "10": return {min:11600, max:12100, label:"SW  25m: 11600–12100 kHz", step:5};
+      case "11": return {min:13570, max:13870, label:"SW  22m: 13570–13870 kHz", step:5};
+      case "12": return {min:15100, max:15800, label:"SW  19m: 15100–15800 kHz", step:5};
+      case "13": return {min:17480, max:17900, label:"SW  16m: 17480–17900 kHz", step:5};
+      case "14": return {min:18900, max:19020, label:"SW  15m: 18900–19020 kHz", step:5};
+      case "15": return {min:21450, max:21850, label:"SW  13m: 21450–21850 kHz", step:5};
+      case "16": return {min:25670, max:26100, label:"SW  11m: 25670–26100 kHz", step:5};
+      case "17": return {min:2300,  max:30000, label:"SW 全域: 2300–30000 kHz",  step:5};
+      // ハムバンド（BANDS[18..26]）
+      case "18": return {min:1800,  max:2000,  label:"Ham 160m: 1800–2000 kHz",  step:1};
+      case "19": return {min:3500,  max:4000,  label:"Ham  80m: 3500–4000 kHz",  step:1};
+      case "20": return {min:7000,  max:7300,  label:"Ham  40m: 7000–7300 kHz",  step:1};
+      case "21": return {min:10100, max:10150, label:"Ham  30m: 10100–10150 kHz",step:1};
+      case "22": return {min:14000, max:14350, label:"Ham  20m: 14000–14350 kHz",step:1};
+      case "23": return {min:18068, max:18168, label:"Ham  17m: 18068–18168 kHz",step:1};
+      case "24": return {min:21000, max:21450, label:"Ham  15m: 21000–21450 kHz",step:1};
+      case "25": return {min:24890, max:24990, label:"Ham  12m: 24890–24990 kHz",step:1};
+      case "26": return {min:28000, max:29700, label:"Ham  10m: 28000–29700 kHz",step:1};
       case "99": return {min:118000, max:137000, label:"AIR: 118.000–137.000 MHz", step:25, isAir:true};
       default:  return {min:522,   max:1710,   label:"MW: 522–1710 kHz",    step:1};
     }
@@ -2940,7 +3016,36 @@ function fwModeCode(selectedMode, uiBandStr){
         if (bandSelEl && modeSelEl) {
           // スキャン中はSTATによるbandSel書き換えを抑制（AIRスキャン中にAIR=0が返っても無視）
           const __scanActive = !!window.__scanning;
-          if (!__scanActive) {
+          // ★ バンド変更待機中はSTATによるbandSel書き換えを禁止
+          if (!__scanActive && !window.__bandChangePending) {
+          // F=値でSWサブバンドを精密に判定するヘルパー（グローバル化して__bandChangePending判定からも参照可）
+          if (!window.freqToSwBandVal) window.freqToSwBandVal = function(fkhz) {
+            if (fkhz >= 1800  && fkhz <= 2000)  return "18"; // 160m ham
+            if (fkhz >= 2300  && fkhz <= 2495)  return "3";  // 120m
+            if (fkhz >= 3200  && fkhz <= 3400)  return "4";  // 90m
+            if (fkhz >= 3500  && fkhz <= 4000)  return "19"; // 80m ham
+            if (fkhz >= 3900  && fkhz <= 4000)  return "5";  // 75m
+            if (fkhz >= 4750  && fkhz <= 5060)  return "6";  // 60m
+            if (fkhz >= 5900  && fkhz <= 6200)  return "7";  // 49m
+            if (fkhz >= 7000  && fkhz <= 7300)  return "20"; // 40m ham
+            if (fkhz >= 7200  && fkhz <= 7600)  return "8";  // 41m
+            if (fkhz >= 9400  && fkhz <= 9900)  return "9";  // 31m
+            if (fkhz >= 10100 && fkhz <= 10150) return "21"; // 30m ham
+            if (fkhz >= 11600 && fkhz <= 12100) return "10"; // 25m
+            if (fkhz >= 13570 && fkhz <= 13870) return "11"; // 22m
+            if (fkhz >= 14000 && fkhz <= 14350) return "22"; // 20m ham
+            if (fkhz >= 15100 && fkhz <= 15800) return "12"; // 19m
+            if (fkhz >= 17480 && fkhz <= 17900) return "13"; // 16m
+            if (fkhz >= 18068 && fkhz <= 18168) return "23"; // 17m ham
+            if (fkhz >= 18900 && fkhz <= 19020) return "14"; // 15m
+            if (fkhz >= 21000 && fkhz <= 21450) return "24"; // 15m ham
+            if (fkhz >= 21450 && fkhz <= 21850) return "15"; // 13m
+            if (fkhz >= 24890 && fkhz <= 24990) return "25"; // 12m ham
+            if (fkhz >= 25670 && fkhz <= 26100) return "16"; // 11m
+            if (fkhz >= 28000 && fkhz <= 29700) return "26"; // 10m ham
+            return "17"; // SW全域
+          };
+          const freqToSwBandVal = window.freqToSwBandVal;
           if (Mc === 2) { // FM
             bandSelEl.value = "0";
             modeSelEl.value = "FM";
@@ -2950,17 +3055,17 @@ function fwModeCode(selectedMode, uiBandStr){
           } else if (Mc === 3) { // MW
             bandSelEl.value = "2";
             modeSelEl.value = "AM";
-          } else if (Mc === 4) { // SW
-            bandSelEl.value = "17";
+          } else if (Mc === 4) { // SW AM: F=値で精密なサブバンドを判定
+            bandSelEl.value = freqToSwBandVal(FkHz);
             modeSelEl.value = "AM";
           } else if (Mc === 5) { // USB
-            bandSelEl.value = "17";
+            bandSelEl.value = freqToSwBandVal(FkHz);
             modeSelEl.value = "USB";
           } else if (Mc === 6) { // LSB
-            bandSelEl.value = "17";
+            bandSelEl.value = freqToSwBandVal(FkHz);
             modeSelEl.value = "LSB";
           } else if (Mc === 7) { // CW
-            bandSelEl.value = "17";
+            bandSelEl.value = freqToSwBandVal(FkHz);
             modeSelEl.value = "CW";
           }
           // AIR=1のときはAIRバンドに設定
@@ -3086,21 +3191,20 @@ function fwModeCode(selectedMode, uiBandStr){
           if (forcedByBandChange || (!userTuning && !isEditing)) {
             // バンド変更直後：FWのF値が新バンドの範囲内に収まるまで待つ
             if (forcedByBandChange) {
-              const curBand = document.getElementById('bandSel')?.value;
+              // ★ 送信したバンド番号で範囲判定（STATによる書き換え前の番号を使う）
+              const curBand = window.__bandChangePendingBand || document.getElementById('bandSel')?.value;
               const isAirBand = (curBand === '99');
               const brNow = (!isAirBand && typeof bandRange === 'function') ? bandRange(curBand) : null;
               const inRange = isAirBand || (brNow && FkHz2 >= brNow.min && FkHz2 <= brNow.max);
               if (!inRange) {
                 // まだ前バンドの周波数 → UI更新をスキップ（フラグは保持）
               } else {
-                if (typeof setFreqUIFromKHz === 'function') setFreqUIFromKHz(FkHz2, true);
-                if (typeof clampFreq === 'function') try { clampFreq(); } catch(e) {}
-                if (typeof validateFreq === 'function') try { validateFreq(); } catch(e) {}
+                // ★ STAT由来の周波数はclamp/validateしない（本体の実値をそのまま表示）
+              if (typeof setFreqUIFromKHz === 'function') setFreqUIFromKHz(FkHz2, true);
               }
             } else {
+              // ★ STAT由来の周波数はclamp/validateしない（本体の実値をそのまま表示）
               if (typeof setFreqUIFromKHz === 'function') setFreqUIFromKHz(FkHz2, true);
-              if (typeof clampFreq === 'function') try { clampFreq(); } catch(e) {}
-              if (typeof validateFreq === 'function') try { validateFreq(); } catch(e) {}
             }
           }
         }
@@ -3108,18 +3212,36 @@ function fwModeCode(selectedMode, uiBandStr){
       // バンド変更後：FWのF値が新バンド範囲内に入ったらフラグをクリア
       if (window.__bandChangePending) {
         const FkHz3 = (() => { const m3 = line.match(/\bF=(\d+)\b/); return m3 ? parseInt(m3[1],10) : NaN; })();
-        const curBand2 = document.getElementById('bandSel')?.value;
-        const isAirBand2 = (curBand2 === '99');
-        const brNow2 = (!isAirBand2 && typeof bandRange === 'function') ? bandRange(curBand2) : null;
-        const inRange2 = isAirBand2 || (brNow2 && Number.isFinite(FkHz3) && FkHz3 >= brNow2.min && FkHz3 <= brNow2.max);
+        // ★ inRange判定は「送信したバンド番号」で固定（STATによるbandSel書き換えの影響を受けない）
+        const pendBand = window.__bandChangePendingBand || document.getElementById('bandSel')?.value;
+        const isAirBand2 = (pendBand === '99');
+        const brNow2 = (!isAirBand2 && typeof bandRange === 'function') ? bandRange(pendBand) : null;
+        // ★ F値がpendBandの範囲内か、またはfreqToSwBandValがpendBandと一致するかの両方を判定
+        //    EEPROMメモリ値が誤ってバンド範囲外に記録されていた場合でも確定させる
+        const inRangeExact = isAirBand2 || (brNow2 && Number.isFinite(FkHz3) && FkHz3 >= brNow2.min && FkHz3 <= brNow2.max);
+        const inRangeByFreq = !isAirBand2 && Number.isFinite(FkHz3) && FkHz3 > 0 &&
+                              (typeof window.freqToSwBandVal === 'function' ? window.freqToSwBandVal(FkHz3) === pendBand : false);
+        const inRange2 = inRangeExact || inRangeByFreq;
         if (inRange2) {
           window.__bandChangePending = false;
+          window.__bandChangePendingBand = null;
+          // bandSelをF値から逆引きしたバンドに確定（範囲外メモリ値の場合はfreqToSwBandValで補正）
+          const bandSelEl2 = document.getElementById('bandSel');
+          const resolvedBand = (inRangeExact || isAirBand2) ? pendBand
+                             : (typeof window.freqToSwBandVal === 'function' ? window.freqToSwBandVal(FkHz3) : pendBand);
+          if (bandSelEl2 && resolvedBand) {
+            bandSelEl2.value = resolvedBand;
+          }
+          // 本体EEPROMメモリの周波数をlocalStorageにも同期
+          if (Number.isFinite(FkHz3) && FkHz3 > 0 && resolvedBand) {
+            try { window.__bandFreqSave(resolvedBand, FkHz3); } catch(e) {}
+          }
           // lastをUIの値に同期して自動送信の誤発火を防ぐ
           if (typeof window.__freqAutoSetLast === 'function') {
             const freqEl2 = document.getElementById('freq');
             if (freqEl2) window.__freqAutoSetLast(String(freqEl2.value));
           }
-          log("(Band) 本体周波数をUIに反映しました");
+          log("(Band) 本体EEPROMメモリの周波数をUIに反映しました: " + FkHz3 + " kHz (band=" + pendBand + ")");
         }
       }
     }
@@ -3500,7 +3622,7 @@ function fwModeCode(selectedMode, uiBandStr){
   // --- バンド／モード送信の重複抑制 ---
   let lastSentBand = null;
   let lastSentMode = null;
-  const validBands = new Set(["0","1","2","7","8","9","10","11","12","13","14","15","16","17"]);
+  const validBands = new Set(["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26"]);
   function buildBandCmdsFromTemplate(nUi){
     const tpl = "";  // バンド送信テンプレ廃止
     if (!tpl) return [];
@@ -3555,7 +3677,16 @@ function fwModeCode(selectedMode, uiBandStr){
   // AIRバンド用周波数コマンド生成
   // 表示周波数(MHz) → IF周波数(kHz) = dispKhz - LO(kHz) に変換
   function buildAirFreqCmds() {
-    const dispKhz = getFreqKHzFromUI();  // 118000〜137000 kHz（25kHz刻み）
+    // AIR局リストからのバンド切替＋選局時、bandSelの change ハンドラ側が
+    // freq.value をローカルキャッシュ値で一旦上書きしてしまうため、
+    // airTune側が明示的に渡したオーバーライド値があれば最優先で使う（使用後は解除）。
+    let dispKhz;
+    if (window.__airTuneOverrideKhz != null) {
+      dispKhz = window.__airTuneOverrideKhz;
+      window.__airTuneOverrideKhz = null;
+    } else {
+      dispKhz = getFreqKHzFromUI();  // 118000〜137000 kHz（25kHz刻み）
+    }
     const loKhz = window.__lastAirLoKhz || 110000;
     const ifKhz = Math.round(dispKhz - loKhz);
     // IF周波数をクランプ（SWバンド範囲内）
@@ -3576,8 +3707,8 @@ function fwModeCode(selectedMode, uiBandStr){
       const totalHz = Math.round(vkhz * 1000);  // Hz単位
       const freqKhz = Math.floor(totalHz / 1000);
       const bfoHz   = totalHz - freqKhz * 1000;  // 0..999
-      // BFOはUSBなら正値、LSBなら負値に変換
-      const bfoFinal = (mode === "LSB") ? -bfoHz : bfoHz;
+      // BFO値はUSB/LSBともに正値で送信（RP2040側でモードに応じて処理）
+      const bfoFinal = bfoHz;
       const cmds = [{cmd: "F" + freqKhz}];
       // BFO=0の場合も必ずFBコマンドを送ってリセット
       cmds.push({cmd: "FB" + bfoFinal});
@@ -3614,11 +3745,14 @@ function fwModeCode(selectedMode, uiBandStr){
   $("bandSel").addEventListener("change", async ()=>{
     // ① 新バンドのUIを適用（スライダー範囲・STEP等を更新）
     applyBandUI();
-    // 新バンドの保存済み周波数があれば復元してからクランプ
+    // ★ 新バンドの周波数は本体EEPROMメモリ(lastFreqByBand[])が正。
+    //    STATで本体から受け取った値でUIを更新するため（③・__bandChangePending処理）、
+    //    ここでは localStorage のキャッシュで周波数ダイヤルを仮表示するだけ。
+    //    本体に周波数コマンド(F)を送らないので上書きは発生しない。
     try {
       const savedKhz = window.__bandFreqRestore(bandSel.value);
       if (savedKhz !== null) {
-        setFreqUIFromKHz(savedKhz);
+        setFreqUIFromKHz(savedKhz);  // 仮表示（本体STAT受信後に正値で上書きされる）
       }
     } catch(e) {}
     clampFreq(); validateFreq();
@@ -3655,7 +3789,10 @@ function fwModeCode(selectedMode, uiBandStr){
       }
     }
 
-    // ② バンド＋モード送信、続いて新バンドのデフォルト周波数を送信
+    // ② バンド＋モード送信
+    // ★ 本体 EEPROM のバンドメモリ値を使うため、周波数(Fコマンド)はここでは送らない。
+    //    本体がバンド切替後に lastFreqByBand[] を復元した周波数で動くので
+    //    ③ で Q を投げて STAT から実周波数を受け取り UI へ反映する。
     lastSentBand = null;  // キャッシュをクリアして強制送信
     await sendBandNow(nStr);
     await window.__sleep(160);
@@ -3668,31 +3805,34 @@ function fwModeCode(selectedMode, uiBandStr){
       window.__lastBandWasAir = true;
       try { await sendLine("XAIR"); } catch(e) {}
       await window.__sleep(80);
+      // AIRバンドのみ：本体メモリなし→UIの周波数を送信
+      try {
+        const freqCmds = buildAirFreqCmds();
+        for (const c of freqCmds) {
+          try { await sendLine(c.cmd); } catch(e) {}
+          await window.__sleep(30);
+        }
+      } catch(e) {}
+      await window.__sleep(80);
     }
+    // ★ 非AIRバンド：Fコマンド送信なし。本体EEPROMメモリの周波数をそのまま使う。
 
-    // ③ 新バンドの現在のUI周波数をFWへ送信（これでFWが新バンドの周波数に移動する）
-    try {
-      const freqCmds = isAir ? buildAirFreqCmds() : buildFreqCmds();
-      for (const c of freqCmds) {
-        try { await sendLine(c.cmd); } catch(e) {}
-        await window.__sleep(30);
-      }
-    } catch(e) {}
-    await window.__sleep(80);
-
-    // ③ 本体が移動した後の周波数をSTATで読み取る
+    // ③ 本体が移動した後の周波数をSTATで読み取ってUIへ反映
     window.__bandChangePending = true;
+    window.__bandChangePendingBand = isAir ? "99" : nStr;  // 送信したバンド番号を記録
     // タイムアウト保険：3秒後に強制解除（FWが範囲内に来なかった場合の保険）
     clearTimeout(window.__bandChangePendingTimer);
     window.__bandChangePendingTimer = setTimeout(function(){
       if (window.__bandChangePending) {
         window.__bandChangePending = false;
+        window.__bandChangePendingBand = null;  // ★ 書き換え禁止を解除
         log("(Band) 周波数同期タイムアウト（強制解除）");
+        // Qを投げてSTATを受け取り、F値からbandSel/freqを正しく更新させる
         try { if(typeof sendLine === 'function') sendLine("Q"); } catch(e) {}
       }
     }, 3000);
     try { await sendLine("Q"); } catch(e) {}
-    log("(Band) バンド変更送信完了: " + (isAir ? "AIR" : nStr) + " Mode=" + mode + " → 本体周波数を取得中...");
+    log("(Band) バンド変更送信完了: " + (isAir ? "AIR" : nStr) + " Mode=" + mode + " → 本体EEPROMメモリの周波数を取得中...");
   });
   // モード変更時：UI同期 + ラジオ本体へ即送信（modeSendと同じ手順）
   let __lastModeForOffset = (bandSel.value === "0") ? "FM" : modeSel.value;
@@ -6417,6 +6557,7 @@ openBtn.addEventListener('click', ()=> modal.classList.remove('hidden'));
  <div class="frow"><div>Webリモコン</div><div><select id="st_web_enable"><option value="1" selected>ON</option><option value="0">OFF</option></select></div></div>
  <div class="frow"><div>AIR LO</div><div><select id="st_air_lo"><option value="100">+100 MHz</option><option value="110" selected>+110 MHz</option><option value="120">+120 MHz</option></select></div></div>
  <div class="frow"><div>AMアンテナ</div><div><select id="st_mw_ant"><option value="BAR" selected>BAR（内蔵バーアンテナ）</option><option value="EXT">EXT（外部アンテナ端子）</option></select></div></div>
+ <div class="frow"><div>LED</div><div><select id="st_led"><option value="ON" selected>ON</option><option value="OFF">OFF</option></select></div></div>
           <div class="frow"><div>AIR 表示</div><div><select id="st_air_disp"><option value="real" selected>実受信周波数</option><option value="if">IF表示</option></select></div></div>
           <div class="frow"><div>AIR 計算（LO±IF）</div><div>
             <select id="st_air_side">
@@ -6687,6 +6828,16 @@ const DefaultCfg = {
       await sendLine(`ANT ${v}`);
       setHint(`AMアンテナを ${v} に切り替えました`);
       logBridge(`Send ANT ${v}`);
+    } catch { setHint('未接続です'); }
+  });
+  // LED ON/OFF：LED ON / LED OFF をRP2040へ直送
+  const elLed = $('#st_led');
+  elLed?.addEventListener('change', async ()=>{
+    const v = elLed.value === 'OFF' ? 'OFF' : 'ON';
+    try {
+      await sendLine(`LED ${v}`);
+      setHint(`LED を ${v} に切り替えました`);
+      logBridge(`Send LED ${v}`);
     } catch { setHint('未接続です'); }
   });
   elAirDisp?.addEventListener('change', async ()=>{
@@ -7259,6 +7410,16 @@ document.addEventListener('DOMContentLoaded', function(){
 })();
 </script>
 <script>
+// ===== TrayApp detection: ?trayapp=1 → WS audio/SA path (same as Android) =====
+(function(){
+  try{
+    if(new URLSearchParams(window.location.search).get('trayapp')==='1'){
+      window.__androidApp=true;
+    }
+  }catch(_){}
+})();
+</script>
+<script>
 // ===== WS URL default + AUDIO OFF button (robust) =====
 (function(){
   // APモード直接アクセス時（Android等でmDNSが解決できない場合）はIPを使用
@@ -7611,6 +7772,12 @@ document.addEventListener('DOMContentLoaded', function(){
       if (mAnt) {
         const el = document.getElementById('st_mw_ant');
         if (el) el.value = mAnt[1];
+      }
+      // STAT行からLED=を解析してLEDセレクトを同期
+      const mLed = line.match(/\bLED=(ON|OFF)\b/);
+      if (mLed) {
+        const el = document.getElementById('st_led');
+        if (el) el.value = mLed[1];
       }
       // OKレスポンス
       if (/OK X=SQL OFF/i.test(line)) { setSqlUi(false, sqlLevel); }
@@ -8007,6 +8174,7 @@ setEiBiSeasonBadge(inferSeasonFromNowUTC(), false);
   let totalAhead = 0;
   let wsActive   = false;
   let wsReconnectTimer = null;  // 自動再接続タイマー（外側スコープで管理）
+  let wsPingTimer = null;       // keepalive pingタイマー
 
   function pushPCM(ab) {
     const i16    = new Int16Array(ab);
@@ -8021,7 +8189,13 @@ setEiBiSeasonBadge(inferSeasonFromNowUTC(), false);
     totalAhead += frames;
   }
 
+  // バッファ上限: 400ms分（接続直後の蓄積を防ぎ早送り防止）
+  const MAX_AHEAD_FRAMES = WS_SAMPLE_RATE * 0.4;  // 9600frames = 400ms
+
+  var __oapCount=0;
   function onAudioProcess(e) {
+    __oapCount++;
+    if(__oapCount<=3){var si2=document.getElementById('saInfo');if(si2)si2.textContent='OAP:'+__oapCount+' buf:'+pcmBuf.length;}
     const outL = e.outputBuffer.getChannelData(0);
     const outR = e.outputBuffer.getChannelData(1);
     let written = 0;
@@ -8044,8 +8218,14 @@ setEiBiSeasonBadge(inferSeasonFromNowUTC(), false);
       }
     }
     for (; written < WS_BUF_FRAMES; written++) { outL[written] = 0; outR[written] = 0; }
-    const ahead_ms = Math.round(totalAhead / WS_SAMPLE_RATE * 1000);
-    updateStatus(totalAhead > 0 ? ahead_ms + 'ms' : '---');
+  }
+
+  function pushPCMWithDrop(ab) {
+    // 上限を超えている場合は古いチャンクを捨てる（早送り防止）
+    while (totalAhead > MAX_AHEAD_FRAMES && pcmBuf.length > 0) {
+      totalAhead -= pcmBuf.shift().l.length;
+    }
+    pushPCM(ab);
   }
 
   function startWsAudio() {
@@ -8056,18 +8236,40 @@ setEiBiSeasonBadge(inferSeasonFromNowUTC(), false);
 
     // iOS Safari: AudioContextはユーザージェスチャー内で生成
     audioCtx  = new (window.AudioContext || window.webkitAudioContext)({sampleRate: WS_SAMPLE_RATE});
+    // Android WebView対策: suspended状態を解除
+    audioCtx.resume().catch(function(){});
     processor = audioCtx.createScriptProcessor(WS_BUF_FRAMES, 0, WS_CHANNELS);
     processor.onaudioprocess = onAudioProcess;
-    processor.connect(audioCtx.destination);
-    // ★ SAエンジンに公開（iOS WS経路）
+    // Androidアプリ内ではUdpAudioServiceが音声担当→WS音声はミュート（SAソースのみ）
+    var gainNode = audioCtx.createGain();
+    gainNode.gain.value = window.__androidApp ? 0 : 1;
+    processor.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    window.__saGainNode = gainNode;
+    // デバッグ: gain値とandroidApp状態を表示
+    (function(){var _e=document.getElementById('saInfo');if(_e)_e.textContent='gain:'+gainNode.gain.value+' and:'+window.__androidApp;})();
+    // ★ SAエンジンに公開（iOS WS経路）- resume()完了後に呼ぶ
     window.__saCtx = audioCtx; window.__saProc = processor;
-    if (typeof window.__saRequestHook === 'function') {
-      setTimeout(function(){ try { window.__saRequestHook(audioCtx, processor); } catch(_){} }, 100);
-    }
+    var si2=document.getElementById('saInfo');
+    if(si2)si2.textContent='CTX:'+audioCtx.state;
+    audioCtx.resume().then(function(){
+      if(si2)si2.textContent='RES:'+audioCtx.state;
+      if (typeof window.__saRequestHook === 'function') {
+        try { window.__saRequestHook(audioCtx, processor); } catch(e){if(si2)si2.textContent='RHK-ERR:'+e.message;}
+      } else {
+        if(si2)si2.textContent='NO-HOOK';
+      }
+    }).catch(function(e){
+      if(si2)si2.textContent='RES-ERR:'+e.message;
+      if (typeof window.__saRequestHook === 'function') {
+        setTimeout(function(){ try { window.__saRequestHook(audioCtx, processor); } catch(_){} }, 500);
+      }
+    });
 
     pcmBuf = []; totalAhead = 0; wsActive = true;
     updateBtn(true);
     updateStatus('接続中…');
+    (function(){var _e=document.getElementById('saInfo');if(_e)_e.textContent='WS:'+url;})();
     if (typeof log === 'function') log('[BrowserAudio] WS connecting: ' + url);
 
     // 再接続対応: openWsAudio()を変数で持ち、oncloseから自己呼び出し可能にする
@@ -8081,13 +8283,23 @@ setEiBiSeasonBadge(inferSeasonFromNowUTC(), false);
         if (typeof wsSend === 'function') {
           try { wsSend('AUDIO ON'); } catch(e) {}
         }
+        // keepalive ping: 15秒ごとに空文字列を送信してESP32のタイムアウトを防ぐ
+        if (wsPingTimer) clearInterval(wsPingTimer);
+        wsPingTimer = setInterval(function() {
+          if (ws.readyState === WebSocket.OPEN) {
+            try { ws.send(''); } catch(e) {}
+          }
+        }, 15000);
       };
       ws.onmessage = function(ev) {
-        if (ev.data instanceof ArrayBuffer) pushPCM(ev.data);
+        // バイナリ=PCMデータ、テキスト=pong等は無視
+        if (ev.data instanceof ArrayBuffer) pushPCMWithDrop(ev.data);
       };
       ws.onclose = function() {
+        if (wsPingTimer) { clearInterval(wsPingTimer); wsPingTimer = null; }
         if (typeof log === 'function') log('[BrowserAudio] WS /audio closed');
         if (!wsActive) return;  // ユーザーが停止した場合は再接続しない
+        (function(){var _e=document.getElementById('saInfo');if(_e)_e.textContent='切断→5s再接続';})();;
         updateStatus('再接続中… (5s)');
         if (wsReconnectTimer) clearTimeout(wsReconnectTimer);
         wsReconnectTimer = setTimeout(function() {
@@ -8097,7 +8309,8 @@ setEiBiSeasonBadge(inferSeasonFromNowUTC(), false);
           wsAudio = openWsAudio();  // 再接続
         }, 5000);
       };
-      ws.onerror = function() {
+      ws.onerror = function(e) {
+        (function(){var _e=document.getElementById('saInfo');if(_e)_e.textContent='WS ERR';})();;
         // onerror の直後に onclose も呼ばれるので再接続は onclose 側に委任
         if (typeof log === 'function') log('[BrowserAudio] WS /audio error');
       };
@@ -8110,6 +8323,7 @@ setEiBiSeasonBadge(inferSeasonFromNowUTC(), false);
   function stopWsAudio() {
     wsActive = false;
     if (wsReconnectTimer) { clearTimeout(wsReconnectTimer); wsReconnectTimer = null; }
+    if (wsPingTimer) { clearInterval(wsPingTimer); wsPingTimer = null; }
     if (wsAudio)   { try { wsAudio.close(); } catch(e){} wsAudio = null; }
     if (processor) { processor.disconnect(); processor = null; }
     if (audioCtx)  { audioCtx.close().catch(()=>{}); audioCtx = null; }
@@ -8132,8 +8346,8 @@ setEiBiSeasonBadge(inferSeasonFromNowUTC(), false);
     const audio = document.getElementById('streamAudio');
     if (!btn || !audio) return;
 
-    audio.onplay  = function() { updateBtn(true);  if (typeof log==='function') log('[Audio] playing: ' + audio.src); };
-    audio.onpause = function() { updateBtn(false); if (typeof log==='function') log('[Audio] paused'); };
+    audio.onplay  = function() { updateBtn(true);  if (typeof log==='function') log('[Audio] playing: ' + audio.src); if(typeof window.__saHookHTTP==='function')window.__saHookHTTP(); };
+    audio.onpause = function() { updateBtn(false); if (typeof log==='function') log('[Audio] paused'); if(typeof window.__saStopHTTP==='function')window.__saStopHTTP(); };
     audio.onerror = function() {
       updateBtn(false);
       if (typeof log==='function') log('[Audio] error - retry in 3s');
@@ -8174,14 +8388,22 @@ setEiBiSeasonBadge(inferSeasonFromNowUTC(), false);
     start: function() { if (isIOS()) { startWsAudio(); } else { document.getElementById('browserAudioBtn').click(); } },
     stop:  function() { if (isIOS()) { stopWsAudio();  } else { const a = document.getElementById('streamAudio'); if(a){ a.pause(); a.src=''; } updateBtn(false); } }
   };
+  // AndroidアプリからWS経路で直接呼べるよう公開
+  window.__startWsAudio = startWsAudio;
+  window.__stopWsAudio  = stopWsAudio;
 
 })();
 </script>
 
 <script>
-/* 音声FFT最小実装 - fetch経路 */
+/* 音声FFT - MediaElementSource方式 (PC/Android) / hookIOS方式 (iOS) */
 (function(){
-var an=null,rafId=0,open=false,fCtx=null,fPr=null,fRd=null,fBuf=[],fAct=false;
+var an=null,rafId=0,open=false,fCtx=null,fMed=null,fAct=false;
+// Android/__saRequestHookからRAFを起動できるようloop/an/rafIdをwindow経由で公開
+window.__saKickLoop=function(newAn){
+  an=newAn;
+  if(!rafId&&open){rafId=requestAnimationFrame(loop);}
+};
 function gz(){return parseInt((document.getElementById('saFftSz')||{value:'2048'}).value,10);}
 function gs(){return parseFloat((document.getElementById('saSm')||{value:'0.8'}).value);}
 function si(m){var e=document.getElementById('saInfo');if(e)e.textContent=m;}
@@ -8196,42 +8418,47 @@ function ea(ctx,sz,sm){
   an=ctx.createAnalyser();an.fftSize=sz;an.smoothingTimeConstant=sm;
   an.minDecibels=-90;an.maxDecibels=0;return an;
 }
-function startF(){
-  if(fAct)return;
-  try{fCtx=new(window.AudioContext||window.webkitAudioContext)({sampleRate:24000});}catch(e){si('AC:'+e.message);return;}
-  fCtx.resume().catch(function(){});
-  var a=ea(fCtx,gz(),gs()),B=4096;
-  fPr=fCtx.createScriptProcessor(B,0,2);fBuf=[];var tot=0;
-  fPr.onaudioprocess=function(e){
-    // FFT用にAnalyserNodeへ渡す（出力バッファはゼロ埋め→音は出ない）
-    var L=e.outputBuffer.getChannelData(0),R=e.outputBuffer.getChannelData(1),w=0;
-    while(w<B&&fBuf.length){var c=fBuf[0],av=c.l.length,nd=B-w;
-      if(av<=nd){L.set(c.l,w);R.set(c.r,w);w+=av;tot-=av;fBuf.shift();}
-      else{L.set(c.l.subarray(0,nd),w);R.set(c.r.subarray(0,nd),w);fBuf[0]={l:c.l.subarray(nd),r:c.r.subarray(nd)};tot-=nd;w=B;}}
-    for(;w<B;w++){L[w]=0;R[w]=0;}
-  };
-  // AnalyserNodeにのみ接続（destinationには繋がない→音が出ない）
-  fPr.connect(a);fAct=true;
-  var hd=0,lv=null;
-  fetch(gurl()).then(function(r){
-    if(!r.ok){si('HTTP '+r.status);fAct=false;return;}
-    si('');if(!rafId)rafId=requestAnimationFrame(loop);
-    fRd=r.body.getReader();
-    (function pump(){if(!fAct)return;fRd.read().then(function(res){
-      if(res.done||!fAct){fAct=false;return;}
-      var ck=res.value;
-      if(hd<44){var sk=Math.min(44-hd,ck.length);ck=ck.subarray(sk);hd+=sk;if(!ck.length){pump();return;}}
-      var data;if(lv&&lv.length){data=new Uint8Array(lv.length+ck.length);data.set(lv);data.set(ck,lv.length);lv=null;}else data=ck;
-      var fr=Math.floor(data.length/4);if(data.length-fr*4)lv=data.subarray(fr*4);
-      if(fr){var i16=new Int16Array(data.buffer,data.byteOffset,fr*2);
-        var la=new Float32Array(fr),ra=new Float32Array(fr);
-        for(var i=0;i<fr;i++){la[i]=i16[i*2]/32768;ra[i]=i16[i*2+1]/32768;}
-        fBuf.push({l:la,r:ra});tot+=fr;while(tot>48000&&fBuf.length>1)tot-=fBuf.shift().l.length;}
-      pump();
-    }).catch(function(){fAct=false;if(open)si('断');});})();
-  }).catch(function(e){fAct=false;si('失敗');});
+/* PC/Android: <audio>タグのMediaElementSourceをAnalyserに接続（音声と完全同期）
+ * ルール:
+ *   fCtx / fMed は初回1回だけ生成・接続、以降は絶対に disconnect しない
+ *   fMed → an → destination のパスを常時維持することで音声が途切れない
+ *   SA停止時は rafId と fAct だけをリセット                              */
+function buildHTTPGraph(){
+  // 既に構築済みなら何もしない
+  if(fMed)return true;
+  var audioEl=document.getElementById('streamAudio');
+  if(!audioEl)return false;
+  try{
+    fCtx=new(window.AudioContext||window.webkitAudioContext)();
+    an=fCtx.createAnalyser();
+    an.fftSize=gz(); an.smoothingTimeConstant=gs();
+    an.minDecibels=-90; an.maxDecibels=0;
+    fMed=fCtx.createMediaElementSource(audioEl);
+    // fMed → AnalyserNode → destination （この接続は永続）
+    fMed.connect(an);
+    an.connect(fCtx.destination);
+    return true;
+  }catch(e){si('ERR:'+e.message);fMed=null;return false;}
 }
-function stopF(){fAct=false;if(fRd)try{fRd.cancel();}catch(x){}fRd=null;if(fPr)try{fPr.disconnect();}catch(x){}fPr=null;if(fCtx)fCtx.close().catch(function(){});fCtx=null;fBuf=[];}
+function startHTTP(){
+  if(fAct)return;
+  var audioEl=document.getElementById('streamAudio');
+  if(!audioEl||audioEl.paused){si('先に▶再生を押してください');return;}
+  if(!buildHTTPGraph())return;
+  fCtx.resume().catch(function(){});
+  // FFTサイズ・スムージングだけ更新（接続は変えない）
+  if(an){an.fftSize=gz();an.smoothingTimeConstant=gs();}
+  fAct=true;si('');
+  if(!rafId)rafId=requestAnimationFrame(loop);
+}
+function stopHTTP(){
+  // グラフは維持（disconnect不要）、RAFとfActだけリセット
+  fAct=false;
+  if(rafId){cancelAnimationFrame(rafId);rafId=0;}
+}
+/* 音声再生開始を検知してSAが開いていれば自動フック */
+window.__saHookHTTP=function(){if(open&&!fAct)startHTTP();};
+window.__saStopHTTP=function(){stopHTTP();};
 function loop(){
   rafId=0;if(!open||!an)return;
   var sc=document.getElementById('audioSaCvs'),wc=document.getElementById('audioWfCvs');
@@ -8243,18 +8470,82 @@ function loop(){
   if(an.fftSize!==sz)an.fftSize=sz;
   an.smoothingTimeConstant=sm;
   var bins=an.frequencyBinCount,ny=(an.context.sampleRate||24000)/2;
+  // ストリームは24kHzサンプリング→有効帯域は0〜12kHz
+  // AudioContextのsampleRateに関わらず12kHz上限のbinまでに制限
+  var STREAM_NYQUIST=12000;
+  var useBins=Math.min(bins,Math.round(bins*STREAM_NYQUIST/ny));
+  var useNy=STREAM_NYQUIST;
   var db=new Float32Array(bins);an.getFloatFrequencyData(db);
-  var sx=sc.getContext('2d'),FL=-90,CL=0,dr=90;
+  var sx=sc.getContext('2d'),dr=90;
+  // レイアウト: 左18px=dBラベル帯、下14px=周波数スケール行
+  var LW=18, SCALE_H=14, PW=W-LW, SH=H-SCALE_H;
   sx.fillStyle='#06101c';sx.fillRect(0,0,W,H);
-  sx.font='9px monospace';
-  for(var d=-90;d<=0;d+=10){var y=Math.round(H-(d+90)/dr*H)+.5;sx.strokeStyle='rgba(255,255,255,.07)';sx.lineWidth=1;sx.beginPath();sx.moveTo(0,y);sx.lineTo(W,y);sx.stroke();sx.fillStyle='rgba(148,163,184,.5)';sx.fillText(d+'dB',2,y-2);}
-  var gr=sx.createLinearGradient(0,H,0,0);gr.addColorStop(0,'#1d4ed8');gr.addColorStop(.4,'#06b6d4');gr.addColorStop(.75,'#eab308');gr.addColorStop(1,'#ef4444');sx.fillStyle=gr;
-  for(var i=0;i<bins;i++){var dv=Math.max(-90,Math.min(0,db[i]));var bh=Math.round((dv+90)/dr*H);var bx=Math.round(i*W/bins),bw=Math.max(1,Math.round((i+1)*W/bins)-bx);sx.fillRect(bx,H-bh,bw,bh);}
-  var ie=document.getElementById('saInfo');if(ie&&!ie.textContent){var pb=0,pv=-90;for(var i=1;i<bins;i++)if(db[i]>pv){pv=db[i];pb=i;}var phz=Math.round(pb/bins*ny);ie.textContent='Peak:'+(phz>=1000?(phz/1000).toFixed(1)+'k':phz)+'Hz '+Math.round(pv)+'dB';}
+  // ---- dBグリッド＆縦軸ラベル ----
+  var dbTicks=[-80,-70,-60,-50,-40,-30,-20,-10,0];
+  sx.font='bold 9px monospace';
+  for(var di=0;di<dbTicks.length;di++){
+    var d=dbTicks[di];
+    var y=Math.round(SH-(d+90)/dr*SH)+.5;
+    if(y<1||y>SH)continue;
+    // グリッド線（プロットエリアのみ）
+    sx.strokeStyle= d===0 ? 'rgba(255,255,255,.18)' : 'rgba(255,255,255,.08)';
+    sx.lineWidth=1;sx.beginPath();sx.moveTo(LW,y);sx.lineTo(W,y);sx.stroke();
+    // dBラベル（右寄せ、LW内）
+    var lbl=d===0?'0':d+'';
+    var tw=sx.measureText(lbl).width;
+    sx.fillStyle= d===0 ? 'rgba(203,213,225,.9)' : 'rgba(148,163,184,.65)';
+    sx.fillText(lbl, LW-tw-3, y+3);
+  }
+  // 縦軸境界線
+  sx.strokeStyle='rgba(100,116,139,.4)';sx.lineWidth=1;
+  sx.beginPath();sx.moveTo(LW+.5,0);sx.lineTo(LW+.5,SH);sx.stroke();
+  // ---- スペクトルバー ----
+  var gr=sx.createLinearGradient(0,SH,0,0);
+  gr.addColorStop(0,'#1d4ed8');gr.addColorStop(.4,'#06b6d4');
+  gr.addColorStop(.75,'#eab308');gr.addColorStop(1,'#ef4444');
+  sx.fillStyle=gr;
+  for(var i=0;i<useBins;i++){
+    var dv=Math.max(-90,Math.min(0,db[i]));
+    var bh=Math.round((dv+90)/dr*SH);
+    var bx=LW+Math.round(i*PW/useBins);
+    var bw=Math.max(1,LW+Math.round((i+1)*PW/useBins)-bx);
+    sx.fillRect(bx,SH-bh,bw,bh);
+  }
+  // ---- 周波数スケール行 ----
+  sx.fillStyle='#080f1e';sx.fillRect(0,SH,W,SCALE_H);
+  // 横軸境界線
+  sx.strokeStyle='rgba(100,116,139,.4)';sx.lineWidth=1;
+  sx.beginPath();sx.moveTo(LW,SH+.5);sx.lineTo(W,SH+.5);sx.stroke();
+  sx.font='bold 9px monospace';
+  var freqTicks=[1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000];
+  for(var fi=0;fi<freqTicks.length;fi++){
+    var fhz=freqTicks[fi];
+    var fx=LW+Math.round(fhz/useNy*PW);
+    if(fx<LW+4||fx>W-2)continue;
+    // 目盛り線（やや長め）
+    sx.strokeStyle='rgba(148,163,184,.7)';sx.lineWidth=1;
+    sx.beginPath();sx.moveTo(fx+.5,SH+1);sx.lineTo(fx+.5,SH+4);sx.stroke();
+    // ラベル
+    var lbl2=(fhz/1000)+'k';
+    var tw2=sx.measureText(lbl2).width;
+    var tx=Math.min(Math.max(fx-tw2/2,LW),W-tw2-1);
+    sx.fillStyle='rgba(148,163,184,.85)';
+    sx.fillText(lbl2,tx,H-2);
+  }
+  // 0Hz ラベル
+  sx.fillStyle='rgba(148,163,184,.65)';sx.font='bold 9px monospace';
+  sx.fillText('0',LW+1,H-2);
+  // Peak表示
+  var ie=document.getElementById('saInfo');if(ie&&!ie.textContent){var pb=0,pv=-90;for(var i=1;i<useBins;i++)if(db[i]>pv){pv=db[i];pb=i;}var phz=Math.round(pb/useBins*useNy);ie.textContent='Peak:'+(phz>=1000?(phz/1000).toFixed(1)+'k':phz)+'Hz '+Math.round(pv)+'dB';}
   var wo=(document.getElementById('saWfOn')||{checked:true}).checked,wx=wc.getContext('2d');
   if(wo){if(!loop.wd||loop.wd.width!==wc.width||loop.wd.height!==wc.height){loop.wd=wx.createImageData(wc.width,wc.height);for(var k=3;k<loop.wd.data.length;k+=4)loop.wd.data[k]=255;}
     loop.wd.data.copyWithin(wc.width*4,0);var bi=0;
-    for(var x=0;x<wc.width;x++){var bn=Math.floor(x*bins/wc.width);var dv=Math.max(-90,Math.min(0,db[bn]));var v=Math.round((dv+90)/dr*255);var r2,g2,b2;
+    // WFもSAと同じくLW分オフセットして周波数軸を合わせる
+    var wPW=wc.width-LW;
+    for(var x=0;x<wc.width;x++){
+      var dv2=-90,bn2;
+      if(x<LW){dv2=-90;}else{bn2=Math.floor((x-LW)*useBins/wPW);bn2=Math.min(bn2,useBins-1);dv2=Math.max(-90,Math.min(0,db[bn2]));}
+      var v=Math.round((dv2+90)/dr*255);var r2,g2,b2;
       if(v<86){r2=0;g2=Math.round(v*1.49);b2=Math.round(128+v*.47);}else if(v<172){r2=Math.round((v-86)*2.97);g2=255;b2=Math.round(Math.max(0,255-(v-86)*2.97));}else{r2=255;g2=Math.round(Math.max(0,255-(v-172)*3));b2=0;}
       var idx=bi+x*4;loop.wd.data[idx]=r2;loop.wd.data[idx+1]=g2;loop.wd.data[idx+2]=b2;loop.wd.data[idx+3]=255;}
     wx.putImageData(loop.wd,0,0);}else wx.clearRect(0,0,wc.width,wc.height);
@@ -8265,11 +8556,55 @@ document.addEventListener('DOMContentLoaded',function(){
   if(!tog||!pan)return;
   // iOS/iPadOS判定
   var isIOS=/iP(hone|ad|od)/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  function isAnd(){return!!window.__androidApp;}
+  window.__isAndTest=isAnd;
+  // IIFE外の__saRequestHookから呼び出せるようwindow経由で公開
+  // window.__hookIOSはIIFE内のhookIOSへのブリッジ（__saRequestHookから呼ぶ用）
+  window.__hookIOS=function(){
+    var c=window.__saCtx,p=window.__saProc;if(!c||!p)return false;
+    try{var sz=parseInt((document.getElementById('saFftSz')||{value:'2048'}).value,10);
+    var sm=parseFloat((document.getElementById('saSm')||{value:'0.8'}).value);
+    var a=c.createAnalyser();a.fftSize=sz;a.smoothingTimeConstant=sm;a.minDecibels=-90;a.maxDecibels=0;
+    p.disconnect();p.connect(a);a.connect(c.destination);
+    window.__saAn=a;return true;}catch(_){return false;}
+  };
+  window.__saStartRAF=function(){
+    // rT2リトライループが既にhookIOSを繰り返し試みている。
+    // hookIOSが成功した後にRAFループを起動するためaudioFftToggleのchangeを再発火
+    if(!window.__saOpen)return;
+    var tog2=document.getElementById('audioFftToggle');
+    if(tog2&&tog2.checked){
+      tog2.dispatchEvent(new Event('change'));
+    }
+  };
+  // PC/Android: <audio>のonplay/onpauseにフックして自動接続
+  if(!isIOS){
+    var audioEl=document.getElementById('streamAudio');
+    if(audioEl){
+      var origOnplay=audioEl.onplay;
+      audioEl.onplay=function(){if(origOnplay)origOnplay.call(this);if(typeof window.__saHookHTTP==='function')window.__saHookHTTP();};
+      var origOnpause=audioEl.onpause;
+      audioEl.onpause=function(){if(origOnpause)origOnpause.call(this);if(open)stopHTTP();};
+    }
+  }
   tog.addEventListener('change',function(){
-    open=tog.checked;pan.style.display=open?'block':'none';
+    open=tog.checked;window.__saOpen=open;pan.style.display=open?'block':'none';
     ['audioSaCvs','audioWfCvs'].forEach(function(id){var c=document.getElementById(id);if(c&&c.clientWidth>0)c.width=c.clientWidth;});
     if(open){
-      if(isIOS){
+      if(isIOS||isAnd()){
+        // Androidアプリ: muted=trueにしてbrowserAudioBtnをクリック→onplay→hookIOS経由でSA起動
+        if(isAnd()){
+          if(!window.__saCtx){
+            // WSオーディオ未接続: __startWsAudioを直接呼ぶ（startWsAudio内でwsActiveチェック済み）
+            if(typeof window.__startWsAudio==='function'){
+              window.__startWsAudio();
+            }
+          } else {
+            // WSオーディオ接続済み: hookIOSを直接実行してRAFを起動
+            var ok0=hookIOS(gz(),gs());
+            if(ok0){if(!rafId)rafId=requestAnimationFrame(loop);si('');}
+          }
+        }
         var ok=hookIOS(gz(),gs());
         if(ok){if(!rafId)rafId=requestAnimationFrame(loop);si('');}
         else{
@@ -8281,16 +8616,49 @@ document.addEventListener('DOMContentLoaded',function(){
           },500);
         }
       }else{
-        // PC/Android: fetchで分析専用接続（音はそのまま<audio>タグから）
-        startF();
+        // PC/Android: MediaElementSource方式（音声と完全同期）
+        startHTTP();
       }
     }else{
-      stopF();if(rafId){cancelAnimationFrame(rafId);rafId=0;}
-      if(isIOS){var p=window.__saProc,c=window.__saCtx;if(p&&c){try{p.disconnect();p.connect(c.destination);}catch(_){}}}
+      if(isAnd()){
+        // AndroidアプリはWS接続を完全停止
+        if(typeof window.__stopWsAudio==='function')window.__stopWsAudio();
+        window.__saCtx=null;window.__saProc=null;window.__saGainNode=null;
+      }else if(isIOS){
+        var p=window.__saProc,c=window.__saCtx;
+        if(p&&c){try{p.disconnect();p.connect(c.destination);}catch(_){}}
+      }else{stopHTTP();}
     }
   });
 });
-window.__saRequestHook=function(c,p){window.__saCtx=c;window.__saProc=p;};
+window.__saRequestHook=function(c,p){
+  window.__saCtx=c;window.__saProc=p;
+  if(!window.__saOpen)return;
+  var si3=document.getElementById('saInfo');
+  // hookIOSを直接実行してAnalyserNodeを生成し、window.__saKickLoopでRAF起動
+  var ctx=window.__saCtx,proc=window.__saProc;
+  if(!ctx||!proc){if(si3)si3.textContent='NO-CTX-PROC';return;}
+  try{
+    var sz=parseInt((document.getElementById('saFftSz')||{value:'2048'}).value,10);
+    var sm=parseFloat((document.getElementById('saSm')||{value:'0.8'}).value);
+    var newAn=ctx.createAnalyser();
+    newAn.fftSize=sz;newAn.smoothingTimeConstant=sm;
+    newAn.minDecibels=-90;newAn.maxDecibels=0;
+    proc.disconnect();proc.connect(newAn);
+    // GainNodeが存在する場合（Androidアプリ）はそれ経由で接続してミュートを維持
+    if(window.__saGainNode){
+      newAn.connect(window.__saGainNode);
+      window.__saGainNode.gain.value=0;
+    }else{
+      newAn.connect(ctx.destination);
+    }
+    if(si3)si3.textContent='KICK:'+ctx.state;
+    if(window.__saKickLoop)window.__saKickLoop(newAn);
+    else{if(si3)si3.textContent='NO-KICK';}
+  }catch(e){
+    if(si3)si3.textContent='AN-ERR:'+e.message;
+  }
+};
 window.__saRequestHookHTTP=function(){};
 function hookIOS(sz,sm){
   var c=window.__saCtx,p=window.__saProc;if(!c||!p)return false;
@@ -8338,7 +8706,7 @@ function hookIOS(sz,sm){
 
   // ----- ESP から取得 -----
   async function fetchFromEsp(){
-    const base = (typeof getWsBase === 'function') ? getWsBase().replace(/^ws/,'http') : '';
+    const base = (typeof inferBaseFromWsInput === 'function') ? (inferBaseFromWsInput() || '') : '';
     const res = await fetch(base + '/jpn.json?ts=' + Date.now(), {cache:'no-store'});
     if(!res.ok) throw new Error('HTTP ' + res.status);
     return await res.json();
@@ -8625,7 +8993,7 @@ function hookIOS(sz,sm){
     btn.disabled = true;
     btn.textContent = '保存中...';
     try{
-      const base = (typeof getWsBase==='function') ? getWsBase().replace(/^ws/,'http') : '';
+      const base = (typeof inferBaseFromWsInput === 'function') ? (inferBaseFromWsInput() || '') : '';
       const json = JSON.stringify(_rows, null, 2);
       const blob = new Blob([json], {type:'application/json'});
       const fd   = new FormData();
@@ -8966,7 +9334,7 @@ function hookIOS(sz,sm){
 
   // ----- ESPから取得 -----
   async function fetchFromEsp(){
-    const base = (typeof getWsBase==='function') ? getWsBase().replace(/^ws/,'http') : '';
+    const base = (typeof inferBaseFromWsInput === 'function') ? (inferBaseFromWsInput() || '') : '';
     const res = await fetch(base+'/air.json?ts='+Date.now(), {cache:'no-store'});
     if(!res.ok) throw new Error('HTTP '+res.status);
     return await res.json();
@@ -9206,22 +9574,28 @@ function hookIOS(sz,sm){
     const f = Number(_selected.freq);
     const name = _selected.name||'';
     const bandSelEl = document.getElementById('bandSel');
+    const targetKhz = Math.round(f * 1000);
 
-    const doSend = ()=>{
-      freqInput.value = f.toFixed(3);
-      window.__jpnManualName = name;
-      window.__jpnManualFreq = Math.round(f * 1000);
-      if(typeof window.__setStationName==='function') window.__setStationName(name||'—');
-      freqSend.click();
-      closeModal();
-    };
+    // 周波数・局名は先に確定させる（バンド切替不要の場合はこの値をそのまま送信に使う）
+    freqInput.value = f.toFixed(3);
+    window.__jpnManualName = name;
+    window.__jpnManualFreq = targetKhz;
+    if(typeof window.__setStationName==='function') window.__setStationName(name||'—');
 
     if(bandSelEl && bandSelEl.value !== '99'){
+      // ★bandSelの change ハンドラがAIRバンド時は内部で buildAirFreqCmds() を呼び、
+      //   周波数送信まで一括で完了させる。ここで別途 freqSend.click() を呼ぶと
+      //   change側の送信と競合（二重送信レース）し、change側が
+      //   ローカルキャッシュ復元値（前回チューニング周波数）を使って送信してしまう
+      //   ケースがあり、選択した局と異なる周波数が本体に反映される不具合があった。
+      //   → オーバーライド値をbuildAirFreqCmds()側に渡し、change側の送信だけで完結させる。
+      window.__airTuneOverrideKhz = targetKhz;
       bandSelEl.value = '99';
       bandSelEl.dispatchEvent(new Event('change'));
-      setTimeout(doSend, 50);
+      closeModal();
     } else {
-      doSend();
+      freqSend.click();
+      closeModal();
     }
   });
 
