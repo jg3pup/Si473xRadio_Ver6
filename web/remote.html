@@ -480,6 +480,16 @@
   .spec-tip{position:absolute;inset:auto 0 0 auto;background:rgba(0,0,0,.45);padding:4px 8px;border-top-left-radius:8px;font-size:12px;color:#cbd5e1}
   /* ズーム選択用の矩形表示 */
   .spec-zoom{position:absolute;pointer-events:none;border:1px dashed rgba(96,165,250,.85);background:rgba(96,165,250,.12);border-radius:6px}
+  /* ===== CW Decode（追加） ===== */
+  .cw-hdr{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .cw-toggle{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#94a3b8;cursor:pointer;user-select:none;padding:3px 8px;border:1px solid #334155;border-radius:5px;background:#0f1729}
+  .cw-status{font-size:11px;color:#64748b;margin-left:auto}
+  .cw-levelwrap{position:relative;height:6px;border-radius:3px;background:#0b1222;border:1px solid #1e293b;overflow:hidden;margin-bottom:8px}
+  .cw-levelbar{position:absolute;left:0;top:0;bottom:0;width:0%;background:#334155;transition:background-color .1s}
+  .cw-levelbar.on{background:#22c55e}
+  .cw-levelthresh{position:absolute;top:0;bottom:0;width:2px;background:rgba(239,68,68,.8)}
+  .cw-output{width:100%;height:110px;overflow-y:auto;background:#06101c;border:1px solid #1e293b;border-radius:6px;padding:8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;letter-spacing:.03em;color:#7dd3fc;white-space:pre-wrap;word-break:break-all;box-sizing:border-box}
+  .cw-footer{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
   /* ===== IC-7300-ish Frequency Display ===== */
   :root{
     --ic7300-bg:#0a0d12;
@@ -1778,7 +1788,7 @@ body, html {
       </div>
     </div>
   </div>
-  <div class="app-footer">Si473x Radio WEBリモコン &nbsp;|&nbsp; remote.html build: 2026-07-15</div>
+  <div class="app-footer">Si473x Radio WEBリモコン &nbsp;|&nbsp; remote.html build: 2026-07-22</div>
  <div class="row" id="mainRow" style="margin-top:12px">
     <div class="card panel" data-panel="status">
       <div class="toolbar" style="justify-content:space-between;align-items:center;">
@@ -2154,6 +2164,26 @@ body, html {
       <canvas id="wf" height="160"
         style="display:block;margin-top:6px;border:1px solid #333;width:100%;max-width:100%;box-sizing:border-box"></canvas>
     </div>
+  </div>
+  <!-- 追加：CWデコード（モールス自動判読） -->
+  <div class="card panel" data-panel="cwdecode" style="margin-top:12px">
+    <div class="cw-hdr">
+      <div class="section-title" style="margin:0">📟 CW自動判読</div>
+      <label class="cw-toggle" title="受信音声からモールス信号を自動デコードします">
+        <input type="checkbox" id="cwDecodeToggle" style="accent-color:#3b82f6;width:14px;height:14px;"> ON
+      </label>
+      <span class="hz-note">トーン(Hz)</span>
+      <input id="cwToneHz" type="number" class="cap num" value="800" style="width:70px" title="CWモードのBFOオフセットに合わせます（既定800Hz）">
+      <span class="cw-status" id="cwStatus">停止中</span>
+    </div>
+    <div class="cw-levelwrap"><div class="cw-levelbar" id="cwLevelBar"></div><div class="cw-levelthresh" id="cwLevelThresh" style="left:0%"></div></div>
+    <div class="cw-output" id="cwOutput"></div>
+    <div class="cw-footer">
+      <span class="hz-note" id="cwWpm">WPM: --</span>
+      <button id="cwClearBtn" class="btn small">出力をクリア</button>
+      <span class="hz-note" id="cwModeHint"></span>
+    </div>
+  </div>
   <!-- プリセット(20) -->
   <div class="card panel" data-panel="presets" style="margin-top:12px">
     <div class="toolbar" style="justify-content:space-between; margin-bottom:8px">
@@ -5670,7 +5700,7 @@ cvs.addEventListener('mouseleave', ()=>{ if(zoomDrag) finishDragZoom(); });
           <input type="file" id="eibiFile" accept=".csv,text/csv" class="eibi-input">
           <button class="eibi-btn" id="eibiLoad">ESPから読み込む</button>
           <span class="eibi-pill">レコード: <span id="eibiCount">0</span></span>
-          <button class="eibi-btn" id="eibiShow" disabled>全件表示(1000)</button>
+          <button class="eibi-btn" id="eibiShow" disabled>全件表示</button>
         </div>
         <div class="eibi-row" style="gap:12px; margin-top:6px;">
           <label class="eibi-row" style="gap:6px"><input type="checkbox" id="eibiJP">日本語のみ</label>
@@ -5702,6 +5732,11 @@ cvs.addEventListener('mouseleave', ()=>{ if(zoomDrag) finishDragZoom(); });
             <tbody></tbody>
           </table>
         </div>
+        <div class="eibi-row" style="gap:8px; margin-top:6px; justify-content:flex-end;">
+          <button class="eibi-btn" id="eibiPrevPage" disabled>◀ 前の1000件</button>
+          <span class="eibi-pill" id="eibiPageInfo">0 / 0件</span>
+          <button class="eibi-btn" id="eibiNextPage" disabled>次の1000件 ▶</button>
+        </div>
       </div>
       <div class="eibi-foot">
         <div class="eibi-muted" style="margin-right:auto">チェック行 →</div>
@@ -5716,7 +5751,8 @@ cvs.addEventListener('mouseleave', ()=>{ if(zoomDrag) finishDragZoom(); });
   function escapeHtml(s){
     return String(s||'').replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
   }
-  const state = { rows:[], view:[], headerMap:{}, allRows:[] };
+  const state = { rows:[], view:[], headerMap:{}, allRows:[], page:0 };
+  const EIBI_PAGE_SIZE = 1000;
   const EIBI_CACHE_KEY = 'si473x.eibi.cache.v1';
   const EIBI_CACHE_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 14; // 14日
   function getEiBiCache(){
@@ -6254,7 +6290,11 @@ openBtn.addEventListener('click', ()=> modal.classList.remove('hidden'));
       await loadEiBiSmart({ useFile: !!(file && file.files && file.files[0]), silent:false, background:false });
     }catch(e){}
   });
-  showAll.addEventListener('click', ()=> renderTable(state.rows.slice(0,1000)) );
+  showAll.addEventListener('click', ()=>{ state.view = state.rows.slice(); state.page = 0; renderPage(); });
+  const prevPageBtn = $('#eibiPrevPage', modal);
+  const nextPageBtn = $('#eibiNextPage', modal);
+  if(prevPageBtn) prevPageBtn.addEventListener('click', ()=>{ if(state.page>0){ state.page--; renderPage(); } });
+  if(nextPageBtn) nextPageBtn.addEventListener('click', ()=>{ state.page++; renderPage(); });
   const _hadCacheAtStart = restoreEiBiCacheOnStart();
   setTimeout(()=>{
     refreshEiBiFromEspInBackground('startup');
@@ -6540,16 +6580,32 @@ openBtn.addEventListener('click', ()=> modal.classList.remove('hidden'));
       }
       return true;
     });
-    renderTable(state.view.slice(0,1000));
+    state.page = 0;
+    renderPage();
   }
-  function renderTable(rows){
+  function renderPage(){
+    const total = state.view.length;
+    const maxPage = Math.max(0, Math.ceil(total / EIBI_PAGE_SIZE) - 1);
+    if(state.page > maxPage) state.page = maxPage;
+    if(state.page < 0) state.page = 0;
+    const start = total===0 ? 0 : state.page * EIBI_PAGE_SIZE;
+    const end = Math.min(start + EIBI_PAGE_SIZE, total);
+    renderTable(state.view.slice(start, end), start);
+    const info = document.getElementById('eibiPageInfo');
+    if(info) info.textContent = total===0 ? '0 / 0件' : `${start+1}-${end} / ${total}件`;
+    const prevBtn = document.getElementById('eibiPrevPage');
+    const nextBtn = document.getElementById('eibiNextPage');
+    if(prevBtn) prevBtn.disabled = state.page<=0;
+    if(nextBtn) nextBtn.disabled = end>=total;
+  }
+  function renderTable(rows, offset=0){
     const tb = $('#eibiTbl tbody', modal);
     tb.innerHTML = '';
     const frag = document.createDocumentFragment();
     rows.forEach((r, idx)=>{
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><input type="checkbox" data-idx="${idx}"></td>
+        <td><input type="checkbox" data-idx="${offset + idx}"></td>
         <td class="right">${isNaN(r.freq)?'':r.freq}</td>
         <td>${esc(r.utc)}</td>
         <td>${esc(r.days)}</td>
@@ -8592,6 +8648,13 @@ function buildHTTPGraph(){
     return true;
   }catch(e){si('ERR:'+e.message);fMed=null;return false;}
 }
+// 他モジュール（CWデコード等）がMediaElementSourceを再生成せずに共有できるよう公開
+// createMediaElementSourceは同一<audio>要素に対して1回しか呼べないため、
+// 既存のSA用グラフをそのまま貸し出す（buildHTTPGraphの副作用は変更しない）
+window.__ensureAudioGraph=function(){
+  if(!buildHTTPGraph())return null;
+  return {ctx:fCtx, src:fMed};
+};
 function startHTTP(){
   if(fAct)return;
   var audioEl=document.getElementById('streamAudio');
@@ -8816,6 +8879,183 @@ function hookIOS(sz,sm){
   var c=window.__saCtx,p=window.__saProc;if(!c||!p)return false;
   try{var a=ea(c,sz,sm);p.disconnect();p.connect(a);a.connect(c.destination);return true;}catch(_){return false;}
 }
+})();
+</script>
+
+<!-- ===== CWデコード（モールス自動判読） ===== -->
+<script>
+(function(){
+  'use strict';
+
+  // 国際モールス符号表（標準）
+  var MORSE_TABLE = {
+    '.-':'A','-...':'B','-.-.':'C','-..':'D','.':'E','..-.':'F','--.':'G','....':'H',
+    '..':'I','.---':'J','-.-':'K','.-..':'L','--':'M','-.':'N','---':'O','.--.':'P',
+    '--.-':'Q','.-.':'R','...':'S','-':'T','..-':'U','...-':'V','.--':'W','-..-':'X',
+    '-.--':'Y','--..':'Z',
+    '-----':'0','.----':'1','..---':'2','...--':'3','....-':'4','.....':'5',
+    '-....':'6','--...':'7','---..':'8','----.':'9',
+    '.-.-.-':'.','--..--':',','..--..':'?','-..-.':'/','-...-':'=','.-.-.':'+',
+    '-....-':'-','.--.-.':'@'
+  };
+
+  var CW_FFT_SIZE = 1024;
+
+  function cwIsIOS(){
+    return /iP(hone|ad|od)/i.test(navigator.userAgent) ||
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
+  // ----- Goertzelアルゴリズムによる単一周波数の振幅検出 -----
+  function goertzelMag(buf, sampleRate, freq){
+    var n = buf.length;
+    var k = Math.round(0.5 + (n * freq) / sampleRate);
+    var w = (2 * Math.PI / n) * k;
+    var cosine = Math.cos(w), sine = Math.sin(w), coeff = 2 * cosine;
+    var q0 = 0, q1 = 0, q2 = 0;
+    for (var i = 0; i < n; i++) { q0 = coeff * q1 - q2 + buf[i]; q2 = q1; q1 = q0; }
+    var real = q1 - q2 * cosine, imag = q2 * sine;
+    return Math.sqrt(real * real + imag * imag) / (n / 2);
+  }
+
+  // ----- 音声グラフへのタップ（既存のSA用グラフを共有・非破壊） -----
+  var cwAn = null, cwAnCtx = null, timeBuf = null;
+  function ensureTap(){
+    var ctx = null, src = null;
+    if (cwIsIOS() || window.__androidApp) {
+      ctx = window.__saCtx; src = window.__saProc;   // WSオーディオ経路
+    } else {
+      var g = window.__ensureAudioGraph && window.__ensureAudioGraph();
+      if (g) { ctx = g.ctx; src = g.src; }            // HTTPストリーム経路
+    }
+    if (!ctx || !src) return false;
+    if (cwAnCtx !== ctx) {
+      cwAn = ctx.createAnalyser();
+      cwAn.fftSize = CW_FFT_SIZE;
+      cwAn.smoothingTimeConstant = 0;
+      cwAnCtx = ctx;
+      timeBuf = new Float32Array(CW_FFT_SIZE);
+    }
+    // connect()は既に接続済みの相手に対しても冪等（重複経路にはならない）ので
+    // SA側の disconnect()/connect() 切替による影響を受けても毎フレーム再接続で復旧する
+    try { src.connect(cwAn); } catch (e) {}
+    try { ctx.resume().catch(function(){}); } catch (e) {}
+    return true;
+  }
+
+  // ----- デコーダ状態 -----
+  var toneOn = false, lastT = 0, unitMs = 60, elemBuf = '', outBuf = '';
+  var noiseFloor = 0.001, sigPeak = 0.02;
+  var rafId = 0;
+
+  function resetDecoderState(){
+    toneOn = false; lastT = performance.now(); unitMs = 60; elemBuf = '';
+    noiseFloor = 0.001; sigPeak = 0.02;
+  }
+
+  function renderOutput(){
+    var el = document.getElementById('cwOutput'); if (!el) return;
+    if (outBuf.length > 4000) outBuf = outBuf.slice(outBuf.length - 4000);
+    el.textContent = outBuf;
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function flushChar(){
+    if (!elemBuf) return;
+    outBuf += (MORSE_TABLE[elemBuf] || '▯');
+    elemBuf = '';
+    renderOutput();
+  }
+
+  function appendWordGap(){
+    flushChar();
+    if (outBuf.length && outBuf[outBuf.length - 1] !== ' ') outBuf += ' ';
+    renderOutput();
+  }
+
+  function tick(){
+    rafId = 0;
+    var toggle = document.getElementById('cwDecodeToggle');
+    var statusEl = document.getElementById('cwStatus');
+    if (!toggle || !toggle.checked) { if (statusEl) statusEl.textContent = '停止中'; return; }
+
+    if (!ensureTap()) {
+      if (statusEl) statusEl.textContent = '音声未接続';
+      rafId = requestAnimationFrame(tick);
+      return;
+    }
+
+    cwAn.getFloatTimeDomainData(timeBuf);
+    var freqInput = document.getElementById('cwToneHz');
+    var freq = (freqInput && parseFloat(freqInput.value)) || 800;
+    var sr = cwAnCtx.sampleRate || 24000;
+    var mag = goertzelMag(timeBuf, sr, freq);
+
+    // 適応しきい値（ノイズ床／ピークを緩やかに追従）
+    if (mag < noiseFloor) noiseFloor = mag; else noiseFloor += (mag - noiseFloor) * 0.002;
+    if (mag > sigPeak) sigPeak = mag; else sigPeak -= (sigPeak - noiseFloor) * 0.001;
+    if (sigPeak < noiseFloor + 0.0005) sigPeak = noiseFloor + 0.0005;
+
+    var onThresh  = noiseFloor + (sigPeak - noiseFloor) * 0.45;
+    var offThresh = noiseFloor + (sigPeak - noiseFloor) * 0.25;
+    var now = performance.now();
+    var newOn = toneOn ? (mag > offThresh) : (mag > onThresh);
+
+    if (newOn !== toneOn) {
+      var dur = now - lastT;
+      if (newOn) {
+        // トーン開始＝直前の無音（スペース）長が確定
+        if (dur >= unitMs * 6) appendWordGap();
+        else if (dur >= unitMs * 2) flushChar();
+        // unitMs*2未満は文字内の要素間ギャップなので何もしない
+      } else {
+        // トーン終了＝マーク長が確定 → dit/dah判定してユニット長を更新
+        if (dur < unitMs * 2) { elemBuf += '.'; unitMs = unitMs * 0.8 + dur * 0.2; }
+        else                  { elemBuf += '-'; unitMs = unitMs * 0.9 + (dur / 3) * 0.1; }
+        unitMs = Math.max(20, Math.min(300, unitMs));
+      }
+      toneOn = newOn; lastT = now;
+    } else if (!toneOn && elemBuf && (now - lastT) > unitMs * 8) {
+      flushChar();  // 長い無音：保留中の文字を確定（送信末尾など）
+    }
+
+    var lv = document.getElementById('cwLevelBar');
+    if (lv) {
+      var pct = Math.max(0, Math.min(100, (mag - noiseFloor) / (sigPeak - noiseFloor) * 100));
+      lv.style.width = pct + '%';
+      lv.classList.toggle('on', toneOn);
+    }
+    var th = document.getElementById('cwLevelThresh');
+    if (th) th.style.left = Math.max(0, Math.min(100, (onThresh - noiseFloor) / (sigPeak - noiseFloor) * 100)) + '%';
+    var wpmEl = document.getElementById('cwWpm');
+    if (wpmEl) wpmEl.textContent = 'WPM: ' + Math.round(1200 / unitMs);
+    if (statusEl) statusEl.textContent = toneOn ? '受信中…' : '待機中';
+    var hintEl = document.getElementById('cwModeHint');
+    if (hintEl) {
+      var modeSelEl = document.getElementById('modeSel');
+      hintEl.textContent = (modeSelEl && modeSelEl.value !== 'CW') ? '※現在のモードはCWではありません' : '';
+    }
+
+    rafId = requestAnimationFrame(tick);
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var tog = document.getElementById('cwDecodeToggle');
+    var clearBtn = document.getElementById('cwClearBtn');
+    if (tog) {
+      tog.addEventListener('change', function(){
+        if (tog.checked) {
+          resetDecoderState();
+          if (!rafId) rafId = requestAnimationFrame(tick);
+        } else if (document.getElementById('cwStatus')) {
+          document.getElementById('cwStatus').textContent = '停止中';
+        }
+      });
+    }
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function(){ outBuf = ''; renderOutput(); });
+    }
+  });
 })();
 </script>
 
@@ -10035,6 +10275,7 @@ function hookIOS(sz,sm){
     {id:'sleep',    label:'⏱️ SLEEP（クイック）'},
     {id:'log',      label:'📜 ログ'},
     {id:'spectrum', label:'📊 スペクトラム（バンド内スキャン）'},
+    {id:'cwdecode', label:'📟 CW自動判読'},
     {id:'presets',  label:'⭐ プリセット (20)'}
   ];
   var DEFAULT_ORDER = PANEL_DEFS.map(function(p){ return p.id; });
