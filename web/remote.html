@@ -490,6 +490,9 @@
   .cw-levelthresh{position:absolute;top:0;bottom:0;width:2px;background:rgba(239,68,68,.8)}
   .cw-output{width:100%;height:110px;overflow-y:auto;background:#06101c;border:1px solid #1e293b;border-radius:6px;padding:8px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;letter-spacing:.03em;color:#7dd3fc;white-space:pre-wrap;word-break:break-all;box-sizing:border-box}
   .cw-footer{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+  .cw-spec-wrap{position:relative;margin-bottom:8px}
+  #cwSpecCanvas{width:100%;height:44px;display:block;background:#06101c;border:1px solid #1e293b;border-radius:6px;cursor:pointer}
+  .cw-spec-axis{display:flex;justify-content:space-between;font-size:10px;color:#475569;margin-top:2px}
   /* ===== IC-7300-ish Frequency Display ===== */
   :root{
     --ic7300-bg:#0a0d12;
@@ -1788,7 +1791,7 @@ body, html {
       </div>
     </div>
   </div>
-  <div class="app-footer">Si473x Radio WEBリモコン &nbsp;|&nbsp; remote.html build: 2026-07-22</div>
+  <div class="app-footer">Si473x Radio WEBリモコン &nbsp;|&nbsp; remote.html build: 2026-07-23-exp2 (CW高分解能タイミング実験版)</div>
  <div class="row" id="mainRow" style="margin-top:12px">
     <div class="card panel" data-panel="status">
       <div class="toolbar" style="justify-content:space-between;align-items:center;">
@@ -2173,8 +2176,12 @@ body, html {
         <input type="checkbox" id="cwDecodeToggle" style="accent-color:#3b82f6;width:14px;height:14px;"> ON
       </label>
       <span class="hz-note">トーン(Hz)</span>
-      <input id="cwToneHz" type="number" class="cap num" value="800" style="width:70px" title="CWモードのBFOオフセットに合わせます（既定800Hz）">
+      <input id="cwToneHz" type="number" class="cap num" value="800" style="width:70px" title="CWモードのBFOオフセット中心（既定800Hz）。±200Hzを自動探索するのでゼロインが多少ズレても検出できます">
       <span class="cw-status" id="cwStatus">停止中</span>
+    </div>
+    <div class="cw-spec-wrap">
+      <canvas id="cwSpecCanvas" title="帯域内の信号強度。クリックした周波数に自動でトーン設定を合わせます"></canvas>
+      <div class="cw-spec-axis"><span id="cwSpecLoLabel">-200Hz</span><span>クリックで信号を選択</span><span id="cwSpecHiLabel">+200Hz</span></div>
     </div>
     <div class="cw-levelwrap"><div class="cw-levelbar" id="cwLevelBar"></div><div class="cw-levelthresh" id="cwLevelThresh" style="left:0%"></div></div>
     <div class="cw-output" id="cwOutput"></div>
@@ -8900,6 +8907,8 @@ function hookIOS(sz,sm){
   };
 
   var CW_FFT_SIZE = 1024;
+  var CW_SCAN_RANGE = 200; // トーン周波数の前後±この範囲(Hz)を自動探索（ゼロインのズレを許容）
+  var CW_SCAN_STEP  = 20;  // 探索刻み(Hz)
 
   function cwIsIOS(){
     return /iP(hone|ad|od)/i.test(navigator.userAgent) ||
@@ -8946,7 +8955,14 @@ function hookIOS(sz,sm){
   // ----- デコーダ状態 -----
   var toneOn = false, lastT = 0, unitMs = 60, elemBuf = '', outBuf = '';
   var noiseFloor = 0.001, sigPeak = 0.02;
-  var rafId = 0;
+  // requestAnimationFrame(画面のリフレッシュレート、通常60Hz≒16.7ms間隔)だけに頼ると、
+  // 速いCW符号ではdit/dah判定のタイミング分解能が粗く、SN良好でも誤読の原因になる。
+  // 判定(sampleTick)はsetTimeoutで細かい間隔に切り離し、描画(renderTick)だけを60fpsで行う。
+  var CW_SAMPLE_MS = 5;
+  var sampleTimerId = 0, renderRafId = 0;
+  var curMag = 0, curDetFreq = 800, curCenterFreq = 800, curOnThresh = 0;
+  var curScanFreqs = [], curScanMags = [];
+  var audioConnected = false;
 
   function resetDecoderState(){
     toneOn = false; lastT = performance.now(); unitMs = 60; elemBuf = '';
@@ -8973,23 +8989,62 @@ function hookIOS(sz,sm){
     renderOutput();
   }
 
-  function tick(){
-    rafId = 0;
+  // ----- 帯域内ミニスペクトラム（混信下でどの信号を拾っているか可視化） -----
+  var specDpr = window.devicePixelRatio || 1;
+  function drawSpectrum(freqs, mags, detFreq, centerFreq, nf, sp, isOn){
+    var cv = document.getElementById('cwSpecCanvas'); if (!cv || !freqs.length) return;
+    var w = cv.clientWidth || 300, h = cv.clientHeight || 44;
+    if (cv.width !== Math.round(w*specDpr) || cv.height !== Math.round(h*specDpr)) {
+      cv.width = Math.round(w*specDpr); cv.height = Math.round(h*specDpr);
+    }
+    var ctx = cv.getContext('2d');
+    ctx.setTransform(specDpr,0,0,specDpr,0,0);
+    ctx.clearRect(0,0,w,h);
+    var n = freqs.length, bw = w / n;
+    var range = Math.max(1e-6, sp - nf);
+    for (var i = 0; i < n; i++) {
+      var pct = Math.max(0, Math.min(1, (mags[i] - nf) / range));
+      var barH = pct * (h - 2);
+      var isPeak = (freqs[i] === detFreq);
+      ctx.fillStyle = isPeak ? (isOn ? '#22c55e' : '#38bdf8') : 'rgba(148,163,184,0.35)';
+      ctx.fillRect(i*bw, h - barH, Math.max(1, bw - 1), barH);
+    }
+    // 現在の設定中心周波数（トーン入力欄の値）の位置に目印線を引く
+    var cx = ((centerFreq - freqs[0]) / (freqs[n-1] - freqs[0] || 1)) * w;
+    ctx.strokeStyle = 'rgba(239,68,68,0.6)';
+    ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, h); ctx.stroke();
+
+    var loLbl = document.getElementById('cwSpecLoLabel'), hiLbl = document.getElementById('cwSpecHiLabel');
+    if (loLbl) loLbl.textContent = Math.round(freqs[0]) + 'Hz';
+    if (hiLbl) hiLbl.textContent = Math.round(freqs[n-1]) + 'Hz';
+  }
+
+  function sampleTick(){
+    sampleTimerId = 0;
     var toggle = document.getElementById('cwDecodeToggle');
-    var statusEl = document.getElementById('cwStatus');
-    if (!toggle || !toggle.checked) { if (statusEl) statusEl.textContent = '停止中'; return; }
+    if (!toggle || !toggle.checked) return;
 
     if (!ensureTap()) {
-      if (statusEl) statusEl.textContent = '音声未接続';
-      rafId = requestAnimationFrame(tick);
+      audioConnected = false;
+      sampleTimerId = setTimeout(sampleTick, CW_SAMPLE_MS);
       return;
     }
+    audioConnected = true;
 
     cwAn.getFloatTimeDomainData(timeBuf);
     var freqInput = document.getElementById('cwToneHz');
-    var freq = (freqInput && parseFloat(freqInput.value)) || 800;
+    var centerFreq = (freqInput && parseFloat(freqInput.value)) || 800;
     var sr = cwAnCtx.sampleRate || 24000;
-    var mag = goertzelMag(timeBuf, sr, freq);
+    // ゼロインが多少ズレていてもデコードできるよう、中心周波数±CW_SCAN_RANGEを
+    // CW_SCAN_STEP刻みで探索し、最も強いところをそのタイミングのトーンとして扱う
+    // （混信下でどの信号を拾っているか可視化するため、各点の強度も保存する）
+    var mag = 0, detFreq = centerFreq;
+    var scanFreqs = [], scanMags = [];
+    for (var f = centerFreq - CW_SCAN_RANGE; f <= centerFreq + CW_SCAN_RANGE; f += CW_SCAN_STEP) {
+      var m = goertzelMag(timeBuf, sr, f);
+      scanFreqs.push(f); scanMags.push(m);
+      if (m > mag) { mag = m; detFreq = f; }
+    }
 
     // 適応しきい値（ノイズ床／ピークを緩やかに追従）
     if (mag < noiseFloor) noiseFloor = mag; else noiseFloor += (mag - noiseFloor) * 0.002;
@@ -9019,24 +9074,42 @@ function hookIOS(sz,sm){
       flushChar();  // 長い無音：保留中の文字を確定（送信末尾など）
     }
 
-    var lv = document.getElementById('cwLevelBar');
-    if (lv) {
-      var pct = Math.max(0, Math.min(100, (mag - noiseFloor) / (sigPeak - noiseFloor) * 100));
-      lv.style.width = pct + '%';
-      lv.classList.toggle('on', toneOn);
+    // 描画用に最新値を保存（DOM操作はrenderTick側でまとめて60fps程度で行う）
+    curMag = mag; curDetFreq = detFreq; curCenterFreq = centerFreq; curOnThresh = onThresh;
+    curScanFreqs = scanFreqs; curScanMags = scanMags;
+
+    sampleTimerId = setTimeout(sampleTick, CW_SAMPLE_MS);
+  }
+
+  function renderTick(){
+    renderRafId = 0;
+    var toggle = document.getElementById('cwDecodeToggle');
+    if (!toggle || !toggle.checked) return;
+
+    var statusEl = document.getElementById('cwStatus');
+    if (!audioConnected) {
+      if (statusEl) statusEl.textContent = '音声未接続';
+    } else {
+      var lv = document.getElementById('cwLevelBar');
+      if (lv) {
+        var pct = Math.max(0, Math.min(100, (curMag - noiseFloor) / (sigPeak - noiseFloor) * 100));
+        lv.style.width = pct + '%';
+        lv.classList.toggle('on', toneOn);
+      }
+      var th = document.getElementById('cwLevelThresh');
+      if (th) th.style.left = Math.max(0, Math.min(100, (curOnThresh - noiseFloor) / (sigPeak - noiseFloor) * 100)) + '%';
+      drawSpectrum(curScanFreqs, curScanMags, curDetFreq, curCenterFreq, noiseFloor, sigPeak, toneOn);
+      var wpmEl = document.getElementById('cwWpm');
+      if (wpmEl) wpmEl.textContent = 'WPM: ' + Math.round(1200 / unitMs);
+      if (statusEl) statusEl.textContent = (toneOn ? '受信中… ' : '待機中 ') + '(' + Math.round(curDetFreq) + 'Hz)';
     }
-    var th = document.getElementById('cwLevelThresh');
-    if (th) th.style.left = Math.max(0, Math.min(100, (onThresh - noiseFloor) / (sigPeak - noiseFloor) * 100)) + '%';
-    var wpmEl = document.getElementById('cwWpm');
-    if (wpmEl) wpmEl.textContent = 'WPM: ' + Math.round(1200 / unitMs);
-    if (statusEl) statusEl.textContent = toneOn ? '受信中…' : '待機中';
     var hintEl = document.getElementById('cwModeHint');
     if (hintEl) {
       var modeSelEl = document.getElementById('modeSel');
       hintEl.textContent = (modeSelEl && modeSelEl.value !== 'CW') ? '※現在のモードはCWではありません' : '';
     }
 
-    rafId = requestAnimationFrame(tick);
+    renderRafId = requestAnimationFrame(renderTick);
   }
 
   document.addEventListener('DOMContentLoaded', function(){
@@ -9046,7 +9119,8 @@ function hookIOS(sz,sm){
       tog.addEventListener('change', function(){
         if (tog.checked) {
           resetDecoderState();
-          if (!rafId) rafId = requestAnimationFrame(tick);
+          if (!sampleTimerId) sampleTimerId = setTimeout(sampleTick, CW_SAMPLE_MS);
+          if (!renderRafId) renderRafId = requestAnimationFrame(renderTick);
         } else if (document.getElementById('cwStatus')) {
           document.getElementById('cwStatus').textContent = '停止中';
         }
@@ -9054,6 +9128,19 @@ function hookIOS(sz,sm){
     }
     if (clearBtn) {
       clearBtn.addEventListener('click', function(){ outBuf = ''; renderOutput(); });
+    }
+    var specCv = document.getElementById('cwSpecCanvas');
+    if (specCv) {
+      specCv.addEventListener('click', function(ev){
+        var rect = specCv.getBoundingClientRect();
+        var xRatio = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
+        var freqInputEl = document.getElementById('cwToneHz');
+        var center = (freqInputEl && parseFloat(freqInputEl.value)) || 800;
+        var lo = center - CW_SCAN_RANGE, hi = center + CW_SCAN_RANGE;
+        var clickedFreq = lo + xRatio * (hi - lo);
+        var snapped = Math.round(clickedFreq / CW_SCAN_STEP) * CW_SCAN_STEP;
+        if (freqInputEl) freqInputEl.value = snapped;
+      });
     }
   });
 })();
