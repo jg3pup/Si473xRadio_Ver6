@@ -493,6 +493,8 @@
   .cw-spec-wrap{position:relative;margin-bottom:8px}
   #cwSpecCanvas{width:100%;height:44px;display:block;background:#06101c;border:1px solid #1e293b;border-radius:6px;cursor:pointer}
   .cw-spec-axis{display:flex;justify-content:space-between;font-size:10px;color:#475569;margin-top:2px}
+  /* ===== RTTY Decode（追加） ===== */
+  #rttySpecCanvas{width:100%;height:58px;display:block;background:#06101c;border:1px solid #1e293b;border-radius:6px}
   /* ===== IC-7300-ish Frequency Display ===== */
   :root{
     --ic7300-bg:#0a0d12;
@@ -1791,7 +1793,7 @@ body, html {
       </div>
     </div>
   </div>
-  <div class="app-footer">Si473x Radio WEBリモコン &nbsp;|&nbsp; remote.html build: 2026-07-23-exp2 (CW高分解能タイミング実験版)</div>
+  <div class="app-footer">Si473x Radio WEBリモコン &nbsp;|&nbsp; remote.html build: 2026-08-10-exp32 (CW自動判読／RTTY自動判読(Baudot/ITA2, ScriptProcessorNode方式, AFC対応)／欧文/和文モード 実験版)</div>
  <div class="row" id="mainRow" style="margin-top:12px">
     <div class="card panel" data-panel="status">
       <div class="toolbar" style="justify-content:space-between;align-items:center;">
@@ -1815,8 +1817,17 @@ body, html {
       <div id="audioFftPanel" style="display:none;margin:8px 0 4px;">
         <div id="saHdr" style="display:flex;align-items:center;gap:8px;font-size:11px;color:#94a3b8;margin-bottom:4px;flex-wrap:wrap;">
           <b style="color:#cfe0ff;font-size:12px;">🎵 Audio Spectrum</b>
-          <label>FFT:<select id="saFftSz" style="font-size:11px;padding:1px 3px;background:#0f1729;color:#e2e8f0;border:1px solid #334155;border-radius:3px"><option value="1024">1024</option><option value="2048" selected>2048</option></select></label>
+          <label>FFT:<select id="saFftSz" style="font-size:11px;padding:1px 3px;background:#0f1729;color:#e2e8f0;border:1px solid #334155;border-radius:3px"><option value="1024">1024</option><option value="2048" selected>2048</option><option value="4096">4096</option></select></label>
+          <label>帯域:<select id="saSpan" style="font-size:11px;padding:1px 3px;background:#0f1729;color:#e2e8f0;border:1px solid #334155;border-radius:3px">
+            <option value="auto" selected>Auto(モード連動)</option>
+            <option value="1000">±1kHz(CW)</option>
+            <option value="3000">±3kHz(SSB)</option>
+            <option value="5000">5kHz(AM)</option>
+            <option value="12000">12kHz(FM)</option>
+          </select></label>
           <label><input type="checkbox" id="saWfOn" checked> WF</label>
+          <label>Floor:<input type="number" id="saFloorDb" value="-90" min="-100" max="-10" step="5" style="font-size:11px;padding:1px 2px;width:44px;background:#0f1729;color:#e2e8f0;border:1px solid #334155;border-radius:3px">dB</label>
+          <label>上限:<input type="number" id="saCeilDb" value="0" min="-60" max="0" step="5" style="font-size:11px;padding:1px 2px;width:44px;background:#0f1729;color:#e2e8f0;border:1px solid #334155;border-radius:3px">dB</label>
           <span id="saInfo" style="margin-left:auto;font-size:10px;color:#64748b"></span>
         </div>
         <canvas id="audioSaCvs" height="88" style="display:block;width:100%;background:#06101c;border:1px solid #1e293b;border-radius:4px 4px 0 0"></canvas>
@@ -2175,6 +2186,11 @@ body, html {
       <label class="cw-toggle" title="受信音声からモールス信号を自動デコードします">
         <input type="checkbox" id="cwDecodeToggle" style="accent-color:#3b82f6;width:14px;height:14px;"> ON
       </label>
+      <select id="cwLangMode" class="cw-toggle" title="自動：通常は欧文で解読し「本文(ホレ)」を受信したら和文に切替。欧文/和文は固定モード" style="background:#0f1729;color:#94a3b8;border:1px solid #334155;border-radius:5px;padding:3px 6px;font-size:12px">
+        <option value="auto" selected>自動</option>
+        <option value="intl">欧文(A-Z)固定</option>
+        <option value="wabun">和文(カナ)固定</option>
+      </select>
       <span class="hz-note">トーン(Hz)</span>
       <input id="cwToneHz" type="number" class="cap num" value="800" style="width:70px" title="CWモードのBFOオフセット中心（既定800Hz）。±200Hzを自動探索するのでゼロインが多少ズレても検出できます">
       <span class="cw-status" id="cwStatus">停止中</span>
@@ -2189,6 +2205,75 @@ body, html {
       <span class="hz-note" id="cwWpm">WPM: --</span>
       <button id="cwClearBtn" class="btn small">出力をクリア</button>
       <span class="hz-note" id="cwModeHint"></span>
+    </div>
+  </div>
+  <!-- 追加：RTTYデコード（Baudot自動判読） -->
+  <div class="card panel" data-panel="rttydecode" style="margin-top:12px">
+    <div class="cw-hdr">
+      <div class="section-title" style="margin:0">🖨️ RTTY自動判読</div>
+      <label class="cw-toggle" title="受信音声からRTTY(Baudot/ITA2)信号を自動デコードします">
+        <input type="checkbox" id="rttyDecodeToggle" style="accent-color:#3b82f6;width:14px;height:14px;"> ON
+      </label>
+      <select id="rttyBaud" class="cw-toggle" title="ボーレート（アマチュア無線では45.45Bdが標準）" style="background:#0f1729;color:#94a3b8;border:1px solid #334155;border-radius:5px;padding:3px 6px;font-size:12px">
+        <option value="45.45" selected>45.45Bd</option>
+        <option value="50">50Bd</option>
+        <option value="75">75Bd</option>
+        <option value="100">100Bd</option>
+      </select>
+      <label class="cw-toggle" title="Mark/Spaceの高低を反転して判定します（文字化けする場合にお試しください）">
+        <input type="checkbox" id="rttyReverse" style="accent-color:#3b82f6;width:14px;height:14px;"> 反転
+      </label>
+      <label class="cw-toggle" title="実際に検出したMarkトーンのピークへゆっくり自動追従します（周波数ズレ・ドリフトの吸収）">
+        <input type="checkbox" id="rttyAfc" style="accent-color:#3b82f6;width:14px;height:14px;" checked> AFC
+      </label>
+      <span class="hz-note">Mark(Hz)</span>
+      <input id="rttyMarkHz" type="number" class="cap num" value="2125" style="width:70px" title="Markトーン周波数（既定2125Hz）。スペクトラムをクリックしても設定できます">
+      <span class="hz-note">Shift(Hz)</span>
+      <input id="rttyShiftHz" type="number" class="cap num" value="170" style="width:60px" title="Mark-Space間の周波数差（既定170Hz）">
+      <button id="rttyAutoDetectBtn" class="btn small" title="300〜3000Hzの帯域全体をスキャンし、最も強い2トーンの組をMark/Spaceとして自動設定します">自動検出</button>
+      <span class="cw-status" id="rttyStatus">停止中</span>
+    </div>
+    <div class="cw-spec-wrap">
+      <canvas id="rttySpecCanvas" title="帯域内の信号強度（300〜3000Hz固定）。クリックした周波数にMarkを合わせます"></canvas>
+      <div class="cw-spec-axis"><span id="rttySpecLoLabel">-</span><span>緑線=Mark設定／橙線=Space設定・クリックでMark選択</span><span id="rttySpecHiLabel">-</span></div>
+    </div>
+    <div class="cw-levelwrap"><div class="cw-levelbar" id="rttyLevelBar"></div></div>
+    <div class="cw-output" id="rttyOutput"></div>
+    <div class="hz-note" id="rttyDiag" style="padding:2px 0;color:#64748b">フレーム検出:0 / STOP一致:0</div>
+    <div class="cw-footer">
+      <span class="hz-note" id="rttyShiftState">LTRS</span>
+      <button id="rttyClearBtn" class="btn small">出力をクリア</button>
+      <span class="hz-note" id="rttyModeHint"></span>
+    </div>
+  </div>
+  <!-- 追加：WEFAXデコード（気象FAX画像自動受信：IOC576/RPM120固定） -->
+  <div class="card panel" data-panel="wefaxdecode" style="margin-top:12px">
+    <div class="cw-hdr">
+      <div class="section-title" style="margin:0">🗺️ WEFAX自動受信 (IOC576/RPM120)</div>
+      <label class="cw-toggle" title="受信音声から気象FAX画像を自動デコードします。300Hzスタートトーン検出→フェージング(黒基準線)同期→画像受信→450Hzストップトーンで自動保存、の順に自動進行します">
+        <input type="checkbox" id="wfaxDecodeToggle" style="accent-color:#3b82f6;width:14px;height:14px;"> ON
+      </label>
+      <span class="hz-note">微調整(Hz)</span>
+      <input id="wfaxTrimHz" type="number" class="cap num" value="0" style="width:60px" title="サブキャリア中心1900Hzからの微調整オフセット。通常は0のまま、ズレる場合は無線機側のダイヤルを合わせてください">
+    </div>
+    <div class="cw-status" id="wfaxStatus" style="text-align:left;margin:2px 0 6px;color:#7dd3fc;font-size:12px">停止中</div>
+    <div class="cw-levelwrap"><div class="cw-levelbar" id="wfaxLevelBar"></div></div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#94a3b8;margin:2px 0 8px">
+      <span id="wfaxLineInfo">行: 0</span>
+      <span id="wfaxTimeInfo">経過: 0:00</span>
+      <span id="wfaxFreqInfo">検出Hz: --</span>
+      <span id="wfaxVarInfo">変動: --</span>
+    </div>
+    <div style="overflow:auto;max-height:480px;border:1px solid #1e293b;border-radius:6px;background:#000">
+      <canvas id="wfaxImgCanvas" style="display:block;width:100%;image-rendering:pixelated"></canvas>
+    </div>
+    <div class="cw-footer">
+      <button id="wfaxManualStart" class="btn small" title="フェージング同期を待たずに、今この瞬間を行の先頭として強制的に受信を開始します">手動で受信開始</button>
+      <button id="wfaxResync" class="btn small" title="今の音声で改めてフェージング同期(黒基準パルス探索)をやり直します。まだフェージング区間で本画像が来ていないと思われる場合に使ってください">同期をやり直す</button>
+      <button id="wfaxManualStop" class="btn small" title="ストップトーンを待たずに、現在までの画像を確定して保存します">受信終了して保存</button>
+      <button id="wfaxSaveBtn" class="btn small">画像を保存(PNG)</button>
+      <button id="wfaxClearBtn" class="btn small">クリア</button>
+      <span class="hz-note" id="wfaxModeHint"></span>
     </div>
   </div>
   <!-- プリセット(20) -->
@@ -8622,6 +8707,19 @@ window.__saKickLoop=function(newAn){
 function gz(){return parseInt((document.getElementById('saFftSz')||{value:'2048'}).value,10);}
 function gs(){return parseFloat((document.getElementById('saSm')||{value:'0.8'}).value);}
 function si(m){var e=document.getElementById('saInfo');if(e)e.textContent=m;}
+// SAの表示帯域(Hz)：saSpanが'auto'ならモード(bandSel/modeSel)から自動決定
+function getAudioSpanHz(){
+  var sel=document.getElementById('saSpan');
+  var v=sel?sel.value:'auto';
+  if(v!=='auto')return parseInt(v,10)||12000;
+  var bandSel=document.getElementById('bandSel'),modeSel=document.getElementById('modeSel');
+  var bv=bandSel?bandSel.value:'0', mv=modeSel?modeSel.value:'';
+  if(bv==='0')return 12000;              // FM
+  if(mv==='USB'||mv==='LSB')return 3000; // SSB
+  if(mv==='CW')return 1000;              // CW
+  if(bv==='99')return 6000;              // AIR(AM)
+  return 5000;                           // AM(LW/MW/SW)
+}
 function gurl(){
   var e=document.getElementById('wsUrl'),v=e?e.value.trim():'';
   var h=v.replace(/^wss?:\/\//i,'').replace(/\/.*$/,'').replace(/:\d+$/,'')||'192.168.4.1';
@@ -8693,21 +8791,31 @@ function loop(){
   an.smoothingTimeConstant=sm;
   var bins=an.frequencyBinCount,ny=(an.context.sampleRate||24000)/2;
   // ストリームは24kHzサンプリング→有効帯域は0〜12kHz
-  // AudioContextのsampleRateに関わらず12kHz上限のbinまでに制限
+  // 表示帯域はモード(またはユーザー選択)により可変。12kHzを上限にクリップ。
+  // ※FFTサイズ・サンプルレートは変わらないためHz/binの実分解能は不変。
+  //   帯域を狭めるとその範囲のbin数が減り、画面幅に対する1binあたりの
+  //   ピクセル数が増える＝見た目のなめらかさは向上するが周波数分解能自体は同じ。
   var STREAM_NYQUIST=12000;
-  var useBins=Math.min(bins,Math.round(bins*STREAM_NYQUIST/ny));
-  var useNy=STREAM_NYQUIST;
+  var dispSpan=Math.min(STREAM_NYQUIST,(typeof getAudioSpanHz==='function')?getAudioSpanHz():STREAM_NYQUIST);
+  var useBins=Math.min(bins,Math.round(bins*dispSpan/ny));
+  var useNy=dispSpan;
   var db=new Float32Array(bins);an.getFloatFrequencyData(db);
-  var sx=sc.getContext('2d'),dr=90;
+  var sx=sc.getContext('2d');
+  var dbMin=parseFloat((document.getElementById('saFloorDb')||{value:'-90'}).value);if(isNaN(dbMin))dbMin=-90;
+  var dbMax=parseFloat((document.getElementById('saCeilDb')||{value:'0'}).value);if(isNaN(dbMax))dbMax=0;
+  if(dbMax-dbMin<10)dbMax=dbMin+10;
+  var dr=dbMax-dbMin;
   // レイアウト: 左18px=dBラベル帯、下14px=周波数スケール行
   var LW=18, SCALE_H=14, PW=W-LW, SH=H-SCALE_H;
   sx.fillStyle='#06101c';sx.fillRect(0,0,W,H);
   // ---- dBグリッド＆縦軸ラベル ----
-  var dbTicks=[-80,-70,-60,-50,-40,-30,-20,-10,0];
+  var tickStep = dr<=20?5 : dr<=60?10 : 20;
+  var dbTicks=[];
+  for(var dtck=Math.ceil(dbMin/tickStep)*tickStep; dtck<=dbMax; dtck+=tickStep) dbTicks.push(dtck);
   sx.font='bold 9px monospace';
   for(var di=0;di<dbTicks.length;di++){
     var d=dbTicks[di];
-    var y=Math.round(SH-(d+90)/dr*SH)+.5;
+    var y=Math.round(SH-(d-dbMin)/dr*SH)+.5;
     if(y<1||y>SH)continue;
     // グリッド線（プロットエリアのみ）
     sx.strokeStyle= d===0 ? 'rgba(255,255,255,.18)' : 'rgba(255,255,255,.08)';
@@ -8727,8 +8835,8 @@ function loop(){
   gr.addColorStop(.75,'#eab308');gr.addColorStop(1,'#ef4444');
   sx.fillStyle=gr;
   for(var i=0;i<useBins;i++){
-    var dv=Math.max(-90,Math.min(0,db[i]));
-    var bh=Math.round((dv+90)/dr*SH);
+    var dv=Math.max(dbMin,Math.min(dbMax,db[i]));
+    var bh=Math.round((dv-dbMin)/dr*SH);
     var bx=LW+Math.round(i*PW/useBins);
     var bw=Math.max(1,LW+Math.round((i+1)*PW/useBins)-bx);
     sx.fillRect(bx,SH-bh,bw,bh);
@@ -8739,7 +8847,10 @@ function loop(){
   sx.strokeStyle='rgba(100,116,139,.4)';sx.lineWidth=1;
   sx.beginPath();sx.moveTo(LW,SH+.5);sx.lineTo(W,SH+.5);sx.stroke();
   sx.font='bold 9px monospace';
-  var freqTicks=[1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000];
+  // 目盛り間隔は表示帯域(useNy)に応じて可変（狭帯域ほど細かい刻みに）
+  var tickStep = useNy<=1200?200 : useNy<=3500?500 : 1000;
+  var freqTicks=[];
+  for(var ft=tickStep; ft<useNy; ft+=tickStep) freqTicks.push(ft);
   for(var fi=0;fi<freqTicks.length;fi++){
     var fhz=freqTicks[fi];
     var fx=LW+Math.round(fhz/useNy*PW);
@@ -8748,7 +8859,7 @@ function loop(){
     sx.strokeStyle='rgba(148,163,184,.7)';sx.lineWidth=1;
     sx.beginPath();sx.moveTo(fx+.5,SH+1);sx.lineTo(fx+.5,SH+4);sx.stroke();
     // ラベル
-    var lbl2=(fhz/1000)+'k';
+    var lbl2=(fhz>=1000?(fhz/1000)+'k':fhz+'');
     var tw2=sx.measureText(lbl2).width;
     var tx=Math.min(Math.max(fx-tw2/2,LW),W-tw2-1);
     sx.fillStyle='rgba(148,163,184,.85)';
@@ -8765,9 +8876,9 @@ function loop(){
     // WFもSAと同じくLW分オフセットして周波数軸を合わせる
     var wPW=wc.width-LW;
     for(var x=0;x<wc.width;x++){
-      var dv2=-90,bn2;
-      if(x<LW){dv2=-90;}else{bn2=Math.floor((x-LW)*useBins/wPW);bn2=Math.min(bn2,useBins-1);dv2=Math.max(-90,Math.min(0,db[bn2]));}
-      var v=Math.round((dv2+90)/dr*255);var r2,g2,b2;
+      var dv2=dbMin,bn2;
+      if(x<LW){dv2=dbMin;}else{bn2=Math.floor((x-LW)*useBins/wPW);bn2=Math.min(bn2,useBins-1);dv2=Math.max(dbMin,Math.min(dbMax,db[bn2]));}
+      var v=Math.round((dv2-dbMin)/dr*255);var r2,g2,b2;
       if(v<86){r2=0;g2=Math.round(v*1.49);b2=Math.round(128+v*.47);}else if(v<172){r2=Math.round((v-86)*2.97);g2=255;b2=Math.round(Math.max(0,255-(v-86)*2.97));}else{r2=255;g2=Math.round(Math.max(0,255-(v-172)*3));b2=0;}
       var idx=bi+x*4;loop.wd.data[idx]=r2;loop.wd.data[idx+1]=g2;loop.wd.data[idx+2]=b2;loop.wd.data[idx+3]=255;}
     wx.putImageData(loop.wd,0,0);}else wx.clearRect(0,0,wc.width,wc.height);
@@ -8776,6 +8887,37 @@ function loop(){
 document.addEventListener('DOMContentLoaded',function(){
   var tog=document.getElementById('audioFftToggle'),pan=document.getElementById('audioFftPanel');
   if(!tog||!pan)return;
+  // ===== WFチェックOFF時: WFキャンバスを隠してSAキャンバスを縦長化 =====
+  var wfChk=document.getElementById('saWfOn'),saCvsEl=document.getElementById('audioSaCvs'),wfCvsEl=document.getElementById('audioWfCvs');
+  var SA_H_WITH_WF=88, SA_H_NO_WF=190;
+  function applySaWfLayout(){
+    if(!wfChk||!saCvsEl||!wfCvsEl)return;
+    var on=wfChk.checked;
+    wfCvsEl.style.display=on?'block':'none';
+    saCvsEl.height=on?SA_H_WITH_WF:SA_H_NO_WF;
+    saCvsEl.style.borderRadius=on?'4px 4px 0 0':'4px';
+    if(saCvsEl.clientWidth>0)saCvsEl.width=saCvsEl.clientWidth;
+    if(on&&wfCvsEl.clientWidth>0)wfCvsEl.width=wfCvsEl.clientWidth;
+  }
+  if(wfChk)wfChk.addEventListener('change',applySaWfLayout);
+  applySaWfLayout();
+  // ===== SA表示dBレンジ(フロア/上限)の永続化 =====
+  var floorEl=document.getElementById('saFloorDb'),ceilEl=document.getElementById('saCeilDb');
+  var SA_RANGE_LSKEY='saDbRange';
+  try{
+    var savedRange=JSON.parse(localStorage.getItem(SA_RANGE_LSKEY)||'null');
+    if(savedRange&&floorEl&&ceilEl){floorEl.value=savedRange.floor;ceilEl.value=savedRange.ceil;}
+  }catch(_){}
+  function saveSaRange(){
+    if(!floorEl||!ceilEl)return;
+    var f=parseFloat(floorEl.value),c=parseFloat(ceilEl.value);
+    if(isNaN(f))f=-90;if(isNaN(c))c=0;
+    if(c-f<10)c=f+10; // 上限は最低でもフロア+10dB
+    floorEl.value=f;ceilEl.value=c;
+    try{localStorage.setItem(SA_RANGE_LSKEY,JSON.stringify({floor:f,ceil:c}));}catch(_){}
+  }
+  if(floorEl)floorEl.addEventListener('change',saveSaRange);
+  if(ceilEl)ceilEl.addEventListener('change',saveSaRange);
   // iOS/iPadOS判定
   var isIOS=/iP(hone|ad|od)/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   function isAnd(){return!!window.__androidApp;}
@@ -8811,6 +8953,7 @@ document.addEventListener('DOMContentLoaded',function(){
   }
   tog.addEventListener('change',function(){
     open=tog.checked;window.__saOpen=open;pan.style.display=open?'block':'none';
+    applySaWfLayout();
     ['audioSaCvs','audioWfCvs'].forEach(function(id){var c=document.getElementById(id);if(c&&c.clientWidth>0)c.width=c.clientWidth;});
     if(open){
       if(isIOS||isAnd()){
@@ -8902,9 +9045,41 @@ function hookIOS(sz,sm){
     '-.--':'Y','--..':'Z',
     '-----':'0','.----':'1','..---':'2','...--':'3','....-':'4','.....':'5',
     '-....':'6','--...':'7','---..':'8','----.':'9',
-    '.-.-.-':'.','--..--':',','..--..':'?','-..-.':'/','-...-':'=','.-.-.':'+',
-    '-....-':'-','.--.-.':'@'
+    '.-.-.-':'.','--..--':',','..--..':'?','-..-.':'/','-....-':'-','.--.-.':'@',
+    // プロサイン（複数文字を続けて打つ符号）。AR/BTは記号「+」「=」と符号が同一のため、
+    // 実運用での使用頻度を優先してプロサイン表記を採用（記号としては読み取れなくなります）
+    '.-.-.':'[AR]', '-...-':'[BT]', '...-.-':'[SK]', '-.--.':'[KN]',
+    '-...-.-':'[BK]', '.-...':'[AS]', '-.-.-':'[KA]',
+    '......':'[HH]', '.......':'[HH]', '........':'[HH]', '.........':'[HH]'
   };
+
+  // 和文（カナ）モールス符号表（無線局運用規則 別表第一号 準拠）
+  var WABUN_TABLE = {
+    '--.--':'ア','.-':'イ','..-':'ウ','-.---':'エ','.-...':'オ',
+    '.-..':'カ','-.-..':'キ','...-':'ク','-.--':'ケ','----':'コ',
+    '-.-.-':'サ','--.-.':'シ','---.-':'ス','.---.':'セ','---.':'ソ',
+    '-.':'タ','..-.':'チ','.--.':'ツ','.-.--':'テ','..-..':'ト',
+    '.-.':'ナ','-.-.':'ニ','....':'ヌ','--.-':'ネ','..--':'ノ',
+    '-...':'ハ','--..-':'ヒ','--..':'フ','.':'ヘ','-..':'ホ',
+    '-..-':'マ','..-.-':'ミ','-':'ム','-...-':'メ','-..-.':'モ',
+    '.--':'ヤ','-..--':'ユ','--':'ヨ',
+    '...':'ラ','--.':'リ','-.--.':'ル','---':'レ','.-.-':'ロ',
+    '-.-':'ワ','.-..-':'ヰ','.---':'ヲ','.--..':'ヱ','.-.-.':'ン',
+    '..':'゛', '..--.':'゜',
+    '-----':'0','.----':'1','..---':'2','...--':'3','....-':'4','.....':'5',
+    '-....':'6','--...':'7','---..':'8','----.':'9',
+    '.--.-':'ー',       // 長音（伸ばし棒）
+    '.-.-.-':'、',      // 区切点
+    '.-.-..':'[段落]',
+    '-.--.-':'（','.-..-.':'）',
+    '-..---':'[本文]', '...-.':'[訂正]'
+  };
+  // 濁点／半濁点は直前の仮名と合成して1文字にする（か+゛→が 等）
+  var DAKUTEN_MAP = {
+    'カ':'ガ','キ':'ギ','ク':'グ','ケ':'ゲ','コ':'ゴ','サ':'ザ','シ':'ジ','ス':'ズ','セ':'ゼ','ソ':'ゾ',
+    'タ':'ダ','チ':'ヂ','ツ':'ヅ','テ':'デ','ト':'ド','ハ':'バ','ヒ':'ビ','フ':'ブ','ヘ':'ベ','ホ':'ボ','ウ':'ヴ'
+  };
+  var HANDAKUTEN_MAP = { 'ハ':'パ','ヒ':'ピ','フ':'プ','ヘ':'ペ','ホ':'ポ' };
 
   var CW_FFT_SIZE = 1024;
   var CW_SCAN_RANGE = 200; // トーン周波数の前後±この範囲(Hz)を自動探索（ゼロインのズレを許容）
@@ -8963,10 +9138,12 @@ function hookIOS(sz,sm){
   var curMag = 0, curDetFreq = 800, curCenterFreq = 800, curOnThresh = 0;
   var curScanFreqs = [], curScanMags = [];
   var audioConnected = false;
+  var autoSubMode = 'intl'; // 「自動」ポリシー時に実際に使われているモード（ホレで'wabun'へ）
 
   function resetDecoderState(){
     toneOn = false; lastT = performance.now(); unitMs = 60; elemBuf = '';
     noiseFloor = 0.001; sigPeak = 0.02;
+    autoSubMode = 'intl'; // コールサイン交換は欧文が基本のため、開始時は欧文から
   }
 
   function renderOutput(){
@@ -8976,9 +9153,44 @@ function hookIOS(sz,sm){
     el.scrollTop = el.scrollHeight;
   }
 
+  function langPolicy(){
+    var sel = document.getElementById('cwLangMode');
+    return sel ? sel.value : 'auto';
+  }
+
+  function currentLangMode(){
+    var p = langPolicy();
+    if (p === 'wabun') return 'wabun';
+    if (p === 'intl') return 'intl';
+    return autoSubMode; // 'auto'：ホレ受信までは欧文、以後は和文
+  }
+
   function flushChar(){
     if (!elemBuf) return;
-    outBuf += (MORSE_TABLE[elemBuf] || '▯');
+    // 「本文(ホレ)」＝和文開始の合図。「自動」ポリシーの時だけ切替に使う。
+    // ※ARを和文からの自動復帰トリガーにすると、和文中に頻出する「ン」(.-.-.)と
+    //   符号が同一で誤爆するため使わない。和文→欧文の復帰は手動切替とする。
+    if (langPolicy() === 'auto' && elemBuf === '-..---') {
+      autoSubMode = 'wabun';
+      outBuf += '《和文》';
+      elemBuf = '';
+      renderOutput();
+      return;
+    }
+    var wabun = (currentLangMode() === 'wabun');
+    var table = wabun ? WABUN_TABLE : MORSE_TABLE;
+    var sym = table[elemBuf];
+    if (wabun && (sym === '゛' || sym === '゜') && outBuf.length) {
+      var lastCh = outBuf[outBuf.length - 1];
+      var map = (sym === '゛') ? DAKUTEN_MAP : HANDAKUTEN_MAP;
+      if (map[lastCh]) {
+        outBuf = outBuf.slice(0, -1) + map[lastCh];
+        elemBuf = '';
+        renderOutput();
+        return;
+      }
+    }
+    outBuf += (sym || '▯');
     elemBuf = '';
     renderOutput();
   }
@@ -9129,6 +9341,10 @@ function hookIOS(sz,sm){
     if (clearBtn) {
       clearBtn.addEventListener('click', function(){ outBuf = ''; renderOutput(); });
     }
+    var langSel = document.getElementById('cwLangMode');
+    if (langSel) {
+      langSel.addEventListener('change', function(){ elemBuf = ''; });
+    }
     var specCv = document.getElementById('cwSpecCanvas');
     if (specCv) {
       specCv.addEventListener('click', function(ev){
@@ -9140,6 +9356,1372 @@ function hookIOS(sz,sm){
         var clickedFreq = lo + xRatio * (hi - lo);
         var snapped = Math.round(clickedFreq / CW_SCAN_STEP) * CW_SCAN_STEP;
         if (freqInputEl) freqInputEl.value = snapped;
+      });
+    }
+  });
+})();
+</script>
+
+<!-- ===== RTTYデコード（Baudot/ITA2自動判読） ===== -->
+<script>
+(function(){
+  'use strict';
+
+  // ITA2(Baudot-Murray)符号表。キーは受信順（スタートビット直後の1ビット目から順）の
+  // ビット文字列で、標準のITA2表記（左端＝最初に届くビット）と同じ並びにしてある。
+  // FIGS(米国式/US-TTY)のH位置は国際規格で未定義のため、実用上よく使われる「#」を割当。
+  var RTTY_LETTERS = {
+    '00000':'', '00001':'T', '00010':'\r', '00011':'O', '00100':' ',
+    '00101':'H', '00110':'N', '00111':'M', '01000':'\n', '01001':'L',
+    '01010':'R', '01011':'G', '01100':'I', '01101':'P', '01110':'C',
+    '01111':'V', '10000':'E', '10001':'Z', '10010':'D', '10011':'B',
+    '10100':'S', '10101':'Y', '10110':'F', '10111':'X', '11000':'A',
+    '11001':'W', '11010':'J', '11100':'U', '11101':'Q', '11110':'K'
+    // '11011'=FIGSシフト, '11111'=LTRSシフト は別処理（emitChar内）
+  };
+  var RTTY_FIGURES = {
+    '00000':'', '00001':'5', '00010':'\r', '00011':'9', '00100':' ',
+    '00101':'#', '00110':',', '00111':'.', '01000':'\n', '01001':')',
+    '01010':'4', '01011':'&', '01100':'8', '01101':'0', '01110':':',
+    '01111':';', '10000':'3', '10001':'"', '10010':'$', '10011':'?',
+    '10100':'\x07', '10101':'6', '10110':'!', '10111':'/', '11000':'-',
+    '11001':'2', '11010':'\'', '11100':'7', '11101':'1', '11110':'('
+  };
+  var RTTY_FIGS_CODE = '11011', RTTY_LTRS_CODE = '11111';
+
+  function rttyIsIOS(){
+    return /iP(hone|ad|od)/i.test(navigator.userAgent) ||
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
+  // ----- Goertzelアルゴリズムによる単一周波数の振幅検出（CWデコーダと同一実装） -----
+  function goertzelMag(buf, sampleRate, freq){
+    var n = buf.length;
+    var k = Math.round(0.5 + (n * freq) / sampleRate);
+    var w = (2 * Math.PI / n) * k;
+    var cosine = Math.cos(w), sine = Math.sin(w), coeff = 2 * cosine;
+    var q0 = 0, q1 = 0, q2 = 0;
+    for (var i = 0; i < n; i++) { q0 = coeff * q1 - q2 + buf[i]; q2 = q1; q1 = q0; }
+    var real = q1 - q2 * cosine, imag = q2 * sine;
+    return Math.sqrt(real * real + imag * imag) / (n / 2);
+  }
+
+  // ----- 音声グラフへのタップ -----
+  // Goertzelの解析窓が1ビット幅より長いと、ビット境界をまたいで音声が混ざり込み
+  // （特にRTTYのような短いビット幅では）データビットの誤読を引き起こす。
+  // そのためボーレートに応じて窓を短く切り替える（おおよそ半ビット幅を目安）。
+  function desiredFftSize(){
+    var baud = currentBaud();
+    if (baud >= 90) return 128;   // 100Bd: 1bit=10ms → 128/24000=5.3ms
+    if (baud >= 65) return 128;   // 75Bd : 1bit=13.3ms
+    return 256;                    // 45.45/50Bd: 1bit=20〜22ms → 256/24000=10.7ms
+  }
+
+  // 帯域スキャン(表示/自動検出/AFC)専用の別Analyser。ビット同期用の短い窓だと
+  // 周波数分解能が粗くなり、自動検出やAFCのピーク位置が実際より低め等にズレて
+  // 出てしまうため、スキャン系は常に長め(1024)の窓を維持して周波数精度を確保する。
+  // こちらはgapless性が不要（表示・チューニング支援用の間引き処理）なので、
+  // 従来通りAnalyserNode + setTimeoutポーリングのままでよい。
+  var RTTY_SCAN_FFT_SIZE = 1024;
+  var rttyScanAn = null, rttyScanAnCtx = null, scanTimeBuf = null;
+
+  // ビット同期本体は ScriptProcessorNode 方式にする。setTimeoutでAnalyserNodeを
+  // ポーリングする従来方式は、スペアナ描画等でJSメインスレッドが混雑すると
+  // 呼び出し自体が遅延・間引かれ、「呼び出しと呼び出しの間の音声が一度も
+  // 解析されずに抜け落ちる」ことがある（実機テストで再現・確認済み）。
+  // ScriptProcessorNodeのonaudioprocessは音声処理側の駆動で発火するため、
+  // メインスレッドの混雑があっても音声を取りこぼさない。
+  var RTTY_PROC_BUFFER_SIZE = 1024; // ScriptProcessorNodeの入出力バッファ長
+  var rttyProc = null, rttyProcCtx = null, rttySilentGain = null;
+  var ringBuf = null, ringSize = 0, ringPos = 0, ringFilled = false;
+  var totalSamplesIn = 0, samplesSinceTick = 0, samplesSinceScan = 0;
+  var rttyProcSr = 24000;
+
+  function resizeRingIfNeeded(){
+    var want = desiredFftSize();
+    if (ringSize !== want) {
+      ringBuf = new Float32Array(want);
+      ringSize = want; ringPos = 0; ringFilled = false;
+    }
+  }
+
+  function pushSample(x){
+    ringBuf[ringPos] = x;
+    ringPos++;
+    if (ringPos >= ringBuf.length) { ringPos = 0; ringFilled = true; }
+    totalSamplesIn++; samplesSinceTick++; samplesSinceScan++;
+  }
+
+  // リングバッファの中身を時系列順（古い→新しい）のFloat32Arrayとして取り出す
+  function getOrderedWindow(){
+    var n = ringBuf.length;
+    var out = new Float32Array(n);
+    if (!ringFilled) {
+      out.set(ringBuf.subarray(0, ringPos), n - ringPos); // 前方はゼロ埋め
+      return out;
+    }
+    out.set(ringBuf.subarray(ringPos), 0);
+    out.set(ringBuf.subarray(0, ringPos), n - ringPos);
+    return out;
+  }
+
+  function onRttyAudioProcess(ev){
+    var toggle = document.getElementById('rttyDecodeToggle');
+    if (!toggle || !toggle.checked) return;
+    // このコールバック内で例外が発生すると、ブラウザによってはScriptProcessorNodeの
+    // onaudioprocess自体がそれ以降呼ばれなくなることがある（＝実信号受信中だけ突然
+    // デコードが完全に止まる、という報告と一致しうる）。try/catchで必ず処理を継続させる。
+    try {
+      resizeRingIfNeeded();
+      var input = ev.inputBuffer.getChannelData(0);
+      var sr = ev.inputBuffer.sampleRate || rttyProcSr;
+      rttyProcSr = sr;
+      var stepSamples = Math.max(1, Math.round(sr * RTTY_SAMPLE_MS / 1000));
+      var scanStepSamples = stepSamples * RTTY_SCAN_EVERY;
+      for (var i = 0; i < input.length; i++) {
+        pushSample(input[i]);
+        if (samplesSinceTick >= stepSamples) {
+          samplesSinceTick -= stepSamples;
+          var win = getOrderedWindow();
+          var nowMs = (totalSamplesIn / sr) * 1000; // 音声サンプル数から直接算出（gapless・sample-accurate）
+          var doScan = (samplesSinceScan >= scanStepSamples);
+          if (doScan) samplesSinceScan -= scanStepSamples;
+          processRttyTick(win, sr, nowMs, doScan);
+        }
+      }
+    } catch (err) {
+      rttyLastError = err;
+      if (window.console && console.error) console.error('[RTTY] onaudioprocess error:', err);
+    }
+  }
+
+  function ensureTap(){
+    var ctx = null, src = null;
+    if (rttyIsIOS() || window.__androidApp) {
+      ctx = window.__saCtx; src = window.__saProc;   // WSオーディオ経路
+    } else {
+      var g = window.__ensureAudioGraph && window.__ensureAudioGraph();
+      if (g) { ctx = g.ctx; src = g.src; }            // HTTPストリーム経路
+    }
+    if (!ctx || !src) return false;
+    if (rttyScanAnCtx !== ctx) {
+      rttyScanAn = ctx.createAnalyser();
+      rttyScanAn.fftSize = RTTY_SCAN_FFT_SIZE;
+      rttyScanAn.smoothingTimeConstant = 0;
+      rttyScanAnCtx = ctx;
+      scanTimeBuf = new Float32Array(RTTY_SCAN_FFT_SIZE);
+    }
+    if (rttyProcCtx !== ctx) {
+      rttyProc = ctx.createScriptProcessor(RTTY_PROC_BUFFER_SIZE, 1, 1);
+      rttyProc.onaudioprocess = onRttyAudioProcess;
+      rttySilentGain = ctx.createGain();
+      rttySilentGain.gain.value = 0; // 無音化：音声を二重再生させず処理のみ行う
+      rttyProcCtx = ctx;
+      resizeRingIfNeeded();
+    }
+    try { src.connect(rttyScanAn); } catch (e) {}
+    try { src.connect(rttyProc); } catch (e) {}
+    try { rttyProc.connect(rttySilentGain); rttySilentGain.connect(ctx.destination); } catch (e) {}
+    try { ctx.resume().catch(function(){}); } catch (e) {}
+    return true;
+  }
+
+
+  // ----- デコーダ状態（非同期スタート・ストップ方式のビット同期） -----
+  var MARK = 1, SPACE = 0;
+  // ボーレートが高い(最大100Bd→1ビット10ms)ため、CWよりサンプリング間隔を詰める
+  var RTTY_SAMPLE_MS = 3;
+  var renderRafId = 0;
+  var audioConnected = false;
+  var rttyState = 'IDLE';   // IDLE(Mark待ち)→START(スタートビット確認)→DATA(5bit)→STOP(ストップビット確認)
+  var edgeT = 0, bitMs = 22.0, nextSampleT = 0, bitIndex = 0, codeBits = '';
+  var curPolarity = MARK, curMarkMag = 0, curSpaceMag = 0;
+  var noiseFloor = 0.001, sigPeak = 0.02;
+  var shiftState = 'ltrs';  // 'ltrs' または 'figs'
+  var outBuf = '';
+  // 診断用カウンタ：STOPビット確認まで到達したフレーム数と、実際にMark一致で確定した数。
+  // 「フレームは検出できているのに成功数が0のまま」＝反転(Mark/Space入替)の疑いが濃厚、
+  // 「フレーム自体が検出できない」＝周波数設定/音声経路の疑いが濃厚、と切り分けるための指標。
+  var framesTried = 0, framesOk = 0, renderTickCount = 0;
+  var rttyLastError = null;
+
+  // ----- チューニング支援（帯域内スキャン表示・AFC自動追従） -----
+  // ビット同期の判定自体は毎tick markHz/spaceHzの2点だけをGoertzelするが、
+  // 可視化とAFCのための帯域スキャンはCPU負荷を抑えるため間引いて実行する
+  var RTTY_SCAN_LO = 300, RTTY_SCAN_HI = 3000; // スキャン範囲は固定（設定値が大きくズレていても発見できるように）
+  var RTTY_SCAN_STEP = 20;    // 帯域スキャンの周波数刻み(Hz)
+  var RTTY_SCAN_EVERY = 15;   // 何tickごとに帯域スキャンを行うか（3ms×15≒45ms間隔）
+  var RTTY_AFC_SEARCH = 50;   // AFCがピークを探す設定値からの範囲(Hz)
+  var RTTY_AFC_GAIN = 0.15;   // AFCの追従の速さ（大きいほど速く追従）
+  var RTTY_AFC_MISS_LIMIT = 15; // これだけ連続で±RTTY_AFC_SEARCH以内にピークが見つからなければ全帯域再探索
+  var afcMissCount = 0;
+  var scanTickCounter = 0;
+  var curScanFreqs = [], curScanMags = [];
+  var curMarkPeakHz = 0, curSpacePeakHz = 0;
+  var curCenterMarkHz = 2125, curCenterSpaceHz = 2295;
+
+  function resetDecoderState(){
+    rttyState = 'IDLE'; codeBits = ''; bitIndex = 0; shiftState = 'ltrs';
+    noiseFloor = 0.001; sigPeak = 0.02; scanTickCounter = 0;
+    framesTried = 0; framesOk = 0; renderTickCount = 0; rttyLastError = null;
+    afcMissCount = 0;
+  }
+
+  function renderOutput(){
+    var el = document.getElementById('rttyOutput'); if (!el) return;
+    if (outBuf.length > 4000) outBuf = outBuf.slice(outBuf.length - 4000);
+    el.textContent = outBuf;
+    el.scrollTop = el.scrollHeight;
+  }
+
+  function emitChar(code){
+    if (code === RTTY_LTRS_CODE) { shiftState = 'ltrs'; return; }
+    if (code === RTTY_FIGS_CODE) { shiftState = 'figs'; return; }
+    var table = (shiftState === 'figs') ? RTTY_FIGURES : RTTY_LETTERS;
+    var ch = table[code];
+    if (ch === undefined) ch = '';
+    if (ch === '') ch = '\u00B7'; // NUL('00000')を中点で可視化：フレーミング成功を目視確認できるようにする
+    outBuf += ch;
+    renderOutput();
+  }
+
+  function currentBaud(){
+    var sel = document.getElementById('rttyBaud');
+    var v = sel ? parseFloat(sel.value) : 45.45;
+    return (v > 0) ? v : 45.45;
+  }
+
+  // ----- 全帯域からMark/Spaceのトーンペアを推定（既定値から大きくズレている場合の救済） -----
+  // 局所ピークを抽出し、現実的なシフト幅（60〜1000Hz）で離れた2本のうち、
+  // 弱い方の強度がなるべく大きい組み合わせ（＝両方ともはっきり出ている組）を採用する。
+  function findBestMarkSpacePair(freqs, mags){
+    var peaks = [];
+    for (var i = 1; i < freqs.length - 1; i++) {
+      if (mags[i] > mags[i - 1] && mags[i] >= mags[i + 1]) peaks.push({ f: freqs[i], m: mags[i] });
+    }
+    peaks.sort(function(a, b){ return b.m - a.m; });
+    peaks = peaks.slice(0, 12);
+    var best = null, bestScore = -1;
+    for (var a = 0; a < peaks.length; a++) {
+      for (var b = a + 1; b < peaks.length; b++) {
+        var diff = Math.abs(peaks[a].f - peaks[b].f);
+        if (diff < 60 || diff > 1000) continue;
+        var score = Math.min(peaks[a].m, peaks[b].m);
+        if (score > bestScore) { bestScore = score; best = [peaks[a], peaks[b]]; }
+      }
+    }
+    return best;
+  }
+
+  // ----- 帯域内スペクトラム表示（CWデコーダと同様、実際の信号分布を見てゼロインできるように） -----
+  var specDpr = window.devicePixelRatio || 1;
+  function drawSpectrum(freqs, mags, markHz, spaceHz, markPeakHz, spacePeakHz, nf, sp){
+    var cv = document.getElementById('rttySpecCanvas'); if (!cv || !freqs.length) return;
+    var w = cv.clientWidth || 300, h = cv.clientHeight || 44;
+    if (cv.width !== Math.round(w*specDpr) || cv.height !== Math.round(h*specDpr)) {
+      cv.width = Math.round(w*specDpr); cv.height = Math.round(h*specDpr);
+    }
+    var ctx = cv.getContext('2d');
+    ctx.setTransform(specDpr,0,0,specDpr,0,0);
+    ctx.clearRect(0,0,w,h);
+    var labelH = 14; // 上部をHzラベル表示領域として確保
+    var n = freqs.length, bw = w / n;
+    var range = Math.max(1e-6, sp - nf);
+    var loF = freqs[0], hiF = freqs[n - 1];
+    for (var i = 0; i < n; i++) {
+      var pct = Math.max(0, Math.min(1, (mags[i] - nf) / range));
+      var barH = pct * (h - labelH - 2);
+      var isMarkPeak = Math.abs(freqs[i] - markPeakHz) < RTTY_SCAN_STEP / 2;
+      var isSpacePeak = Math.abs(freqs[i] - spacePeakHz) < RTTY_SCAN_STEP / 2;
+      var nearMarkSide = Math.abs(freqs[i] - markHz) <= Math.abs(freqs[i] - spaceHz);
+      if (isMarkPeak) ctx.fillStyle = '#22c55e';
+      else if (isSpacePeak) ctx.fillStyle = '#f59e0b';
+      else ctx.fillStyle = nearMarkSide ? 'rgba(34,197,94,0.3)' : 'rgba(245,158,11,0.3)';
+      ctx.fillRect(i * bw, h - barH, Math.max(1, bw - 1), barH);
+    }
+    function xAt(f){ return ((f - loF) / (hiF - loF || 1)) * w; }
+
+    // 現在の設定値（緑=Mark／橙=Space）を「目標」として破線＋Hzラベルで明示。
+    // ライブ受信中に実際のピーク(バー)と見比べてゼロインしやすくするための表示。
+    function drawTarget(f, color, label, alignRight){
+      var x = xAt(f);
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath(); ctx.moveTo(x, labelH); ctx.lineTo(x, h); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = color;
+      ctx.font = '10px sans-serif';
+      ctx.textBaseline = 'top';
+      ctx.textAlign = alignRight ? 'right' : 'left';
+      var tx = Math.max(2, Math.min(w - 2, x)) + (alignRight ? -3 : 3);
+      ctx.fillText(label, tx, 1);
+      ctx.restore();
+    }
+    drawTarget(markHz, '#22c55e', 'Mark ' + Math.round(markHz) + 'Hz', xAt(markHz) > w * 0.7);
+    drawTarget(spaceHz, '#f59e0b', 'Space ' + Math.round(spaceHz) + 'Hz', xAt(spaceHz) > w * 0.7);
+
+    var loLbl = document.getElementById('rttySpecLoLabel'), hiLbl = document.getElementById('rttySpecHiLabel');
+    if (loLbl) loLbl.textContent = Math.round(loF) + 'Hz';
+    if (hiLbl) hiLbl.textContent = Math.round(hiF) + 'Hz';
+  }
+
+  function processRttyTick(win, sr, now, doScan){
+    audioConnected = true;
+
+    var markInput = document.getElementById('rttyMarkHz');
+    var shiftInput = document.getElementById('rttyShiftHz');
+    var markHz = (markInput && parseFloat(markInput.value)) || 2125;
+    var shiftHz = (shiftInput && parseFloat(shiftInput.value)) || 170;
+    var spaceHz = markHz + shiftHz;
+
+    var markMag = goertzelMag(win, sr, markHz);
+    var spaceMag = goertzelMag(win, sr, spaceHz);
+    var totalMag = markMag + spaceMag;
+
+    // 適応しきい値（ノイズ床／ピークを緩やかに追従）。
+    // CWは符号間に無音区間があるためノイズ床が定期的にリセットされるが、RTTYは
+    // Markトーンが常時存在し無音区間がほぼ無いため、上昇レートが速いと「ノイズ床が
+    // 信号レベルそのものを追いかけて」しまい、数秒でレベル差(sigPeak-noiseFloor)が
+    // 潰れてゲートが閉じてしまう（スペアナのバーが縮んで消える症状の原因）。
+    // そのため上昇方向だけ大幅に緩やかにする（下降方向＝真の無音検出は従来通り速い）。
+    if (totalMag < noiseFloor) noiseFloor = totalMag; else noiseFloor += (totalMag - noiseFloor) * 0.00005;
+    if (totalMag > sigPeak) sigPeak = totalMag; else sigPeak -= (sigPeak - noiseFloor) * 0.001;
+    if (sigPeak < noiseFloor + 0.0005) sigPeak = noiseFloor + 0.0005;
+
+    var revEl = document.getElementById('rttyReverse');
+    // 以前ここに「モードがLSBなら自動反転」というロジックがあったが、実機（Si473xの
+    // LSB復調経路）で検証した結果、これは誤りだった。一般的なアマチュア無線機とは異なり、
+    // このSi473xのLSB復調ではMark/Spaceの音声上の高低が入れ替わらないため、自動反転を
+    // 適用すると逆に化けてしまう（実測音声で確認済み：自動反転OFFで完全にクリーンな
+    // 文章が復元できた）。反転が必要な場合は「反転」チェックボックスを手動で操作する。
+    var reversed = revEl && revEl.checked;
+    var hiTone = (markMag >= spaceMag) ? MARK : SPACE; // 2トーンのうち強い方
+    var polarity = reversed ? (hiTone === MARK ? SPACE : MARK) : hiTone;
+    curPolarity = polarity; curMarkMag = markMag; curSpaceMag = spaceMag;
+    curCenterMarkHz = markHz; curCenterSpaceHz = spaceHz;
+
+    // ----- 帯域スキャン（表示＋AFC用）：判定自体は上のmarkMag/spaceMagで完結しているので、
+    // ここは間引いて実行してCPU負荷を抑える -----
+    if (doScan && ensureTap() && rttyScanAn) {
+      rttyScanAn.getFloatTimeDomainData(scanTimeBuf);
+      var scanSr = rttyScanAnCtx.sampleRate || 24000;
+      var freqs = [], mags = [];
+      for (var f = RTTY_SCAN_LO; f <= RTTY_SCAN_HI; f += RTTY_SCAN_STEP) {
+        freqs.push(f); mags.push(goertzelMag(scanTimeBuf, scanSr, f));
+      }
+      // 単発スキャンだとFSKの遷移タイミングによってはMark/Spaceどちらかのトーンが
+      // 窓内にほとんど乗らず、ピーク検出（特に自動検出ボタン）が不正確になることがある。
+      // そのため表示・検出用のスペクトラムはEMA平滑化して複数回分を積算する。
+      if (!curScanMags.length || curScanMags.length !== mags.length) {
+        curScanMags = mags;
+      } else {
+        for (var si = 0; si < mags.length; si++) {
+          curScanMags[si] = curScanMags[si] * 0.7 + mags[si] * 0.3;
+        }
+      }
+      curScanFreqs = freqs;
+
+      // 設定値(markHz/spaceHz)の近傍で実際のピーク周波数を探す（EMA平滑化後のスペクトラムを使用）
+      var markPeakHz = markHz, markPeakMag = -1, spacePeakHz = spaceHz, spacePeakMag = -1;
+      for (var i = 0; i < curScanFreqs.length; i++) {
+        if (Math.abs(curScanFreqs[i] - markHz) <= RTTY_AFC_SEARCH && curScanMags[i] > markPeakMag) { markPeakMag = curScanMags[i]; markPeakHz = curScanFreqs[i]; }
+        if (Math.abs(curScanFreqs[i] - spaceHz) <= RTTY_AFC_SEARCH && curScanMags[i] > spacePeakMag) { spacePeakMag = curScanMags[i]; spacePeakHz = curScanFreqs[i]; }
+      }
+      curMarkPeakHz = markPeakHz; curSpacePeakHz = spacePeakHz;
+
+      // AFC：はっきりした信号がある時だけ、実際のMarkピークへゆっくり追従する
+      // （入力欄をユーザーが編集中は上書きしない）
+      var afcEl = document.getElementById('rttyAfc');
+      if (afcEl && afcEl.checked && markInput && document.activeElement !== markInput) {
+        var sigThresh = noiseFloor + (sigPeak - noiseFloor) * 0.3;
+        if (markPeakMag > sigThresh && markPeakHz !== markHz) {
+          // ±RTTY_AFC_SEARCH以内に見つかった場合はゆっくり追従（滑らかな微調整）
+          var newMarkHz = markHz + (markPeakHz - markHz) * RTTY_AFC_GAIN;
+          markInput.value = Math.round(newMarkHz);
+          afcMissCount = 0;
+        } else if (totalMag >= sigThresh) {
+          // 信号自体は来ているのに±RTTY_AFC_SEARCH以内にピークが見つからない状態が続く
+          // ＝設定値が大きくズレている（前回セッションの値を引き継いでいる等）。
+          // これが続くと「収束するまで前半だけ文字化けする」原因になるため、
+          // 一定回数見失ったら「自動検出」と同じ全帯域探索に切り替えて一気に飛ばす。
+          afcMissCount++;
+          if (afcMissCount >= RTTY_AFC_MISS_LIMIT) {
+            afcMissCount = 0;
+            var pair = findBestMarkSpacePair(curScanFreqs, curScanMags);
+            if (pair) {
+              var lo2 = pair[0].f < pair[1].f ? pair[0] : pair[1];
+              var hi2 = pair[0].f < pair[1].f ? pair[1] : pair[0];
+              var weaker2 = Math.min(pair[0].m, pair[1].m);
+              if (weaker2 >= sigThresh) {
+                markInput.value = Math.round(lo2.f);
+                shiftInput.value = Math.round(hi2.f - lo2.f);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    bitMs = 1000 / currentBaud();
+
+    // エネルギーしきい値は「新規にフレームを開始してよいか」の判定にのみ使う。
+    // 一度START/DATA/STOPに入った後まで毎tick適用すると、FSKのMark⇔Space遷移時に
+    // 生じる瞬間的なレベルの谷（正常な現象）を誤って「信号消失」と判定してしまい、
+    // フレームがSTOPまで到達できず全滅する（実測で確認済みの不具合）。
+    var minEnergyThresh = noiseFloor + (sigPeak - noiseFloor) * 0.35;
+    switch (rttyState) {
+      case 'IDLE':
+        if (totalMag >= minEnergyThresh && polarity === SPACE) { // Mark(待機)→Spaceの遷移＝スタートビット候補
+          rttyState = 'START'; edgeT = now; nextSampleT = edgeT + bitMs * 0.5;
+        }
+        break;
+      case 'START':
+        if (now >= nextSampleT) {
+          if (polarity === SPACE) { // スタートビット中心で再確認できたら確定
+            rttyState = 'DATA'; bitIndex = 0; codeBits = '';
+            nextSampleT = edgeT + bitMs * 1.5;
+          } else {
+            rttyState = 'IDLE'; // ノイズによる誤検出
+          }
+        }
+        break;
+      case 'DATA':
+        if (now >= nextSampleT) {
+          codeBits += (polarity === MARK) ? '1' : '0';
+          bitIndex++;
+          if (bitIndex >= 5) {
+            rttyState = 'STOP';
+            nextSampleT = edgeT + bitMs * 6.5;
+          } else {
+            nextSampleT = edgeT + bitMs * (1.5 + bitIndex);
+          }
+        }
+        break;
+      case 'STOP':
+        if (now >= nextSampleT) {
+          framesTried++;
+          if (polarity === MARK) { emitChar(codeBits); framesOk++; } // ストップビット確認できた時のみ文字確定
+          rttyState = 'IDLE'; // 不正時も次の文字探索へ自己回復
+        }
+        break;
+    }
+  }
+
+  // 音声タップの確立と、ON/OFF切替に応じたrAF描画ループの起動のみをここで行う。
+  // 実際のビット同期処理はScriptProcessorNode(onRttyAudioProcess)側から
+  // processRttyTick()が直接呼ばれる（setTimeoutポーリングは廃止）。
+  var tapWatchdogId = 0;
+  function tapWatchdog(){
+    var toggle = document.getElementById('rttyDecodeToggle');
+    if (!toggle || !toggle.checked) { tapWatchdogId = 0; return; }
+    if (!ensureTap()) audioConnected = false;
+    tapWatchdogId = setTimeout(tapWatchdog, 500);
+  }
+
+  function renderTick(){
+    renderRafId = 0;
+    var toggle = document.getElementById('rttyDecodeToggle');
+    if (!toggle || !toggle.checked) return;
+
+    var statusEl = document.getElementById('rttyStatus');
+    if (!audioConnected) {
+      if (statusEl) statusEl.textContent = '音声未接続';
+    } else {
+      var lv = document.getElementById('rttyLevelBar');
+      if (lv) {
+        var pct = Math.max(0, Math.min(100, ((curMarkMag + curSpaceMag) - noiseFloor) / (sigPeak - noiseFloor) * 100));
+        lv.style.width = pct + '%';
+        lv.classList.toggle('on', rttyState !== 'IDLE');
+      }
+      drawSpectrum(curScanFreqs, curScanMags, curCenterMarkHz, curCenterSpaceHz, curMarkPeakHz, curSpacePeakHz, noiseFloor, sigPeak);
+      if (statusEl) statusEl.textContent = (rttyState === 'IDLE' ? '待機中' : '受信中…');
+    }
+    var shiftEl = document.getElementById('rttyShiftState');
+    if (shiftEl) shiftEl.textContent = (shiftState === 'figs') ? 'FIGS' : 'LTRS';
+
+    var diagEl = document.getElementById('rttyDiag');
+    if (diagEl) {
+      var okPct = framesTried > 0 ? Math.round(framesOk / framesTried * 100) : 0;
+      diagEl.textContent = 'フレーム検出:' + framesTried + ' / STOP一致:' + framesOk + ' (' + okPct + '%)';
+    }
+
+    var hintEl = document.getElementById('rttyModeHint');
+    if (hintEl) {
+      var modeSelEl = document.getElementById('modeSel');
+      var m = modeSelEl && modeSelEl.value;
+      renderTickCount++;
+      var okPct2 = framesTried > 0 ? framesOk / framesTried : 0;
+      if (rttyLastError) {
+        hintEl.textContent = '※内部エラーが発生しました（自動復帰済み）: ' + String(rttyLastError.message || rttyLastError);
+      } else if (m !== 'USB' && m !== 'LSB') {
+        hintEl.textContent = '※現在のモードはUSB/LSBではありません';
+      } else if (audioConnected && renderTickCount > 180 && framesTried === 0) {
+        // 約3秒(60fps想定)以上、一度もSTOPビット確認まで到達しない＝Mark/Space周波数が
+        // 実際の信号と合っていない（または帯域外）疑いが濃厚
+        hintEl.textContent = '※信号を検出できていません。Mark/Shift(Hz)の設定を確認してください';
+      } else if (framesTried >= 15 && framesOk === 0) {
+        // フレーム自体は検出できているのに一度もSTOPが一致しない＝Mark/Space反転の疑いが濃厚
+        hintEl.textContent = '※フレームは検出できていますがSTOP不一致が続いています。「反転」を試してください';
+      } else if (framesTried >= 40 && okPct2 > 0.3 && okPct2 < 0.7) {
+        // STOP一致率が50%前後＝ノイズに対する偶然の一致（コイン投げ）の可能性が高く、
+        // 実信号をロックできていない疑いが濃厚。本当にロックできていれば90%以上になる。
+        hintEl.textContent = '※STOP一致率が' + Math.round(okPct2*100) + '%と中途半端です。ノイズに誤ロックしている可能性があります。実際に送信中か、Mark/Shiftの値をご確認ください';
+      } else {
+        hintEl.textContent = '';
+      }
+    }
+
+    renderRafId = requestAnimationFrame(renderTick);
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var tog = document.getElementById('rttyDecodeToggle');
+    var clearBtn = document.getElementById('rttyClearBtn');
+    if (tog) {
+      tog.addEventListener('change', function(){
+        if (tog.checked) {
+          resetDecoderState();
+          ensureTap();
+          if (!tapWatchdogId) tapWatchdogId = setTimeout(tapWatchdog, 500);
+          if (!renderRafId) renderRafId = requestAnimationFrame(renderTick);
+        } else if (document.getElementById('rttyStatus')) {
+          document.getElementById('rttyStatus').textContent = '停止中';
+        }
+      });
+    }
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function(){ outBuf = ''; renderOutput(); });
+    }
+    var baudSel = document.getElementById('rttyBaud');
+    if (baudSel) baudSel.addEventListener('change', resetDecoderState);
+    var autoBtn = document.getElementById('rttyAutoDetectBtn');
+    if (autoBtn) {
+      autoBtn.addEventListener('click', function(){
+        var statusEl = document.getElementById('rttyStatus');
+        if (!curScanFreqs.length) {
+          if (statusEl) statusEl.textContent = 'ONにしてから実行してください';
+          return;
+        }
+        var pair = findBestMarkSpacePair(curScanFreqs, curScanMags);
+        if (!pair) {
+          if (statusEl) statusEl.textContent = '2トーンを検出できませんでした';
+          return;
+        }
+        // 見つかったペアがノイズ床に対して十分強いかを確認（弱いピークの誤検出を防ぐ）
+        var weaker = Math.min(pair[0].m, pair[1].m);
+        var reqLevel = noiseFloor + (sigPeak - noiseFloor) * 0.4;
+        if (weaker < reqLevel) {
+          if (statusEl) statusEl.textContent = '信号が弱すぎます（送信中か確認してください）';
+          return;
+        }
+        var lo = pair[0].f < pair[1].f ? pair[0] : pair[1];
+        var hi = pair[0].f < pair[1].f ? pair[1] : pair[0];
+        var markInputEl = document.getElementById('rttyMarkHz');
+        var shiftInputEl = document.getElementById('rttyShiftHz');
+        if (markInputEl) markInputEl.value = Math.round(lo.f);
+        if (shiftInputEl) shiftInputEl.value = Math.round(hi.f - lo.f);
+        resetDecoderState();
+        if (statusEl) statusEl.textContent = '検出: ' + Math.round(lo.f) + '/' + Math.round(hi.f) + 'Hz に設定';
+      });
+    }
+    var specCv = document.getElementById('rttySpecCanvas');
+    if (specCv) {
+      specCv.addEventListener('click', function(ev){
+        if (!curScanFreqs.length) return;
+        var rect = specCv.getBoundingClientRect();
+        var xRatio = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
+        var loF = curScanFreqs[0], hiF = curScanFreqs[curScanFreqs.length - 1];
+        var clickedFreq = loF + xRatio * (hiF - loF);
+        var snapped = Math.round(clickedFreq / RTTY_SCAN_STEP) * RTTY_SCAN_STEP;
+        var markInputEl = document.getElementById('rttyMarkHz');
+        if (markInputEl) markInputEl.value = snapped;
+      });
+    }
+  });
+})();
+</script>
+
+<!-- ===== WEFAXデコード（気象FAX画像自動受信：IOC576/RPM120固定） ===== -->
+<script>
+(function(){
+  'use strict';
+
+  // ----- 固定パラメータ（IOC576 / RPM120 = ITU-R気象FAX標準） -----
+  var IOC = 576;
+  var RPM = 120;
+  var LINE_SEC = 60 / RPM;                    // 1行あたりの時間（120RPM=0.5秒/行）
+  var PPL = Math.round(IOC * Math.PI);         // 1行あたりのピクセル数（IOC576≒1810px）
+  var WHITE_HZ = 1500, BLACK_HZ = 2300;
+  var CENTER_HZ = (WHITE_HZ + BLACK_HZ) / 2;    // 1900Hz
+  var DEV_HZ = (BLACK_HZ - WHITE_HZ) / 2;       // ±400Hz
+  var START_TONE_HZ = 300, STOP_TONE_HZ = 450;
+  // ※黒パルス幅は固定値を仮定せず、フェージング時に実測したエッジ位置を使う（tryLockPhasing内）
+  var TONE_REQUIRED_MS = 700;                   // スタートトーンを確定判定する連続検出時間
+  var STOP_TONE_REQUIRED_MS = 2000;             // ストップトーンはより長く連続検出できて初めて確定（実画像の誤検出防止）
+  var STOP_MAX_DEMOD_VAR = 0.015;               // この分散を超える(＝まだ絵柄が変動している)間はストップ扱いにしない
+  var PHASING_MIN_MS = 10000;                   // 同期(フェージング)確定に必要な最低蓄積時間。
+                                                 // 300Hzスタートトーン自体が検出後もしばらく鳴り続け、
+                                                 // その間のノイズを黒基準パルスと誤認してロックしてしまう
+                                                 // 不具合があったため、6行分(3秒)から10秒に延長した
+  var WARMUP_MS = 1500;                         // タップ接続直後、閾値(ノイズ床/ピーク)が安定するまでの助走時間（誤検出防止）
+  var MIN_RECEIVE_MS_BEFORE_STOP = 8000;        // 受信開始直後の誤ストップ検出を防ぐための最低受信継続時間
+  var MAX_LINES = 3000;                         // 画像バッファの安全上限（約25分@120RPM）
+  var TONE_FFT_SIZE = 2048;
+
+  var ST_IDLE = 'idle', ST_PHASING = 'phasing', ST_RECEIVING = 'receiving', ST_DONE = 'done';
+  var state = ST_IDLE;
+
+  function wfaxIsIOS(){
+    return /iP(hone|ad|od)/i.test(navigator.userAgent) ||
+           (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  }
+
+  // ----- Goertzelアルゴリズムによる単一周波数の振幅検出（トーン検出専用） -----
+  function goertzelMag(buf, sampleRate, freq){
+    var n = buf.length;
+    var k = Math.round(0.5 + (n * freq) / sampleRate);
+    var w = (2 * Math.PI / n) * k;
+    var cosine = Math.cos(w), sine = Math.sin(w), coeff = 2 * cosine;
+    var q0 = 0, q1 = 0, q2 = 0;
+    for (var i = 0; i < n; i++) { q0 = coeff * q1 - q2 + buf[i]; q2 = q1; q1 = q0; }
+    var real = q1 - q2 * cosine, imag = q2 * sine;
+    return Math.sqrt(real * real + imag * imag) / (n / 2);
+  }
+
+  // ----- 音声グラフへのタップ -----
+  // (1) wfaxAn: トーン検出（AnalyserNode・低頻度ポーリング、CW/RTTYと同じ方式）
+  // (2) wfaxProc: 連続復調用（ScriptProcessorNode・オーディオクロック駆動でサンプル欠落なし）
+  var wfaxAnCtx = null, wfaxAn = null, toneBuf = null;
+  var wfaxProc = null, wfaxSilentGain = null;
+  var fs = 24000;
+  var samplesPerLine = 12000;
+  var tapEstablishedMs = 0;
+
+  // ----- AudioWorklet移行 -----
+  // ScriptProcessorNodeはメインスレッド駆動のため、無音(gain=0)にしているWEFAXタップは
+  // ブラウザ側の優先度が下がりやすく、コールバックが欠落してもユーザーには気づけない
+  // （音声再生自体は別ノードが担当しており、耳には途切れが聞こえない）。
+  // AudioWorkletProcessorは音声専用のリアルタイムスレッドで実行されるため、この問題を避けられる。
+  // 1ファイル完結の都合上、ワークレットのコードはBlob URL経由で読み込む。
+  // 復調の中身（発振器回転・I/Qローパス・atan2レス周波数弁別・declickメディアン・復調後平滑化）は
+  // onWfaxAudioProcess（フォールバック版）と数式レベルで同一。
+  var WFAX_WORKLET_SRC = [
+    'class WfaxDemodProcessor extends AudioWorkletProcessor {',
+    '  constructor(options) {',
+    '    super();',
+    '    var po = (options && options.processorOptions) || {};',
+    '    this.CENTER_HZ = po.centerHz || 1900;',
+    '    this.DEV_HZ = po.devHz || 400;',
+    '    this.alphaIQ = po.alphaIQ || 0.23;',
+    '    this.alphaDemod = po.alphaDemod || 0.35;',
+    '    this.trimHz = 0;',
+    '    this.oc = 1; this.os = 0;',
+    '    this.lpI = 0; this.lpQ = 0; this.lpI2 = 0; this.lpQ2 = 0;',
+    '    this.prevPhase = 0;',
+    '    this.demodLP = 0; this.demodLP2 = 0;',
+    '    this.fdPrev1 = 0; this.fdPrev2 = 0;',
+    '    this.sampleCounter = 0;',
+    '    this.BATCH_SIZE = 2048;',
+    '    this.batchBuf = new Float32Array(this.BATCH_SIZE);',
+    '    this.batchLen = 0;',
+    '    this.batchStartIdx = 0;',
+    '    var self = this;',
+    '    this.port.onmessage = function(ev){',
+    '      var d = ev.data || {};',
+    '      if (d.type === "trim") {',
+    '        self.trimHz = d.value || 0;',
+    '      } else if (d.type === "reset") {',
+    '        self.oc = 1; self.os = 0; self.lpI = 0; self.lpQ = 0; self.lpI2 = 0; self.lpQ2 = 0;',
+    '        self.prevPhase = 0; self.demodLP = 0; self.demodLP2 = 0;',
+    '        self.fdPrev1 = 0; self.fdPrev2 = 0;',
+    '      }',
+    '    };',
+    '  }',
+    '  flush(){',
+    '    if (this.batchLen === 0) return;',
+    '    var out = new Float32Array(this.batchBuf.subarray(0, this.batchLen));',
+    '    this.port.postMessage({ startIdx: this.batchStartIdx, grays: out }, [out.buffer]);',
+    '    this.batchLen = 0;',
+    '  }',
+    '  process(inputs) {',
+    '    var input = inputs[0];',
+    '    if (!input || !input[0] || input[0].length === 0) return true;',
+    '    var x = input[0];',
+    '    var wOsc = 2 * Math.PI * (this.CENTER_HZ + this.trimHz) / sampleRate;',
+    '    var rotC = Math.cos(wOsc), rotS = Math.sin(wOsc);',
+    '    var oc = this.oc, os = this.os, prevPhase = this.prevPhase;',
+    '    var lpI = this.lpI, lpQ = this.lpQ, lpI2 = this.lpI2, lpQ2 = this.lpQ2;',
+    '    var demodLP = this.demodLP, demodLP2 = this.demodLP2;',
+    '    var fdPrev1 = this.fdPrev1, fdPrev2 = this.fdPrev2;',
+    '    var DEV_HZ = this.DEV_HZ, alphaIQ = this.alphaIQ, alphaDemod = this.alphaDemod;',
+    '    for (var n = 0; n < x.length; n++) {',
+    '      var xs = x[n];',
+    '      var iInst = xs * oc, qInst = -xs * os;',
+    '      lpI += (iInst - lpI) * alphaIQ;',
+    '      lpQ += (qInst - lpQ) * alphaIQ;',
+    '      lpI2 += (lpI - lpI2) * alphaIQ;',
+    '      lpQ2 += (lpQ - lpQ2) * alphaIQ;',
+    '      var phase = Math.atan2(lpQ2, lpI2);',
+    '      var dPhase = phase - prevPhase;',
+    '      dPhase -= 2 * Math.PI * Math.round(dPhase / (2 * Math.PI));',
+    '      prevPhase = phase;',
+    '      var freqDev = dPhase * sampleRate / (2 * Math.PI);',
+    '      if (freqDev > DEV_HZ * 1.6) freqDev = DEV_HZ * 1.6;',
+    '      if (freqDev < -DEV_HZ * 1.6) freqDev = -DEV_HZ * 1.6;',
+    '      var da = fdPrev2, db = fdPrev1, dc = freqDev;',
+    '      var freqDevMed = Math.max(Math.min(da, db), Math.min(Math.max(da, db), dc));',
+    '      fdPrev2 = fdPrev1; fdPrev1 = freqDev;',
+    '      demodLP += (freqDevMed - demodLP) * alphaDemod;',
+    '      demodLP2 += (demodLP - demodLP2) * alphaDemod;',
+    '      var pct = (demodLP2 + DEV_HZ) / (2 * DEV_HZ);',
+    '      if (pct < 0) pct = 0; if (pct > 1) pct = 1;',
+    '      if (this.batchLen === 0) this.batchStartIdx = this.sampleCounter;',
+    '      this.batchBuf[this.batchLen++] = pct * 255;',
+    '      this.sampleCounter++;',
+    '      if (this.batchLen >= this.BATCH_SIZE) this.flush();',
+    '      var ocNew = oc * rotC - os * rotS;',
+    '      var osNew = oc * rotS + os * rotC;',
+    '      oc = ocNew; os = osNew;',
+    '    }',
+    '    var norm = 1 / Math.sqrt(oc * oc + os * os);',
+    '    this.oc = oc * norm; this.os = os * norm;',
+    '    this.prevPhase = prevPhase;',
+    '    this.lpI = lpI; this.lpQ = lpQ; this.lpI2 = lpI2; this.lpQ2 = lpQ2;',
+    '    this.demodLP = demodLP; this.demodLP2 = demodLP2;',
+    '    this.fdPrev1 = fdPrev1; this.fdPrev2 = fdPrev2;',
+    '    return true;',
+    '  }',
+    '}',
+    'registerProcessor("wfax-demod-processor", WfaxDemodProcessor);'
+  ].join('\n');
+
+  var wfaxWorkletNode = null, wfaxWorkletGain = null;
+  var wfaxUseWorklet = false, wfaxWorkletReady = false;
+  var wfaxWorkletModulePromise = null, wfaxWorkletModuleCtx = null;
+
+  function ensureWorkletModule(ctx){
+    if (wfaxWorkletModulePromise && wfaxWorkletModuleCtx === ctx) return wfaxWorkletModulePromise;
+    wfaxWorkletModuleCtx = ctx;
+    var blob = new Blob([WFAX_WORKLET_SRC], { type: 'application/javascript' });
+    var url = URL.createObjectURL(blob);
+    wfaxWorkletModulePromise = ctx.audioWorklet.addModule(url).catch(function(err){
+      wfaxWorkletModulePromise = null; // 失敗時は次回リトライできるようにキャッシュを破棄
+      throw err;
+    });
+    return wfaxWorkletModulePromise;
+  }
+
+  function startLegacyScriptProcessor(ctx){
+    // AudioWorklet非対応環境向けフォールバック（従来のScriptProcessorNode方式）
+    console.warn('[WEFAX worklet] using legacy ScriptProcessor fallback (not AudioWorklet)');
+    wfaxUseWorklet = false;
+    try { if (wfaxProc) wfaxProc.onaudioprocess = null; } catch (e) {}
+    wfaxProc = ctx.createScriptProcessor(4096, 1, 1);
+    wfaxProc.onaudioprocess = onWfaxAudioProcess;
+    wfaxSilentGain = ctx.createGain();
+    wfaxSilentGain.gain.value = 0;
+    wfaxProc.connect(wfaxSilentGain);
+    wfaxSilentGain.connect(ctx.destination);
+    wfaxWorkletReady = true;
+  }
+
+  function setupWfaxWorklet(ctx){
+    ensureWorkletModule(ctx).then(function(){
+      if (wfaxAnCtx !== ctx) return; // 読込中にコンテキストが切り替わっていたら破棄
+      var trimInput = document.getElementById('wfaxTrimHz');
+      var trimHz = (trimInput && parseFloat(trimInput.value)) || 0;
+      wfaxWorkletNode = new AudioWorkletNode(ctx, 'wfax-demod-processor', {
+        processorOptions: { centerHz: CENTER_HZ, devHz: DEV_HZ, alphaIQ: alphaIQ, alphaDemod: alphaDemod }
+      });
+      wfaxWorkletNode.port.onmessage = function(ev){
+        var d = ev.data;
+        if (d && d.grays) handleWfaxGrayBatch(d.startIdx, d.grays);
+      };
+      wfaxWorkletNode.port.postMessage({ type: 'trim', value: trimHz });
+      wfaxWorkletGain = ctx.createGain();
+      wfaxWorkletGain.gain.value = 0; // 音声出力への二重ミックスを避ける
+      wfaxWorkletNode.connect(wfaxWorkletGain);
+      wfaxWorkletGain.connect(ctx.destination);
+      wfaxWorkletReady = true;
+      console.log('[WEFAX worklet] AudioWorklet setup succeeded. wfaxUseWorklet=' + wfaxUseWorklet);
+    }).catch(function(err){
+      console.error('[WEFAX worklet] setup failed, falling back to ScriptProcessor. reason:', err);
+      startLegacyScriptProcessor(ctx);
+    });
+  }
+
+  function setupDemodParams(){
+    fs = (wfaxAnCtx && wfaxAnCtx.sampleRate) || 24000;
+    samplesPerLine = Math.round(fs * LINE_SEC);
+    // 一次IIRローパスの係数（ミキサー後のI/Q用・復調後の追加平滑化用）。いずれも2段カスケードで使用する
+    alphaIQ = 1 - Math.exp(-2 * Math.PI * 1000 / fs);
+    alphaDemod = 1 - Math.exp(-2 * Math.PI * (PPL / LINE_SEC * 0.75) / fs); // ノイズ抑圧と解像度のバランスを取った折衷値
+  }
+
+  function ensureTap(){
+    var ctx = null, src = null;
+    if (wfaxIsIOS() || window.__androidApp) {
+      ctx = window.__saCtx; src = window.__saProc;
+    } else {
+      var g = window.__ensureAudioGraph && window.__ensureAudioGraph();
+      if (g) { ctx = g.ctx; src = g.src; }
+    }
+    if (!ctx || !src) return false;
+    if (wfaxAnCtx !== ctx) {
+      wfaxAnCtx = ctx;
+      wfaxAn = ctx.createAnalyser();
+      wfaxAn.fftSize = TONE_FFT_SIZE;
+      wfaxAn.smoothingTimeConstant = 0;
+      toneBuf = new Float32Array(TONE_FFT_SIZE);
+      // 連続復調用タップを作り直す（コンテキストが変わったら再構築）
+      try { if (wfaxProc) wfaxProc.onaudioprocess = null; } catch (e) {}
+      wfaxProc = null;
+      if (wfaxWorkletNode) { try { wfaxWorkletNode.port.onmessage = null; } catch (e) {} }
+      wfaxWorkletNode = null;
+      wfaxWorkletReady = false;
+      setupDemodParams();
+      resetToIdle();
+      tapEstablishedMs = performance.now();
+      if (ctx.audioWorklet) {
+        wfaxUseWorklet = true;
+        setupWfaxWorklet(ctx);
+      } else {
+        startLegacyScriptProcessor(ctx);
+      }
+    }
+    try { src.connect(wfaxAn); } catch (e) {}
+    if (wfaxUseWorklet) {
+      if (wfaxWorkletNode) { try { src.connect(wfaxWorkletNode); } catch (e) {} }
+    } else if (wfaxProc) {
+      try { src.connect(wfaxProc); } catch (e) {}
+    }
+    try { ctx.resume().catch(function(){}); } catch (e) {}
+    return wfaxWorkletReady;
+  }
+
+  // ----- 復調（FM直交検波）の状態 -----
+  var alphaIQ = 0.23, alphaDemod = 0.35;
+  var oscC = 1, oscS = 0, lpI = 0, lpQ = 0, lpI2 = 0, lpQ2 = 0, prevPhaseFallback = 0, demodLP = 0, demodLP2 = 0;
+  var fdPrev1 = 0, fdPrev2 = 0; // FMクリックノイズ除去用メディアンフィルタの履歴
+  var totalSampleCount = 0;
+
+  function median3(a, b, c){
+    return Math.max(Math.min(a, b), Math.min(Math.max(a, b), c));
+  }
+
+  // フェージング同期用：行長samplesPerLineでの位相ビンごとの明るさ平均（黒基準パルスの位置を探す）
+  var foldSum = null, foldCount = null, phasingStartMs = 0;
+
+  // 受信中の行バッファ
+  var lineStartSampleIdx = 0, lineEndSampleIdx = 0;
+  var currentLineBuf = null, currentLineLen = 0;
+  var lineIndex = 0;
+  var recvStartMs = 0;
+
+  function resetDemodState(){
+    oscC = 1; oscS = 0; lpI = 0; lpQ = 0; lpI2 = 0; lpQ2 = 0; prevPhaseFallback = 0; demodLP = 0; demodLP2 = 0;
+    fdPrev1 = 0; fdPrev2 = 0;
+    if (wfaxUseWorklet && wfaxWorkletNode) {
+      try { wfaxWorkletNode.port.postMessage({ type: 'reset' }); } catch (e) {}
+    }
+  }
+
+  function resetToIdle(){
+    state = ST_IDLE;
+    resetDemodState();
+    lineIndex = 0;
+  }
+
+  function beginPhasing(){
+    state = ST_PHASING;
+    foldSum = new Float32Array(samplesPerLine);
+    foldCount = new Float32Array(samplesPerLine);
+    phasingStartMs = performance.now();
+    setStatus('スタートトーン検出 → フェージング同期中…');
+  }
+
+  function beginReceiving(lineStartIdx){
+    state = ST_RECEIVING;
+    lineStartSampleIdx = lineStartIdx;
+    lineEndSampleIdx = lineStartIdx + samplesPerLine;
+    currentLineBuf = new Float32Array(samplesPerLine + 256);
+    currentLineLen = 0;
+    lineIndex = 0;
+    recvStartMs = performance.now();
+    demodMeanEma = 127; demodVarEma = 1; // 変動ありとみなす安全側の初期値から開始
+    clearCanvasForNewImage();
+    setStatus('画像受信中…');
+  }
+
+  // ----- 画像バッファ／canvas描画 -----
+  function ensureCanvasHeight(n){
+    var cv = document.getElementById('wfaxImgCanvas'); if (!cv) return;
+    if (cv.width !== PPL) cv.width = PPL;
+    if (cv.height < n) {
+      var newH = Math.min(MAX_LINES, Math.max(n, Math.ceil((cv.height || 200) * 1.5)));
+      var tmp = document.createElement('canvas');
+      tmp.width = PPL; tmp.height = cv.height || 0;
+      if (cv.height > 0) { try { tmp.getContext('2d').drawImage(cv, 0, 0); } catch (e) {} }
+      cv.height = newH;
+      var c2 = cv.getContext('2d');
+      c2.fillStyle = '#000'; c2.fillRect(0, 0, PPL, newH);
+      if (tmp.height > 0) c2.drawImage(tmp, 0, 0);
+    }
+  }
+
+  function clearCanvasForNewImage(){
+    var cv = document.getElementById('wfaxImgCanvas'); if (!cv) return;
+    cv.width = PPL; cv.height = 200;
+    var c2 = cv.getContext('2d'); c2.fillStyle = '#000'; c2.fillRect(0, 0, PPL, 200);
+  }
+
+  function drawLine(idx, grayRow){
+    ensureCanvasHeight(idx + 1);
+    var cv = document.getElementById('wfaxImgCanvas'); if (!cv) return;
+    var ctx = cv.getContext('2d');
+    var imgData = ctx.createImageData(PPL, 1);
+    for (var x = 0; x < PPL; x++) {
+      var g = grayRow[x], o = x * 4;
+      imgData.data[o] = g; imgData.data[o+1] = g; imgData.data[o+2] = g; imgData.data[o+3] = 255;
+    }
+    ctx.putImageData(imgData, 0, idx);
+  }
+
+  // 復調後信号の変動(分散)を追跡：実画像は常に激しく変動するが、純音(ストップトーン等)は一定値に張り付くため、
+  // この差を使ってストップトーン誤検出（実画像の一部を誤検出）を防ぐ
+  var demodMeanEma = 0, demodVarEma = 1; // 初期値は「変動あり」寄りにしておく（未受信時に誤ってロック扱いされないよう安全側）
+  var DEMOD_VAR_ALPHA = 0.00005; // fs=24kHz換算で時定数約0.8秒（コメント通りの秒オーダーに合わせる）
+
+  // 行バッファ（samplesPerLine個の輝度サンプル）→ PPLピクセルへ間引き（区間平均）
+  function finishLine(buf, len){
+    var row = new Uint8ClampedArray(PPL);
+    for (var x = 0; x < PPL; x++) {
+      var a = Math.floor(x * len / PPL), b = Math.floor((x + 1) * len / PPL);
+      if (b <= a) b = a + 1;
+      if (b > len) b = len;
+      var sum = 0, cnt = 0;
+      for (var i = a; i < b; i++) { sum += buf[i]; cnt++; }
+      row[x] = cnt > 0 ? (sum / cnt) : 0;
+    }
+    // 行内メディアン(3タップ)で残った塩コショウ状ノイズを軽減（実際の線は連続しているため潰れにくい）
+    // ※5タップまで強めたところ、逆に細かい線の凹凸を潰してブロック状になってしまったため3タップに戻した
+    var despeckled = new Uint8ClampedArray(PPL);
+    despeckled[0] = row[0]; despeckled[PPL - 1] = row[PPL - 1];
+    for (var xx = 1; xx < PPL - 1; xx++) {
+      despeckled[xx] = median3(row[xx - 1], row[xx], row[xx + 1]);
+    }
+    drawLine(lineIndex, despeckled);
+    lineIndex++;
+  }
+
+  // ----- AudioWorkletからのバッチ受信（推奨経路） -----
+  // ワークレット側は復調済みのグレー値(0-255)とその開始サンプル番号(startIdx)だけを送ってくる。
+  // 行組み立て・フェージング集計・状態遷移は、従来のonWfaxAudioProcess内ループと同じロジックを
+  // ここでバッチ単位（＝サンプル単位のforループ）で行う。message queueはロスレスなので、
+  // メインスレッドが多少混雑して処理が遅れても、サンプルの取りこぼしにはならない。
+  function handleWfaxGrayBatch(startIdx, grays){
+    var toggle = document.getElementById('wfaxDecodeToggle');
+    var enabled = !!(toggle && toggle.checked);
+    for (var n = 0; n < grays.length; n++) {
+      var idx = startIdx + n;
+      totalSampleCount = idx + 1;
+      if (!enabled || (state !== ST_PHASING && state !== ST_RECEIVING)) continue;
+      var gray = grays[n];
+
+      if (state === ST_RECEIVING) {
+        var gDev = (gray - demodMeanEma) / 255;
+        demodMeanEma += (gray - demodMeanEma) * DEMOD_VAR_ALPHA;
+        demodVarEma += (gDev * gDev - demodVarEma) * DEMOD_VAR_ALPHA;
+      }
+
+      if (state === ST_PHASING) {
+        var bin = idx % samplesPerLine;
+        foldSum[bin] += gray; foldCount[bin] += 1;
+      } else if (state === ST_RECEIVING) {
+        if (idx >= lineStartSampleIdx && idx < lineEndSampleIdx && currentLineLen < currentLineBuf.length) {
+          currentLineBuf[currentLineLen++] = gray;
+        }
+        if (idx >= lineEndSampleIdx) {
+          finishLine(currentLineBuf, currentLineLen);
+          currentLineLen = 0;
+          lineStartSampleIdx = lineEndSampleIdx;
+          lineEndSampleIdx = lineStartSampleIdx + samplesPerLine;
+          // ----- 境界サンプルの取りこぼし対策 -----
+          // 行の境界をまたいだこのサンプル(idx)は、直前の行には入らなかったが、
+          // 新しい行の範囲には該当するはずなので、ここで改めて追加する
+          // （以前はここで1サンプル失われ、毎行len=samplesPerLine-1になっていた）。
+          if (idx >= lineStartSampleIdx && idx < lineEndSampleIdx && currentLineLen < currentLineBuf.length) {
+            currentLineBuf[currentLineLen++] = gray;
+          }
+          if (lineIndex >= MAX_LINES) {
+            finalizeAndSave('行数上限に達したため自動終了', true);
+          }
+        }
+      }
+    }
+  }
+
+  // ----- 連続復調本体（ScriptProcessorNode：AudioWorklet非対応環境向けフォールバック） -----
+  function onWfaxAudioProcess(e){
+    var toggle = document.getElementById('wfaxDecodeToggle');
+    var input = e.inputBuffer.getChannelData(0);
+    if (!toggle || !toggle.checked || (state !== ST_PHASING && state !== ST_RECEIVING)) {
+      totalSampleCount += input.length;
+      return;
+    }
+    var trimInput = document.getElementById('wfaxTrimHz');
+    var trimHz = (trimInput && parseFloat(trimInput.value)) || 0;
+    var wOsc = 2 * Math.PI * (CENTER_HZ + trimHz) / fs;
+    // 発振器の1サンプルあたり回転量（cos/sinはこのコールバック内で1回だけ計算し、
+    // 以降は複素回転の漸化式で回す。オーディオコールバックごとに高々2回のtrig呼び出しで済む）
+    var rotC = Math.cos(wOsc), rotS = Math.sin(wOsc);
+    var oc = oscC, os = oscS, prevPhase = prevPhaseFallback;
+
+    for (var n = 0; n < input.length; n++) {
+      var x = input[n];
+      var iInst = x * oc, qInst = -x * os;
+      // I/Q ローパスを2段カスケード（-12dB/oct）にして帯域外ノイズの除去を強化
+      lpI += (iInst - lpI) * alphaIQ;
+      lpQ += (qInst - lpQ) * alphaIQ;
+      lpI2 += (lpI - lpI2) * alphaIQ;
+      lpQ2 += (lpQ - lpQ2) * alphaIQ;
+
+      // atan2ベースの周波数弁別器。フェージング/ノイズで振幅が瞬間的にゼロへ落ちても
+      // atan2は常に有限な角度を返すため、振幅ゼロ付近で値が暴走する心配が無い
+      // （atan2を使わない cross/|z|^2 方式は軽量だが、振幅がゼロに近づくと除算で
+      //  異常値に跳ね上がり、実際のフェージング下で画像がノイズまみれになる不具合があった）
+      var phase = Math.atan2(lpQ2, lpI2);
+      var dPhase = phase - prevPhase;
+      dPhase -= 2 * Math.PI * Math.round(dPhase / (2 * Math.PI)); // -π..π へラップ
+      prevPhase = phase;
+      var freqDev = dPhase * fs / (2 * Math.PI);
+      if (freqDev > DEV_HZ * 1.6) freqDev = DEV_HZ * 1.6;
+      if (freqDev < -DEV_HZ * 1.6) freqDev = -DEV_HZ * 1.6;
+      // FMクリックノイズ（瞬間的なスパイク）除去：直近3サンプルのメディアンを取ることで、
+      // 本物のエッジ（連続的な変化）は保ったまま孤立スパイクだけを落とす
+      var freqDevMed = median3(fdPrev2, fdPrev1, freqDev);
+      fdPrev2 = fdPrev1; fdPrev1 = freqDev;
+      // 復調後の平滑化も2段カスケードにして、ピクセル化前のノイズを抑える
+      demodLP += (freqDevMed - demodLP) * alphaDemod;
+      demodLP2 += (demodLP - demodLP2) * alphaDemod;
+
+      var pct = (demodLP2 + DEV_HZ) / (2 * DEV_HZ);
+      if (pct < 0) pct = 0; if (pct > 1) pct = 1;
+      var gray = pct * 255; // white(1500Hz)=255, black(2300Hz)=0 ※復調段の符号の都合で反転していたため修正
+
+      var idx = totalSampleCount + n;
+
+      if (state === ST_RECEIVING) {
+        var gDev = (gray - demodMeanEma) / 255;
+        demodMeanEma += (gray - demodMeanEma) * DEMOD_VAR_ALPHA;
+        demodVarEma += (gDev * gDev - demodVarEma) * DEMOD_VAR_ALPHA;
+      }
+
+      if (state === ST_PHASING) {
+        var bin = idx % samplesPerLine;
+        foldSum[bin] += gray; foldCount[bin] += 1;
+      } else if (state === ST_RECEIVING) {
+        if (idx >= lineStartSampleIdx && idx < lineEndSampleIdx && currentLineLen < currentLineBuf.length) {
+          currentLineBuf[currentLineLen++] = gray;
+        }
+        if (idx >= lineEndSampleIdx) {
+          finishLine(currentLineBuf, currentLineLen);
+          currentLineLen = 0;
+          lineStartSampleIdx = lineEndSampleIdx;
+          lineEndSampleIdx = lineStartSampleIdx + samplesPerLine;
+          // ----- 境界サンプルの取りこぼし対策（worklet経路と同じ修正） -----
+          if (idx >= lineStartSampleIdx && idx < lineEndSampleIdx && currentLineLen < currentLineBuf.length) {
+            currentLineBuf[currentLineLen++] = gray;
+          }
+          if (lineIndex >= MAX_LINES) {
+            finalizeAndSave('行数上限に達したため自動終了', true);
+          }
+        }
+      }
+
+      // 発振器を漸化式で1ステップ回転
+      var ocNew = oc * rotC - os * rotS;
+      var osNew = oc * rotS + os * rotC;
+      oc = ocNew; os = osNew;
+    }
+    // 複素回転を毎サンプル繰り返すと浮動小数点誤差で振幅が徐々にずれるため、
+    // コールバック境界（4096サンプルごと）で正規化しておく
+    var norm = 1 / Math.sqrt(oc * oc + os * os);
+    oscC = oc * norm; oscS = os * norm;
+    prevPhaseFallback = prevPhase;
+    totalSampleCount += input.length;
+  }
+
+  // フェージング中の位相ビン集計から、黒基準パルスの位置（＝行境界）を推定
+  var lastLockContrast = 0;
+  var MIN_LOCK_CONTRAST = 0.12;                 // これ未満のコントラストは「ノイズかもしれない」として同期を保留
+  var PHASING_MAX_MS = 60000;                   // これ以上待ってもコントラストが上がらなければ、見切りで確定させる
+
+  function tryLockPhasing(){
+    if (!foldSum) return false;
+    var elapsed = performance.now() - phasingStartMs;
+    if (elapsed < PHASING_MIN_MS) return false;
+    var minAvg = Infinity, minBin = 0, sumAvg = 0, nBins = 0;
+    for (var b = 0; b < samplesPerLine; b++) {
+      if (foldCount[b] < 3) continue; // 十分な蓄積が無いビンは無視
+      var avg = foldSum[b] / foldCount[b];
+      sumAvg += avg; nBins++;
+      if (avg < minAvg) { minAvg = avg; minBin = b; }
+    }
+    if (minAvg === Infinity || nBins === 0) return false;
+    var meanAvg = sumAvg / nBins;
+    // コントラスト：平均輝度に対して黒基準パルス位置がどれだけ暗いか（0=差が無い＝おそらくノイズ、1=完全な黒）
+    lastLockContrast = meanAvg > 0 ? Math.max(0, Math.min(1, (meanAvg - minAvg) / meanAvg)) : 0;
+
+    if (lastLockContrast < MIN_LOCK_CONTRAST && elapsed < PHASING_MAX_MS) {
+      // まだ明確な黒基準パルスが見えない＝フェージング信号がまだ来ていない/弱い可能性。蓄積を続けて待つ
+      setStatus('フェージング同期中…（同期コントラスト' + Math.round(lastLockContrast * 100) + '%・信号待ち）');
+      return false;
+    }
+    // 黒パルスの「谷底1点」だけでなく、しきい値を跨ぐ区間（黒く沈んでいる範囲）を実測し、
+    // その終端（黒→白に戻るエッジ）を行の先頭として使う。固定幅の仮定に頼らないため、
+    // 同期のたびに結果がブレる問題を減らせる
+    var threshold = (meanAvg + minAvg) / 2;
+    var maxScan = Math.floor(samplesPerLine * 0.3); // 想定より大幅に広い黒領域は異常とみなし打ち切る
+    var endEdgeBin = minBin, scanned = 0;
+    while (scanned < maxScan && (foldCount[endEdgeBin] < 3 || (foldSum[endEdgeBin] / foldCount[endEdgeBin]) < threshold)) {
+      endEdgeBin = (endEdgeBin + 1) % samplesPerLine;
+      scanned++;
+    }
+    var lineStartBin = endEdgeBin;
+    // 直近の未来にある、この位相ビンに一致するサンプル位置を行開始点とする
+    var cur = totalSampleCount;
+    var curBin = cur % samplesPerLine;
+    var delta = (lineStartBin - curBin + samplesPerLine) % samplesPerLine;
+    if (delta < samplesPerLine * 0.02) delta += samplesPerLine; // 直後すぎる場合は次周期にずらす
+    beginReceiving(cur + delta);
+    setStatus('画像受信中…（同期コントラスト' + Math.round(lastLockContrast * 100) + '%' +
+      (lastLockContrast < MIN_LOCK_CONTRAST ? '・低いためノイズ誤同期の可能性あり' : '') + '）');
+    return true;
+  }
+
+  // ----- 保存（PNG） -----
+  function saveImage(finalLineCount){
+    var cv = document.getElementById('wfaxImgCanvas'); if (!cv) return;
+    var h = Math.max(1, finalLineCount || lineIndex);
+    var out = document.createElement('canvas');
+    out.width = PPL; out.height = h;
+    out.getContext('2d').drawImage(cv, 0, 0, PPL, h, 0, 0, PPL, h);
+    out.toBlob(function(blob){
+      if (!blob) return;
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      var ts = new Date();
+      var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+      var fname = 'wefax_' + ts.getFullYear() + pad(ts.getMonth()+1) + pad(ts.getDate()) + '_' +
+                  pad(ts.getHours()) + pad(ts.getMinutes()) + pad(ts.getSeconds()) + '.png';
+      a.href = url; a.download = fname;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+    }, 'image/png');
+  }
+
+  function finalizeAndSave(reason, silent){
+    if (state !== ST_RECEIVING && state !== ST_PHASING) return;
+    // 受信中断中の途中行も、たまっている分だけ画像化しておく
+    if (state === ST_RECEIVING && currentLineLen > 8) {
+      finishLine(currentLineBuf, currentLineLen);
+      currentLineLen = 0;
+    }
+    var finalCount = lineIndex;
+    state = ST_DONE;
+    setStatus('受信完了（' + (reason || '') + '）→ 保存しました。まもなく次のスタートトーン待ちに戻ります');
+    saveImage(finalCount);
+    // 保存後、少し間をおいて自動的に「次のチャート待ち」に戻る（継続運用のため）
+    setTimeout(function(){
+      if (state === ST_DONE) {
+        resetToIdle();
+        var toggle = document.getElementById('wfaxDecodeToggle');
+        setStatus((toggle && toggle.checked) ? 'スタートトーン(300Hz)待機中' : '停止中');
+      }
+    }, 3000);
+  }
+
+  function setStatus(t){
+    var el = document.getElementById('wfaxStatus'); if (el) el.textContent = t;
+  }
+
+  // ----- トーン検出（300Hzスタート／450Hzストップ）：低頻度ポーリング -----
+  var nfStart = 0.001, spStart = 0.02, nfStop = 0.001, spStop = 0.02;
+  var startOnSince = 0, stopOnSince = 0;
+  var startOffSince = 0, stopOffSince = 0; // 直近で検出が途切れた時刻（短い途切れを許容するため）
+  var toneSampleTimerId = 0, renderRafId = 0;
+  var curMagStart = 0, curMagStop = 0, curDetHz = 0;
+  var audioConnected = false;
+
+  var TONE_SAMPLE_MS = 100;
+  var TONE_DROPOUT_TOLERANCE_MS = 300; // これより短い途切れ(ノイズ・フェージング)は連続検出とみなす
+
+  function toneSampleTick(){
+    toneSampleTimerId = 0;
+    var toggle = document.getElementById('wfaxDecodeToggle');
+    if (!toggle || !toggle.checked) return;
+
+    if (!ensureTap()) {
+      audioConnected = false;
+      toneSampleTimerId = setTimeout(toneSampleTick, TONE_SAMPLE_MS);
+      return;
+    }
+    audioConnected = true;
+
+    wfaxAn.getFloatTimeDomainData(toneBuf);
+    var sr = wfaxAnCtx.sampleRate || 24000;
+    var magStart = goertzelMag(toneBuf, sr, START_TONE_HZ);
+    var magStop  = goertzelMag(toneBuf, sr, STOP_TONE_HZ);
+
+    if (magStart < nfStart) nfStart = magStart; else nfStart += (magStart - nfStart) * 0.01;
+    if (magStart > spStart) spStart = magStart; else spStart -= (spStart - nfStart) * 0.01;
+    if (spStart < nfStart + 0.0005) spStart = nfStart + 0.0005;
+    if (magStop < nfStop) nfStop = magStop; else nfStop += (magStop - nfStop) * 0.01;
+    if (magStop > spStop) spStop = magStop; else spStop -= (spStop - nfStop) * 0.01;
+    if (spStop < nfStop + 0.0005) spStop = nfStop + 0.0005;
+
+    var onStart = magStart > (nfStart + (spStart - nfStart) * 0.55);
+    var onStop  = magStop  > (nfStop  + (spStop  - nfStop)  * 0.55);
+    var now = performance.now();
+
+    // ----- 短い途切れを許容する連続検出判定 -----
+    // 実際の無線信号はフェージング等で瞬間的に途切れることがあり、1回でも検出漏れした
+    // 瞬間にカウントを振り出しに戻すと、必要な連続検出時間を永遠に満たせないことがあった。
+    // TONE_DROPOUT_TOLERANCE_MS未満の途切れは無視し、それより長く途切れた場合のみリセットする。
+    if (onStart) {
+      startOffSince = 0;
+      if (!startOnSince) startOnSince = now;
+    } else {
+      if (!startOffSince) startOffSince = now;
+      else if (now - startOffSince > TONE_DROPOUT_TOLERANCE_MS) { startOnSince = 0; startOffSince = 0; }
+    }
+    if (onStop) {
+      stopOffSince = 0;
+      if (!stopOnSince) stopOnSince = now;
+    } else {
+      if (!stopOffSince) stopOffSince = now;
+      else if (now - stopOffSince > TONE_DROPOUT_TOLERANCE_MS) { stopOnSince = 0; stopOffSince = 0; }
+    }
+
+    // タップ接続直後はノイズ床/ピークの推定がまだ安定していないため、誤検出防止のため状態遷移を保留する
+    var warmedUp = tapEstablishedMs && (now - tapEstablishedMs) >= WARMUP_MS;
+
+    if (warmedUp && state === ST_IDLE && startOnSince && (now - startOnSince) >= TONE_REQUIRED_MS) {
+      beginPhasing();
+      startOnSince = 0; startOffSince = 0;
+    } else if (state === ST_PHASING) {
+      tryLockPhasing();
+    }
+    // ストップトーンは「画像受信中」かつ、受信開始から最低限の時間が経過し、
+    // かつ復調後の信号がフラット(=実画像の変動ではなく単一トーン)になっている場合のみ有効
+    if (warmedUp && state === ST_RECEIVING && stopOnSince &&
+        (now - stopOnSince) >= STOP_TONE_REQUIRED_MS &&
+        (now - recvStartMs) >= MIN_RECEIVE_MS_BEFORE_STOP &&
+        demodVarEma <= STOP_MAX_DEMOD_VAR) {
+      finalizeAndSave('ストップトーン検出');
+      stopOnSince = 0; stopOffSince = 0;
+    }
+
+    curMagStart = magStart; curMagStop = magStop;
+    curDetHz = onStart ? START_TONE_HZ : (onStop ? STOP_TONE_HZ : 0);
+
+    toneSampleTimerId = setTimeout(toneSampleTick, TONE_SAMPLE_MS);
+  }
+
+  function fmtElapsed(ms){
+    var s = Math.floor(ms / 1000), m = Math.floor(s / 60); s = s % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function renderTick(){
+    renderRafId = 0;
+    var toggle = document.getElementById('wfaxDecodeToggle');
+    if (!toggle || !toggle.checked) return;
+
+    if (!audioConnected) {
+      setStatus('音声未接続');
+    } else {
+      var lv = document.getElementById('wfaxLevelBar');
+      if (lv) {
+        var m = Math.max(curMagStart, curMagStop);
+        var nf = Math.min(nfStart, nfStop), sp = Math.max(spStart, spStop);
+        var pct = Math.max(0, Math.min(100, (m - nf) / (sp - nf || 1) * 100));
+        lv.style.width = pct + '%';
+        lv.classList.toggle('on', curDetHz > 0);
+      }
+      var freqEl = document.getElementById('wfaxFreqInfo');
+      if (freqEl) freqEl.textContent = '検出Hz: ' + (curDetHz ? curDetHz : '--');
+      var lineEl = document.getElementById('wfaxLineInfo');
+      if (lineEl) lineEl.textContent = '行: ' + lineIndex + (state === ST_RECEIVING ? (' / ' + PPL + 'px幅') : '');
+      var timeEl = document.getElementById('wfaxTimeInfo');
+      if (timeEl) timeEl.textContent = '経過: ' + (state === ST_RECEIVING ? fmtElapsed(performance.now() - recvStartMs) : '0:00');
+      var varEl = document.getElementById('wfaxVarInfo');
+      if (varEl) varEl.textContent = '変動: ' + (state === ST_RECEIVING ? demodVarEma.toFixed(4) : '--');
+      if (state === ST_IDLE) setStatus((toggle.checked ? 'スタートトーン(300Hz)待機中' : '停止中') +
+        ' [助走:' + (tapEstablishedMs ? (performance.now() - tapEstablishedMs >= WARMUP_MS ? '完了' : Math.round(WARMUP_MS - (performance.now() - tapEstablishedMs)) + 'ms') : '未接続') + ']');
+    }
+    var hintEl = document.getElementById('wfaxModeHint');
+    if (hintEl) hintEl.textContent = 'IOC576/RPM120固定・1行=' + PPL + 'px・実効' + (samplesPerLine / fs).toFixed(4) + '秒/行';
+
+    renderRafId = requestAnimationFrame(renderTick);
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    var tog = document.getElementById('wfaxDecodeToggle');
+    if (tog) {
+      tog.addEventListener('change', function(){
+        if (tog.checked) {
+          if (!toneSampleTimerId) toneSampleTimerId = setTimeout(toneSampleTick, TONE_SAMPLE_MS);
+          if (!renderRafId) renderRafId = requestAnimationFrame(renderTick);
+        } else {
+          setStatus('停止中');
+        }
+      });
+    }
+    var trimHzInput = document.getElementById('wfaxTrimHz');
+    if (trimHzInput) {
+      trimHzInput.addEventListener('change', function(){
+        if (wfaxUseWorklet && wfaxWorkletNode) {
+          var v = parseFloat(trimHzInput.value) || 0;
+          try { wfaxWorkletNode.port.postMessage({ type: 'trim', value: v }); } catch (e) {}
+        }
+      });
+    }
+    var manualStart = document.getElementById('wfaxManualStart');
+    if (manualStart) {
+      manualStart.addEventListener('click', function(){
+        if (!ensureTap()) { alert('先に音声を接続してください'); return; }
+        beginReceiving(totalSampleCount);
+      });
+    }
+    var resyncBtn = document.getElementById('wfaxResync');
+    if (resyncBtn) {
+      resyncBtn.addEventListener('click', function(){
+        if (!ensureTap()) { alert('先に音声を接続してください'); return; }
+        beginPhasing();
+      });
+    }
+    var manualStop = document.getElementById('wfaxManualStop');
+    if (manualStop) {
+      manualStop.addEventListener('click', function(){
+        if (state === ST_RECEIVING || state === ST_PHASING) {
+          finalizeAndSave('手動終了');
+        } else {
+          saveImage(lineIndex); // 受信中でなくても現状の画像を保存だけしたい場合
+        }
+      });
+    }
+    var saveBtn = document.getElementById('wfaxSaveBtn');
+    if (saveBtn) saveBtn.addEventListener('click', function(){ saveImage(lineIndex); });
+
+    var clearBtn = document.getElementById('wfaxClearBtn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function(){
+        resetToIdle();
+        clearCanvasForNewImage();
+        setStatus(document.getElementById('wfaxDecodeToggle') && document.getElementById('wfaxDecodeToggle').checked ? 'スタートトーン(300Hz)待機中' : '停止中');
       });
     }
   });
@@ -10363,6 +11945,8 @@ function hookIOS(sz,sm){
     {id:'log',      label:'📜 ログ'},
     {id:'spectrum', label:'📊 スペクトラム（バンド内スキャン）'},
     {id:'cwdecode', label:'📟 CW自動判読'},
+    {id:'rttydecode', label:'🖨️ RTTY自動判読'},
+    {id:'wefaxdecode', label:'🗺️ WEFAX自動受信(気象FAX)'},
     {id:'presets',  label:'⭐ プリセット (20)'}
   ];
   var DEFAULT_ORDER = PANEL_DEFS.map(function(p){ return p.id; });
