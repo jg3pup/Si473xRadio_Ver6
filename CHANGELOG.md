@@ -157,10 +157,20 @@ Si473X Radio Ver6 のリリース履歴です。
 3. `.uf2` ファイルを RPI-RP2 ドライブにコピー
 
 **ESP32-C3**
-1. ブラウザで `http://[IPアドレス]/update` にアクセス
-2. `.merged.bin` をアップロード
+> ⚠️ 書き換え前に WiFi スライドスイッチ（SW7）を必ず OFF にしてください
 
-### Web リモコン更新
+1. Chrome / Edge で https://www.espboards.dev/tools/program/ を開く
+2. WiFi SW を **OFF** にしてから XIAO ESP32-C3 の USB ポートと PC を接続
+3. `.merged.bin` を指定（アドレス `0x0`）して Flash
+4. 書き込み完了後、USB を抜いて WiFi SW を ON に戻す
 
-1. ブラウザで `http://[IPアドレス]/upload` にアクセス
-2. `remote.html.gz` をアップロード
+### Web リモコン・局データの更新
+
+ESP32-C3 FW 書き換え後は LittleFS が消去されます。
+`http://[IPアドレス]/upload` にアクセスして以下を再アップロードしてください。
+
+| ファイル | アップロード欄 |
+|----------|--------------|
+| `remote.html.gz` | ① Web リモコン HTML |
+| `japan_stations.json` | ② 国内放送局データ |
+| `air_stations.json` | ④ AIR 局データ |
