@@ -114,6 +114,25 @@ ESP32-C3 FW 書き換え後は LittleFS が消去されるため、以下のフ�
 2. `.apk` ファイルをダウンロードしてインストール
 
 ---
+## Third-Party Notices
+
+The FT8/FT4 auto-decode feature embeds a WebAssembly module built from
+[`kgoba/ft8_lib`](https://github.com/kgoba/ft8_lib) (**MIT License**,
+Copyright (c) 2018 Kārlis Goba), via a small original C wrapper
+(`decode_wrap.c`). See [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md)
+for the full notice and license text. This does not change the license of
+this repository itself — see [`LICENSE`](./LICENSE).
+
+<!-- 日本語版 -->
+
+## サードパーティ通知
+
+FT8/FT4自動判読機能は、[`kgoba/ft8_lib`](https://github.com/kgoba/ft8_lib)
+（**MITライセンス**、Copyright (c) 2018 Kārlis Goba）をもとに自作のCラッパー
+（`decode_wrap.c`）でビルドしたWebAssemblyモジュールを組み込んでいます。詳細な
+通知文とライセンス全文は [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md)
+をご覧ください。この機能によって本リポジトリ自体のライセンス（
+[`LICENSE`](./LICENSE)）が変わることはありません。
 
 ## リリース履歴
 
